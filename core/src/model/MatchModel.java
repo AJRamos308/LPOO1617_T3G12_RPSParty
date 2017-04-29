@@ -33,7 +33,7 @@ public class MatchModel {
         rock = new RockHandModel(MatchController.ARENA_WIDTH / 2, MatchController.ARENA_HEIGHT / 2, 0);
         paper = new PaperHandModel(MatchController.ARENA_WIDTH / 2, MatchController.ARENA_HEIGHT / 2, 0);
         scissor = new ScissorHandModel(MatchController.ARENA_WIDTH / 2, MatchController.ARENA_HEIGHT / 2, 0);
-        
+
     }
 
     public RockHandModel getRock() { return rock; }
