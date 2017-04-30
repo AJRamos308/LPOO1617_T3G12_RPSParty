@@ -12,6 +12,12 @@ Repository created for the final project of the "Laboratório de Programação O
 **State**: Permite que um objeto altere o seu comportamento consoante o contexto em que se encontra. Aqui teremos diferentes states para cada mini jogo ao usarmos dentro de um Screen mais do que um Stage diferente.
 
 **Template Method**: Define a estrutura base (esqueleto) de um algoritmos, tendo ligeiras variâncias entras as subclasses. As subclasses redefinem certos passo/métodos da template sem alterarem a estrutura da mesma. No nosso caso tal é visível nas classes abstratas EntityModel, EntityActor, EntityButton, etc, em que teremos algumas características em comum entre as subclasses que derivam destas classes abstratas, no entanto as mesma continuam a ser “únicas” porque redefinem métodos de forma diferente.
+## Tests
+-To the correct transition between screens, depending on the button pressed;
+-To the correct attribution of points to the winner player;
+-To the game’s physic (correct objects’ trajectory taking into account their weight, the clash between two objects whose coordinates intersect, etc.);
+-To the correct socket creation nad correct connection of the “cliente” (second player) to the socket created by the “server” (first player);
+-To the mobile phone’s shake correct detection.
 
 ## Mock App
 ![Main Menu](https://github.com/AJRamos308/LPOO1617_T3G12_RPSParty/blob/master/Delivery%20Images/MainMenu.png)
