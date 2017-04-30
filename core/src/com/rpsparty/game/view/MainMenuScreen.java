@@ -5,19 +5,17 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.view.entities.CreatePartyButton;
 
-import static com.badlogic.gdx.controllers.ControlType.button;
 
 
 /**
@@ -43,6 +41,7 @@ public class MainMenuScreen extends ScreenAdapter {
     private Stage stage;
     private CreatePartyButton createPartyButton;
 
+
     public MainMenuScreen(RPSParty game) {
         this.game = game;
         loadAssets();
@@ -52,6 +51,7 @@ public class MainMenuScreen extends ScreenAdapter {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(createPartyButton);
+
     }
     /**
      * Loads the assets needed by this screen.
@@ -81,7 +81,8 @@ public class MainMenuScreen extends ScreenAdapter {
      */
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor( 103/255f, 69/255f, 117/255f, 1 );
+        //Gdx.gl.glClearColor( 103/255f, 69/255f, 117/255f, 1 );
+        Gdx.gl.glClearColor( 1, 1, 1, 1 );
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
         camera.update();
         stage.act();
@@ -89,7 +90,6 @@ public class MainMenuScreen extends ScreenAdapter {
         game.getBatch().begin();
         stage.draw();
         game.getBatch().end();
-
     }
 
     public void addButtons() {
@@ -100,6 +100,7 @@ public class MainMenuScreen extends ScreenAdapter {
         createPartyButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 //TODO: fazer setScreen()
+                System.out.print("TOCOUuuuuuu!");
             }});
     }
 }

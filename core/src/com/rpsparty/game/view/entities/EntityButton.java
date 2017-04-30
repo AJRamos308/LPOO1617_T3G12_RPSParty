@@ -1,5 +1,6 @@
 package com.rpsparty.game.view.entities;
 
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
