@@ -23,7 +23,7 @@ public class MatchController implements ContactListener {
      */
     private static MatchController instance;
 
-    public static final int ARENA_WIDTH = 320;
+    public static final int ARENA_WIDTH = 800;
     public static final int ARENA_HEIGHT = 480;
 
     private final World world;

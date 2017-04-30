@@ -13,8 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
+import com.rpsparty.game.view.entities.CreatePartyButton;
+
+import static com.badlogic.gdx.controllers.ControlType.button;
 
 
 /**
@@ -37,18 +40,18 @@ public class MainMenuScreen extends ScreenAdapter {
      * automatically calculated using the screen ratio.
      */
     private static final float VIEWPORT_WIDTH = 20;
-
     private Stage stage;
-    private BitmapFont font;
-    private TextureAtlas buttonsAtlas;
-    private Skin buttonSkin;
-    private TextButton button;
+    private CreatePartyButton createPartyButton;
 
     public MainMenuScreen(RPSParty game) {
         this.game = game;
         loadAssets();
         camera = createCamera();
-        addButton();
+        addButtons();
+        addListeners();
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        stage.addActor(createPartyButton);
     }
     /**
      * Loads the assets needed by this screen.
@@ -89,35 +92,14 @@ public class MainMenuScreen extends ScreenAdapter {
 
     }
 
-    public void addButton() {
-        buttonsAtlas = new TextureAtlas("buttons.pack"); //** button atlas image **//
-        buttonSkin = new Skin();
-        buttonSkin.addRegions(buttonsAtlas); //** skins for on and off **//
-        font = new BitmapFont(Gdx.files.internal("CustomFont.fnt"),false);
-        stage = new Stage();        //** window is stage **//
-        stage.clear();
-        Gdx.input.setInputProcessor(stage); //** stage is responsive **//
-        TextButtonStyle style = new TextButtonStyle(); //** Button properties **//
-        style.up = buttonSkin.getDrawable("ButtonOff");
-        style.down = buttonSkin.getDrawable("ButtonOn");
-        style.font = font;
-        button = new TextButton("PRESS ME", style); //** Button text and style **//
-        button.setPosition(8, 10); //** Button location **//
-        button.setHeight(4); //** Button Height **//
-        button.setWidth(7); //** Button Width **//
-
-        buttonListener();
-        stage.addActor(button);
+    public void addButtons() {
+        createPartyButton = new CreatePartyButton(game);
     }
 
-    public void buttonListener() {
-        button.addListener(new InputListener() {
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                }
-        });
+    public void addListeners() {
+        createPartyButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                //TODO: fazer setScreen()
+            }});
     }
 }
