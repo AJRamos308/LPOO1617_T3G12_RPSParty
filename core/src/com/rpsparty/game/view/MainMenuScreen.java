@@ -5,17 +5,12 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.view.entities.CreatePartyButton;
-
+import com.rpsparty.game.view.entities.JoinPartyButton;
 
 
 /**
@@ -40,6 +35,7 @@ public class MainMenuScreen extends ScreenAdapter {
     private static final float VIEWPORT_WIDTH = 20;
     private Stage stage;
     private CreatePartyButton createPartyButton;
+    private JoinPartyButton joinPartyButton;
 
 
     public MainMenuScreen(RPSParty game) {
@@ -51,6 +47,7 @@ public class MainMenuScreen extends ScreenAdapter {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(createPartyButton);
+        stage.addActor(joinPartyButton);
 
     }
     /**
@@ -66,7 +63,8 @@ public class MainMenuScreen extends ScreenAdapter {
      * @return the camera
      */
     private OrthographicCamera createCamera() {
-        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()));
+        float ratio = ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
+        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
 
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
@@ -94,13 +92,19 @@ public class MainMenuScreen extends ScreenAdapter {
 
     public void addButtons() {
         createPartyButton = new CreatePartyButton(game);
+        joinPartyButton = new JoinPartyButton(game);
     }
 
     public void addListeners() {
         createPartyButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 //TODO: fazer setScreen()
-                System.out.print("TOCOUuuuuuu!");
+                System.out.println("create party!");
+            }});
+        joinPartyButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                //TODO: fazer setScreen()
+                System.out.println("join party!");
             }});
     }
 }
