@@ -1,10 +1,9 @@
-package model;
+package com.rpsparty.game.model;
 
-import controller.MatchController;
-import model.entities.EntityModel;
-import model.entities.PaperHandModel;
-import model.entities.RockHandModel;
-import model.entities.ScissorHandModel;
+import com.rpsparty.game.controller.MatchController;
+import com.rpsparty.game.model.entities.RockHandModel;
+import com.rpsparty.game.model.entities.PaperHandModel;
+import com.rpsparty.game.model.entities.ScissorHandModel;
 
 /**
  * Created by bibib on 28/04/2017.

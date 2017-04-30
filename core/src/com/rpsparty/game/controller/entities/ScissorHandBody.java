@@ -1,17 +1,15 @@
-package controller.entities;
+package com.rpsparty.game.controller.entities;
 
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-import model.entities.PaperHandModel;
-import model.entities.RockHandModel;
-import model.entities.ScissorHandModel;
+import com.rpsparty.game.model.entities.ScissorHandModel;
 
 /**
  * Created by bibib on 29/04/2017.
  */
 
-public class ScissorHandBody extends EntityBody{
+public class ScissorHandBody extends EntityBody {
     public ScissorHandBody(World world, ScissorHandModel model) {
         super(world, model);
         float density = 0.7f, friction = 0.4f, restitution = 0.3f;

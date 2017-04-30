@@ -1,4 +1,4 @@
-package controller;
+package com.rpsparty.game.controller;
 
 /**
  * Created by bibib on 29/04/2017.
@@ -12,10 +12,10 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 
-import controller.entities.PaperHandBody;
-import controller.entities.RockHandBody;
-import controller.entities.ScissorHandBody;
-import model.MatchModel;
+import com.rpsparty.game.controller.entities.PaperHandBody;
+import com.rpsparty.game.controller.entities.RockHandBody;
+import com.rpsparty.game.controller.entities.ScissorHandBody;
+import com.rpsparty.game.model.MatchModel;
 
 public class MatchController implements ContactListener {
     /**

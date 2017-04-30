@@ -1,4 +1,4 @@
-package controller.entities;
+package com.rpsparty.game.controller.entities;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-import model.entities.EntityModel;
+import com.rpsparty.game.model.entities.EntityModel;
 
 /**
  * Created by bibib on 28/04/2017.

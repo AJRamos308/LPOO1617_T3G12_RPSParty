@@ -1,15 +1,15 @@
-package controller.entities;
+package com.rpsparty.game.controller.entities;
 
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-import model.entities.RockHandModel;
+import com.rpsparty.game.model.entities.RockHandModel;
 
 /**
  * Created by bibib on 28/04/2017.
  */
 
-public class RockHandBody extends EntityBody{
+public class RockHandBody extends EntityBody {
     public RockHandBody(World world, RockHandModel model) {
         super(world, model);
         float density = 1.2f, friction = 0.8f, restitution = 0.2f;

@@ -1,10 +1,9 @@
-package controller.entities;
+package com.rpsparty.game.controller.entities;
 
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-import model.entities.PaperHandModel;
-import model.entities.RockHandModel;
+import com.rpsparty.game.model.entities.PaperHandModel;
 
 /**
  * Created by bibib on 29/04/2017.
