@@ -84,8 +84,8 @@ public class MainMenuScreen extends ScreenAdapter {
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
         camera.update();
         stage.act();
-        game.getBatch().setProjectionMatrix(camera.combined);
         game.getBatch().begin();
+        game.getBatch().setProjectionMatrix(camera.combined);
         stage.draw();
         game.getBatch().end();
     }

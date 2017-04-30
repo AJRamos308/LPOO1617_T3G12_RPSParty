@@ -7,4 +7,5 @@ import com.badlogic.gdx.ScreenAdapter;
  */
 
 public class CreatePartyScreen extends ScreenAdapter {
+
 }
