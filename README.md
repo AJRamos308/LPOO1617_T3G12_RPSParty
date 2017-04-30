@@ -6,6 +6,13 @@ Repository created for the final project of the "Laboratório de Programação O
 ![Behavioural Aspects](https://github.com/AJRamos308/LPOO1617_T3G12_RPSParty/blob/master/Delivery%20Images/StateMachine.PNG)
 ## UML
 ![UML](https://github.com/AJRamos308/LPOO1617_T3G12_RPSParty/blob/master/Delivery%20Images/UML.PNG)
+## Design Patterns
+**Singleton**: Assegura que uma classe terá apenas umas instancia, ou seja, será apenas criada uma e uma só vez, e é acedida de uma forma global. No nosso projeto usaremos para instanciar apenas uma vez o modelo (model) e logica (controller) do jogo principal (em que se escolhe um dos elementos pedra, papel ou tesoura) e de cada mini jogo.
+
+**State**: Permite que um objeto altere o seu comportamento consoante o contexto em que se encontra. Aqui teremos diferentes states para cada mini jogo ao usarmos dentro de um Screen mais do que um Stage diferente.
+
+**Template Method**: Define a estrutura base (esqueleto) de um algoritmos, tendo ligeiras variâncias entras as subclasses. As subclasses redefinem certos passo/métodos da template sem alterarem a estrutura da mesma. No nosso caso tal é visível nas classes abstratas EntityModel, EntityActor, EntityButton, etc, em que teremos algumas características em comum entre as subclasses que derivam destas classes abstratas, no entanto as mesma continuam a ser “únicas” porque redefinem métodos de forma diferente.
+
 ## Mock App
 ![Main Menu](https://github.com/AJRamos308/LPOO1617_T3G12_RPSParty/blob/master/Delivery%20Images/MainMenu.png)
 
