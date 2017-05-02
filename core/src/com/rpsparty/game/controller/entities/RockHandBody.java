@@ -5,10 +5,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import com.rpsparty.game.model.entities.RockHandModel;
 
-/**
- * Created by bibib on 28/04/2017.
- */
-
 public class RockHandBody extends EntityBody {
     public RockHandBody(World world, RockHandModel model) {
         super(world, model);

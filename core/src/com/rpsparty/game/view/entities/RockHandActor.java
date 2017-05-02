@@ -7,10 +7,6 @@ import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.model.entities.EntityModel;
 import com.rpsparty.game.view.MainMenuScreen;
 
-/**
- * Created by bibib on 29/04/2017.
- */
-
 public class RockHandActor extends EntityActor {
     private Texture texture;
 

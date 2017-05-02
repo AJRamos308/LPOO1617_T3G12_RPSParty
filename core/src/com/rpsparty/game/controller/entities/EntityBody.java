@@ -8,10 +8,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import com.rpsparty.game.model.entities.EntityModel;
 
-/**
- * Created by bibib on 28/04/2017.
- */
-
 public class EntityBody {
     final static short ROCK_BODY = 0x1;//categorias de colisao
     final static short PAPER_BODY = 0x2;

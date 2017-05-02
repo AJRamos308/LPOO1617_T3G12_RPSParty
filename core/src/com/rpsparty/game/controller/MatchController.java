@@ -1,9 +1,5 @@
 package com.rpsparty.game.controller;
 
-/**
- * Created by bibib on 29/04/2017.
- */
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;

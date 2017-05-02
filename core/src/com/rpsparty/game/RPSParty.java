@@ -5,10 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.rpsparty.game.view.MainMenuScreen;
 
-/**
- * Created by bibib on 29/04/2017.
- */
-
 public class RPSParty extends Game {
 	private SpriteBatch batch;
 	private AssetManager assetManager;

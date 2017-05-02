@@ -8,10 +8,6 @@ import com.rpsparty.game.model.entities.EntityModel;
 
 import static com.rpsparty.game.view.MainMenuScreen.PIXEL_TO_METER;
 
-/**
- * Created by bibib on 29/04/2017.
- */
-
 public class ScissorHandActor extends EntityActor {
     private Texture texture;
 

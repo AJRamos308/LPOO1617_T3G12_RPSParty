@@ -5,15 +5,13 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
-import com.rpsparty.game.view.entities.CreatePartyButton;
 import com.rpsparty.game.view.entities.HelpButton;
-import com.rpsparty.game.view.entities.JoinPartyButton;
 
-public class MainMenuScreen extends ScreenAdapter {
+public class JoinPartyScreen extends ScreenAdapter {
     /**
      * How much meters does a pixel represent.
      */
@@ -30,12 +28,9 @@ public class MainMenuScreen extends ScreenAdapter {
      */
     private static final float VIEWPORT_WIDTH = 20;
     private Stage stage;
-    private CreatePartyButton createPartyButton;
-    private JoinPartyButton joinPartyButton;
     private HelpButton helpButton;
 
-
-    public MainMenuScreen(RPSParty game) {
+    public JoinPartyScreen(RPSParty game) {
         this.game = game;
         loadAssets();
         camera = createCamera();
@@ -43,8 +38,6 @@ public class MainMenuScreen extends ScreenAdapter {
         addListeners();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        stage.addActor(createPartyButton);
-        stage.addActor(joinPartyButton);
         stage.addActor(helpButton);
 
     }
@@ -53,7 +46,6 @@ public class MainMenuScreen extends ScreenAdapter {
      */
     private void loadAssets() {
         this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
-        this.game.getAssetManager().load( "test.jpg" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
     /**
@@ -90,22 +82,10 @@ public class MainMenuScreen extends ScreenAdapter {
     }
 
     public void addButtons() {
-        createPartyButton = new CreatePartyButton(game);
-        joinPartyButton = new JoinPartyButton(game);
         helpButton = new HelpButton(game);
     }
-
+    //TODO: Back Button
     public void addListeners() {
-        createPartyButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new CreatePartyScreen(game));
-                System.out.println("create party!");
-            }});
-        joinPartyButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new JoinPartyScreen(game));
-                System.out.println("join party!");
-            }});
         helpButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 //TODO: fazer setScreen()

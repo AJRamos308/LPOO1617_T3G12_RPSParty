@@ -1,9 +1,5 @@
 package com.rpsparty.game.model.entities;
 
-/**
- * Created by bibib on 28/04/2017.
- */
-
 public class ScissorMiniGameModel extends EntityModel {
 
     /**

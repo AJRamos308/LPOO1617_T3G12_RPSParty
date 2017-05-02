@@ -6,10 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.math.Rectangle;
 import com.rpsparty.game.RPSParty;
 
-/**
- * Created by bibib on 30/04/2017.
- */
-
 public abstract class EntityButton extends Button {
     Skin skin;
     ButtonStyle style;

@@ -1,9 +1,5 @@
 package com.rpsparty.game.model.entities;
 
-/**
- * Created by bibib on 28/04/2017.
- */
-
 public abstract class EntityModel {
     public enum ModelType {ROCKHAND, PAPERHAND, SCISSORHAND, ROCKMINIGAME, PAPERMINIGAME, SCISSORMINIGAME};
     /**

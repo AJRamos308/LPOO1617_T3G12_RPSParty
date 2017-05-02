@@ -5,10 +5,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import com.rpsparty.game.model.entities.PaperHandModel;
 
-/**
- * Created by bibib on 29/04/2017.
- */
-
 public class PaperHandBody extends EntityBody {
     public PaperHandBody(World world, PaperHandModel model) {
         super(world, model);

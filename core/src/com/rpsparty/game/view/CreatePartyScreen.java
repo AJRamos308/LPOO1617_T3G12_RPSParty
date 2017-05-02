@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.view.entities.HelpButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class CreatePartyScreen extends ScreenAdapter {
     /**
@@ -29,6 +30,7 @@ public class CreatePartyScreen extends ScreenAdapter {
     private static final float VIEWPORT_WIDTH = 20;
     private Stage stage;
     private HelpButton helpButton;
+    private TextField ip;
 
     public CreatePartyScreen(RPSParty game) {
         this.game = game;
@@ -40,6 +42,8 @@ public class CreatePartyScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
         stage.addActor(helpButton);
 
+        //ip = new TextField("Friend's IP",TextField.style sstyle);
+//TODO: Add textfield
     }
     /**
      * Loads the assets needed by this screen.
@@ -84,7 +88,7 @@ public class CreatePartyScreen extends ScreenAdapter {
     public void addButtons() {
         helpButton = new HelpButton(game);
     }
-
+    //TODO: Back Button
     public void addListeners() {
         helpButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {

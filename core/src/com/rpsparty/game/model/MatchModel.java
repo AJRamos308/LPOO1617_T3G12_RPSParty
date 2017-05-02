@@ -5,10 +5,6 @@ import com.rpsparty.game.model.entities.RockHandModel;
 import com.rpsparty.game.model.entities.PaperHandModel;
 import com.rpsparty.game.model.entities.ScissorHandModel;
 
-/**
- * Created by bibib on 28/04/2017.
- */
-
 public class MatchModel {
     /**
      * The singleton instance of the MatchGame model

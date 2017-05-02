@@ -5,10 +5,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import com.rpsparty.game.model.entities.ScissorHandModel;
 
-/**
- * Created by bibib on 29/04/2017.
- */
-
 public class ScissorHandBody extends EntityBody {
     public ScissorHandBody(World world, ScissorHandModel model) {
         super(world, model);
