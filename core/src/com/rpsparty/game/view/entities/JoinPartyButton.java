@@ -4,11 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.rpsparty.game.RPSParty;
 
-/**
- * Created by bibib on 30/04/2017.
- */
-
 public class JoinPartyButton extends EntityButton {
+
     public JoinPartyButton(RPSParty game) {
         super(game);
     }

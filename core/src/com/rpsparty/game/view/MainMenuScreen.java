@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.view.entities.CreatePartyButton;
+import com.rpsparty.game.view.entities.HelpButton;
 import com.rpsparty.game.view.entities.JoinPartyButton;
 
 
@@ -36,6 +37,7 @@ public class MainMenuScreen extends ScreenAdapter {
     private Stage stage;
     private CreatePartyButton createPartyButton;
     private JoinPartyButton joinPartyButton;
+    private HelpButton helpButton;
 
 
     public MainMenuScreen(RPSParty game) {
@@ -48,6 +50,7 @@ public class MainMenuScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
         stage.addActor(createPartyButton);
         stage.addActor(joinPartyButton);
+        stage.addActor(helpButton);
 
     }
     /**
@@ -55,6 +58,7 @@ public class MainMenuScreen extends ScreenAdapter {
      */
     private void loadAssets() {
         this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
+        this.game.getAssetManager().load( "test.jpg" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
     /**
@@ -93,6 +97,7 @@ public class MainMenuScreen extends ScreenAdapter {
     public void addButtons() {
         createPartyButton = new CreatePartyButton(game);
         joinPartyButton = new JoinPartyButton(game);
+        helpButton = new HelpButton(game);
     }
 
     public void addListeners() {
@@ -105,6 +110,11 @@ public class MainMenuScreen extends ScreenAdapter {
             public void clicked(InputEvent event, float x, float y) {
                 //TODO: fazer setScreen()
                 System.out.println("join party!");
+            }});
+        helpButton.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                //TODO: fazer setScreen()
+                System.out.println("HELP!");
             }});
     }
 }
