@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.view.entities.HelpButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.Input.Keys;
 
 public class CreatePartyScreen extends ScreenAdapter {
     /**
@@ -41,9 +43,9 @@ public class CreatePartyScreen extends ScreenAdapter {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(helpButton);
-
-        //ip = new TextField("Friend's IP",TextField.style sstyle);
-//TODO: Add textfield
+        //Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
+        //ip = new TextField("Friend's IP",uiskin);
+        //TODO: Add textfield
     }
     /**
      * Loads the assets needed by this screen.
@@ -83,6 +85,11 @@ public class CreatePartyScreen extends ScreenAdapter {
         game.getBatch().setProjectionMatrix(camera.combined);
         stage.draw();
         game.getBatch().end();
+        if (Gdx.input.isKeyPressed(Keys.BACK)) {
+            game.backpressed = true;
+            game.setScreen(new MainMenuScreen(game));
+            Gdx.input.setCatchBackKey(true);
+        }
     }
 
     public void addButtons() {

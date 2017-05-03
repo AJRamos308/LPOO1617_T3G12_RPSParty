@@ -8,6 +8,7 @@ import com.rpsparty.game.view.MainMenuScreen;
 public class RPSParty extends Game {
 	private SpriteBatch batch;
 	private AssetManager assetManager;
+	public boolean backpressed = false;
 
 	/**
 	 * Creates the game. Initializes the sprite batch and asset manager.

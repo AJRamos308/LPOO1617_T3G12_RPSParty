@@ -9,9 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
+import com.rpsparty.game.view.entities.AchievementsButton;
 import com.rpsparty.game.view.entities.CreatePartyButton;
 import com.rpsparty.game.view.entities.HelpButton;
 import com.rpsparty.game.view.entities.JoinPartyButton;
+import com.rpsparty.game.view.entities.SettingsButton;
+import com.badlogic.gdx.Input.Keys;
 
 public class MainMenuScreen extends ScreenAdapter {
     /**
@@ -33,6 +36,8 @@ public class MainMenuScreen extends ScreenAdapter {
     private CreatePartyButton createPartyButton;
     private JoinPartyButton joinPartyButton;
     private HelpButton helpButton;
+    private AchievementsButton achievementsButton;
+    private SettingsButton settingsButton;
 
 
     public MainMenuScreen(RPSParty game) {
@@ -46,7 +51,8 @@ public class MainMenuScreen extends ScreenAdapter {
         stage.addActor(createPartyButton);
         stage.addActor(joinPartyButton);
         stage.addActor(helpButton);
-
+        stage.addActor(achievementsButton);
+        stage.addActor(settingsButton);
     }
     /**
      * Loads the assets needed by this screen.
@@ -54,6 +60,8 @@ public class MainMenuScreen extends ScreenAdapter {
     private void loadAssets() {
         this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
         this.game.getAssetManager().load( "test.jpg" , Texture.class);
+        this.game.getAssetManager().load( "Achieve.png" , Texture.class);
+        this.game.getAssetManager().load( "settings.png" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
     /**
@@ -79,20 +87,31 @@ public class MainMenuScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         //Gdx.gl.glClearColor( 103/255f, 69/255f, 117/255f, 1 );
-        Gdx.gl.glClearColor( 1, 1, 1, 1 );
-        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+        game.backpressed = false;
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
         stage.act();
         game.getBatch().begin();
         game.getBatch().setProjectionMatrix(camera.combined);
         stage.draw();
         game.getBatch().end();
+        if (Gdx.input.isKeyPressed(Keys.BACK)) {
+            if (!game.backpressed) {
+                game.backpressed = true;
+            } else if (game.backpressed) {
+                game.backpressed = false;
+                Gdx.app.exit();
+            }
+        }
     }
 
     public void addButtons() {
         createPartyButton = new CreatePartyButton(game);
         joinPartyButton = new JoinPartyButton(game);
         helpButton = new HelpButton(game);
+        achievementsButton = new AchievementsButton(game);
+        settingsButton = new SettingsButton(game);
     }
 
     public void addListeners() {

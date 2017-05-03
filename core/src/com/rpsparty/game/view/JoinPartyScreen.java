@@ -1,6 +1,7 @@
 package com.rpsparty.game.view;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -39,7 +40,11 @@ public class JoinPartyScreen extends ScreenAdapter {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(helpButton);
-
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            game.backpressed = true;
+            game.setScreen(new MainMenuScreen(game));
+            Gdx.input.setCatchBackKey(true);
+        }
     }
     /**
      * Loads the assets needed by this screen.
