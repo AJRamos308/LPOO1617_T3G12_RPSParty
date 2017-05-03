@@ -84,6 +84,11 @@ public class JoinPartyScreen extends ScreenAdapter {
         game.getBatch().setProjectionMatrix(camera.combined);
         stage.draw();
         game.getBatch().end();
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            game.backpressed = true;
+            game.setScreen(new MainMenuScreen(game));
+            Gdx.input.setCatchBackKey(true);
+        }
     }
 
     public void addButtons() {
