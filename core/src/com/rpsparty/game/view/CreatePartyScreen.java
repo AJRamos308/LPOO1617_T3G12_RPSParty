@@ -5,14 +5,29 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.net.ServerSocket;
+import com.badlogic.gdx.net.ServerSocketHints;
+import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.view.entities.HelpButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Net.Protocol;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
 
 public class CreatePartyScreen extends ScreenAdapter {
     /**
@@ -46,6 +61,33 @@ public class CreatePartyScreen extends ScreenAdapter {
         //Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
         //ip = new TextField("Friend's IP",uiskin);
         //TODO: Add textfield
+        // The following code loops through the available network interfaces
+        // Keep in mind, there can be multiple interfaces per device, for example
+        // one per NIC, one per active wireless and the loopback
+        // In this case we only care about IPv4 address ( x.x.x.x format )
+        List<String> addresses = new ArrayList<String>();
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            for(NetworkInterface ni : Collections.list(interfaces)){
+                for(InetAddress address : Collections.list(ni.getInetAddresses()))
+                {
+                    if(address instanceof Inet4Address){
+                        addresses.add(address.getHostAddress());
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
+        // Print the contents of our array to a string.  Yeah, should have used StringBuilder
+        String ipAddress = new String("");
+        for(String str:addresses)
+        {
+            if(!str.equals("127.0.0.1"))//nao escrever o IP "127.0.0.1" porque e o localhost (igual para qualquer pc)
+            ipAddress = ipAddress + str + "\n";
+        }
+        System.out.println(ipAddress);
     }
     /**
      * Loads the assets needed by this screen.
@@ -102,5 +144,43 @@ public class CreatePartyScreen extends ScreenAdapter {
                 //TODO: fazer setScreen()
                 System.out.println("HELP!");
             }});
+    }
+    /*
+    *espera que um cliente se ligue ao nosso socket
+    * e le o que o cliente escreve para o socket
+     */
+    public void createThread() {
+        // Now we create a thread that will listen for incoming socket connections
+        new Thread(new Runnable(){
+
+            @Override
+            public void run() {
+                ServerSocketHints serverSocketHint = new ServerSocketHints();
+                // 0 means no timeout.  Probably not the greatest idea in production!
+                serverSocketHint.acceptTimeout = 0;
+
+                // Create the socket server using TCP protocol and listening on 9021
+                // Only one app can listen to a port at a time, keep in mind many ports are reserved
+                // especially in the lower numbers ( like 21, 80, etc )
+                ServerSocket serverSocket = Gdx.net.newServerSocket(Protocol.TCP, 9021, serverSocketHint);
+
+                // Loop forever
+                while(true){
+                    // Create a socket; o accept bloqueia/nao se avanca no código enquanto um cliente nao se ligar ao nosso socket
+                    Socket socket = serverSocket.accept(null);
+                    //TODO: mudar de ecra mal o cliente se ligue
+                    // Read data from the socket into a BufferedReader
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                    try {
+                        // Read to the next newline (\n) and display that text on labelMessage
+                        System.out.println(buffer.readLine());
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start(); // And, start the thread running
     }
 }

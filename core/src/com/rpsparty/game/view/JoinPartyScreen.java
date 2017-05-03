@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.view.entities.HelpButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 
 public class JoinPartyScreen extends ScreenAdapter {
     /**
@@ -30,6 +31,7 @@ public class JoinPartyScreen extends ScreenAdapter {
     private static final float VIEWPORT_WIDTH = 20;
     private Stage stage;
     private HelpButton helpButton;
+    private TextArea serverIP;
 
     public JoinPartyScreen(RPSParty game) {
         this.game = game;
