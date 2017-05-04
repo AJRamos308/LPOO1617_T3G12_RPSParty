@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.rpsparty.game.RPSParty;
@@ -25,6 +26,7 @@ import com.badlogic.gdx.Net.Protocol;
 import java.io.IOException;
 
 import static com.badlogic.gdx.Input.Keys.T;
+import static com.badlogic.gdx.utils.Align.center;
 
 public class JoinPartyScreen extends ScreenAdapter {
     /**
@@ -44,7 +46,7 @@ public class JoinPartyScreen extends ScreenAdapter {
     private static final float VIEWPORT_WIDTH = 20;
     private Stage stage;
     private HelpButton helpButton;
-    private TextArea serverIP;
+    private TextField serverIP;
     private TextButton confirmInput;
 
     public JoinPartyScreen(RPSParty game) {
@@ -56,7 +58,6 @@ public class JoinPartyScreen extends ScreenAdapter {
         addTextArea();
         addTextButton();
         addListenersTextButton();
-
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(helpButton);
@@ -129,12 +130,13 @@ public class JoinPartyScreen extends ScreenAdapter {
         TextFieldStyle style = new TextFieldStyle();
         style.font = new BitmapFont();
         style.fontColor = Color.BLACK;
-        serverIP = new TextArea("Server IP", style);
-        serverIP.setY(camera.position.y/2);
-        serverIP.setX(camera.position.x/2);
-        serverIP.setWidth(270);
-        serverIP.setHeight(270);
-        serverIP.setMaxLength(50);
+        serverIP = new TextField("Server IP", style);
+        serverIP.setY(Gdx.graphics.getHeight()/2);
+        serverIP.setX(Gdx.graphics.getWidth()/4);
+        serverIP.setWidth(Gdx.graphics.getWidth()/2);
+        serverIP.setHeight(Gdx.graphics.getHeight()/4);
+        serverIP.setAlignment(center);
+        serverIP.setMaxLength(15);
     }
 
     public void addListenersTextArea() {
@@ -146,10 +148,10 @@ public class JoinPartyScreen extends ScreenAdapter {
         style.font = new BitmapFont();
         style.fontColor = Color.BLACK;
         confirmInput = new TextButton("Join Party", style);
-        confirmInput.setY(camera.position.y/2);
-        confirmInput.setX(camera.position.x/2);
-        confirmInput.setWidth(270);
-        confirmInput.setHeight(270);
+        confirmInput.setY(Gdx.graphics.getHeight()/4);
+        confirmInput.setX(Gdx.graphics.getWidth()/4);
+        confirmInput.setWidth(Gdx.graphics.getWidth()/2);
+        confirmInput.setHeight(Gdx.graphics.getHeight()/4);
     }
 
     public void addListenersTextButton() {
