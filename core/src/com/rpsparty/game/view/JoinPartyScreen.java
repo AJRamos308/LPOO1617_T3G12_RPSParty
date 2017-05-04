@@ -163,9 +163,11 @@ public class JoinPartyScreen extends ScreenAdapter {
                 socketHints.connectTimeout = 4000;
                 //create the socket and connect to the server entered in the text box ( x.x.x.x format ) on port 9021
                 try {
+                    System.out.println(serverIP.getText());
                         Socket socket = Gdx.net.newClientSocket(Protocol.TCP, serverIP.getText(), 9021, socketHints);
                     } catch (GdxRuntimeException e) {
                         System.out.println("excecao");
+                        e.printStackTrace();
                     }
 
 

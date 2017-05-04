@@ -89,6 +89,7 @@ public class CreatePartyScreen extends ScreenAdapter {
         }
         System.out.println(ipAddress);
         if (ipAddress.equals(" ")) System.out.println("nao deu ip");
+        createThread();
     }
     /**
      * Loads the assets needed by this screen.
@@ -166,6 +167,7 @@ public class CreatePartyScreen extends ScreenAdapter {
                 ServerSocket serverSocket = Gdx.net.newServerSocket(Protocol.TCP, 9021, serverSocketHint);
 
                 Socket socket = serverSocket.accept(null);//fica a espera que alguem se conecte
+                System.out.println("aceitou cliente");
                     game.setScreen(new MainMenuScreen(game));
                 /*
                 // Loop forever
