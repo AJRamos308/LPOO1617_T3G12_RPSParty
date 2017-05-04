@@ -164,6 +164,9 @@ public class CreatePartyScreen extends ScreenAdapter {
                 // especially in the lower numbers ( like 21, 80, etc )
                 ServerSocket serverSocket = Gdx.net.newServerSocket(Protocol.TCP, 9021, serverSocketHint);
 
+                Socket socket = serverSocket.accept(null);//fica a espera que alguem se conecte
+                    game.setScreen(new MainMenuScreen(game));
+                /*
                 // Loop forever
                 while(true){
                     // Create a socket; o accept bloqueia/nao se avanca no código enquanto um cliente nao se ligar ao nosso socket
@@ -180,6 +183,7 @@ public class CreatePartyScreen extends ScreenAdapter {
                         e.printStackTrace();
                     }
                 }
+                */
             }
         }).start(); // And, start the thread running
     }
