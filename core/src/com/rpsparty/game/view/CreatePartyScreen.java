@@ -88,6 +88,7 @@ public class CreatePartyScreen extends ScreenAdapter {
             ipAddress = ipAddress + str + "\n";
         }
         System.out.println(ipAddress);
+        if (ipAddress.equals(" ")) System.out.println("nao deu ip");
     }
     /**
      * Loads the assets needed by this screen.
