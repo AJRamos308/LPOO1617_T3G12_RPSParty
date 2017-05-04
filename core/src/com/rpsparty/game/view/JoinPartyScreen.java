@@ -3,15 +3,28 @@ package com.rpsparty.game.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.net.Socket;
+import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.view.entities.HelpButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
+import com.badlogic.gdx.Net.Protocol;
+
+import java.io.IOException;
+
+import static com.badlogic.gdx.Input.Keys.T;
 
 public class JoinPartyScreen extends ScreenAdapter {
     /**
@@ -32,16 +45,23 @@ public class JoinPartyScreen extends ScreenAdapter {
     private Stage stage;
     private HelpButton helpButton;
     private TextArea serverIP;
+    private TextButton confirmInput;
 
     public JoinPartyScreen(RPSParty game) {
         this.game = game;
         loadAssets();
         camera = createCamera();
         addButtons();
-        addListeners();
+        addListenersButton();
+        addTextArea();
+        addTextButton();
+        addListenersTextButton();
+
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(helpButton);
+        stage.addActor(serverIP);
+        stage.addActor(confirmInput);
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             game.backpressed = true;
             game.setScreen(new MainMenuScreen(game));
@@ -97,11 +117,63 @@ public class JoinPartyScreen extends ScreenAdapter {
         helpButton = new HelpButton(game);
     }
     //TODO: Back Button
-    public void addListeners() {
+    public void addListenersButton() {
         helpButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 //TODO: fazer setScreen()
                 System.out.println("HELP!");
+            }});
+    }
+
+    public void addTextArea() {
+        TextFieldStyle style = new TextFieldStyle();
+        style.font = new BitmapFont();
+        style.fontColor = Color.BLACK;
+        serverIP = new TextArea("Server IP", style);
+        serverIP.setY(camera.position.y/2);
+        serverIP.setX(camera.position.x/2);
+        serverIP.setWidth(270);
+        serverIP.setHeight(270);
+        serverIP.setMaxLength(50);
+    }
+
+    public void addListenersTextArea() {
+
+    }
+
+    public void addTextButton() {
+        TextButtonStyle style = new TextButtonStyle();
+        style.font = new BitmapFont();
+        style.fontColor = Color.BLACK;
+        confirmInput = new TextButton("Join Party", style);
+        confirmInput.setY(camera.position.y/2);
+        confirmInput.setX(camera.position.x/2);
+        confirmInput.setWidth(270);
+        confirmInput.setHeight(270);
+    }
+
+    public void addListenersTextButton() {
+        confirmInput.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("clicou no butao\n");
+                SocketHints socketHints = new SocketHints();
+                // Socket will time our in 4 seconds
+                socketHints.connectTimeout = 4000;
+                //create the socket and connect to the server entered in the text box ( x.x.x.x format ) on port 9021
+                try {
+                        Socket socket = Gdx.net.newClientSocket(Protocol.TCP, serverIP.getText(), 9021, socketHints);
+                    } catch (GdxRuntimeException e) {
+                        System.out.println("excecao");
+                    }
+
+
+                //CODIGO PARA ESCREVER PARA O SOCKET
+                /*try {
+                    // write our entered message to the stream
+                    socket.getOutputStream().write(textToSend.getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
             }});
     }
 }
