@@ -129,12 +129,18 @@ public class JoinPartyScreen extends ScreenAdapter {
     public void addTextArea() {
         TextFieldStyle style = new TextFieldStyle();
         style.font = new BitmapFont();
+        style.font.getData().setScale(4f);
         style.fontColor = Color.BLACK;
         serverIP = new TextField("Server IP", style);
-        serverIP.setY(Gdx.graphics.getHeight()/2);
-        serverIP.setX(Gdx.graphics.getWidth()/4);
-        serverIP.setWidth(Gdx.graphics.getWidth()/2);
-        serverIP.setHeight(Gdx.graphics.getHeight()/4);
+        serverIP.setBounds(Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
+        serverIP.setTextFieldFilter(new TextField.TextFieldFilter() {
+            // Accepts only numbers and dots
+            public  boolean acceptChar(TextField textField, char c) {
+                if ((c != '1') && (c != '2') && (c != '3') && (c != '4') && (c != '5') && (c != '6') && (c != '7') && (c != '8') && (c != '9') && (c != '0') && (c != '.'))
+                    return false;
+                return true;
+            }
+        });
         serverIP.setAlignment(center);
         serverIP.setMaxLength(15);
     }
@@ -146,6 +152,7 @@ public class JoinPartyScreen extends ScreenAdapter {
     public void addTextButton() {
         TextButtonStyle style = new TextButtonStyle();
         style.font = new BitmapFont();
+        style.font.getData().setScale(4f);
         style.fontColor = Color.BLACK;
         confirmInput = new TextButton("Join Party", style);
         confirmInput.setY(Gdx.graphics.getHeight()/4);
