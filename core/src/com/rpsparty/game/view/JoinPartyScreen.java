@@ -8,10 +8,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -74,6 +76,7 @@ public class JoinPartyScreen extends ScreenAdapter {
      */
     private void loadAssets() {
         this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
+        this.game.getAssetManager().load( "cursor.png" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
     /**
@@ -128,11 +131,20 @@ public class JoinPartyScreen extends ScreenAdapter {
 
     public void addTextArea() {
         TextFieldStyle style = new TextFieldStyle();
-        style.font = new BitmapFont();
-        style.font.getData().setScale(4f);
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 45;
+        BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
+        generator.dispose(); // don't forget to dispose to avoid memory leaks!
+        style.font = font;
+        //style.font.getData().setScale(4f);
         style.fontColor = Color.BLACK;
+        Skin skin = new Skin();
+        skin.add("cursor", this.game.getAssetManager().get("cursor.png"));
+        style.cursor = skin.newDrawable("cursor");
+        style.cursor.setLeftWidth(20);
         serverIP = new TextField("Server IP", style);
-        serverIP.setBounds(Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/4);
+        serverIP.setBounds(Gdx.graphics.getWidth()/8, Gdx.graphics.getHeight()/2, 3*Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight()/4);
         serverIP.setTextFieldFilter(new TextField.TextFieldFilter() {
             // Accepts only numbers and dots
             public  boolean acceptChar(TextField textField, char c) {
@@ -151,8 +163,12 @@ public class JoinPartyScreen extends ScreenAdapter {
 
     public void addTextButton() {
         TextButtonStyle style = new TextButtonStyle();
-        style.font = new BitmapFont();
-        style.font.getData().setScale(4f);
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 60;
+        BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
+        generator.dispose(); // don't forget to dispose to avoid memory leaks!
+        style.font = font;
         style.fontColor = Color.BLACK;
         confirmInput = new TextButton("Join Party", style);
         confirmInput.setY(Gdx.graphics.getHeight()/4);
