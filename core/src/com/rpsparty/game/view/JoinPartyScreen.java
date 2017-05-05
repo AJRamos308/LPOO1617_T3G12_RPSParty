@@ -182,7 +182,7 @@ public class JoinPartyScreen extends ScreenAdapter {
     public void addListenersTextButton() {
         confirmInput.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("clicou no butao\n");
+                System.out.println("Clicked the Button!\n");
                 SocketHints socketHints = new SocketHints();
                 // Socket will time our in 4 seconds
                 socketHints.connectTimeout = 4000;
@@ -191,7 +191,7 @@ public class JoinPartyScreen extends ScreenAdapter {
                     System.out.println(serverIP.getText());
                         Socket socket = Gdx.net.newClientSocket(Protocol.TCP, serverIP.getText(), 9021, socketHints);
                     } catch (GdxRuntimeException e) {
-                        System.out.println("excecao");
+                        System.out.println("Exception");
                         e.printStackTrace();
                     }
 

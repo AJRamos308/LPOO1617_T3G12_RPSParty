@@ -61,6 +61,7 @@ public class MainMenuScreen extends ScreenAdapter {
         this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
         this.game.getAssetManager().load( "test.jpg" , Texture.class);
         this.game.getAssetManager().load( "Achieve.png" , Texture.class);
+        this.game.getAssetManager().load( "join.jpg" , Texture.class);
         this.game.getAssetManager().load( "settings.png" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
