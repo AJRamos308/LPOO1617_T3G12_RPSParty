@@ -2,18 +2,21 @@ package com.rpsparty.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.net.ServerSocket;
 import com.badlogic.gdx.net.ServerSocketHints;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.view.entities.HelpButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Net.Protocol;
 
@@ -28,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+
+import static com.badlogic.gdx.utils.Align.center;
 
 public class CreatePartyScreen extends ScreenAdapter {
     /**
@@ -47,7 +52,8 @@ public class CreatePartyScreen extends ScreenAdapter {
     private static final float VIEWPORT_WIDTH = 20;
     private Stage stage;
     private HelpButton helpButton;
-    private TextField ip;
+    private Label myIP;
+    private String ipAddress;
 
     public CreatePartyScreen(RPSParty game) {
         this.game = game;
@@ -55,9 +61,11 @@ public class CreatePartyScreen extends ScreenAdapter {
         camera = createCamera();
         addButtons();
         addListeners();
+        addLabel();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(helpButton);
+        stage.addActor(myIP);
         //Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
         //ip = new TextField("Friend's IP",uiskin);
         //TODO: Add textfield
@@ -81,15 +89,16 @@ public class CreatePartyScreen extends ScreenAdapter {
         }
 
         // Print the contents of our array to a string.  Yeah, should have used StringBuilder
-        String ipAddress = new String("");
+        ipAddress = new String("");
         for(String str:addresses)
         {
             if(!str.equals("127.0.0.1"))//nao escrever o IP "127.0.0.1" porque e o localhost (igual para qualquer pc)
             ipAddress = ipAddress + str + "\n";
         }
         System.out.println(ipAddress);
-        if (ipAddress.equals(" ")) System.out.println("nao deu ip");
-        createThread();
+        if (ipAddress.equals(" ")) System.out.println("Did not get IP");
+        else myIP.setText("YOUR IP:\n" + ipAddress);
+        //createThread();
     }
     /**
      * Loads the assets needed by this screen.
@@ -139,7 +148,21 @@ public class CreatePartyScreen extends ScreenAdapter {
     public void addButtons() {
         helpButton = new HelpButton(game);
     }
-    //TODO: Back Button
+
+    public void addLabel() {
+        Label.LabelStyle style = new Label.LabelStyle();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 170;
+        BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
+        generator.dispose(); // don't forget to dispose to avoid memory leaks!
+        style.font = font;
+        style.fontColor = Color.BLACK;
+        myIP = new Label(" ", style);
+        myIP.setBounds(Gdx.graphics.getWidth()/4, 5*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/4);
+        myIP.setAlignment(center);
+    }
+
     public void addListeners() {
         helpButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {

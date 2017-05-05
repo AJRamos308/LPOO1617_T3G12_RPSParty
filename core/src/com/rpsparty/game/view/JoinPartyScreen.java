@@ -77,6 +77,7 @@ public class JoinPartyScreen extends ScreenAdapter {
     private void loadAssets() {
         this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
         this.game.getAssetManager().load( "cursor.png" , Texture.class);
+        this.game.getAssetManager().load( "Selection.png" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
     /**
@@ -133,7 +134,7 @@ public class JoinPartyScreen extends ScreenAdapter {
         TextFieldStyle style = new TextFieldStyle();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 45;
+        parameter.size = 150;
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
         style.font = font;
@@ -141,10 +142,11 @@ public class JoinPartyScreen extends ScreenAdapter {
         style.fontColor = Color.BLACK;
         Skin skin = new Skin();
         skin.add("cursor", this.game.getAssetManager().get("cursor.png"));
+        skin.add("Selection", this.game.getAssetManager().get("Selection.png"));
         style.cursor = skin.newDrawable("cursor");
-        style.cursor.setLeftWidth(20);
+        style.selection = skin.newDrawable("Selection");
         serverIP = new TextField("Server IP", style);
-        serverIP.setBounds(Gdx.graphics.getWidth()/8, Gdx.graphics.getHeight()/2, 3*Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight()/4);
+        serverIP.setBounds(0, Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()/4);
         serverIP.setTextFieldFilter(new TextField.TextFieldFilter() {
             // Accepts only numbers and dots
             public  boolean acceptChar(TextField textField, char c) {
@@ -165,7 +167,7 @@ public class JoinPartyScreen extends ScreenAdapter {
         TextButtonStyle style = new TextButtonStyle();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 60;
+        parameter.size = 150;
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
         style.font = font;
