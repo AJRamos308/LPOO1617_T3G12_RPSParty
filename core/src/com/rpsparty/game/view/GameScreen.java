@@ -51,7 +51,7 @@ public class GameScreen extends ScreenAdapter {
 
     public GameScreen(RPSParty game) {
         this.game = game;
-        matchStage = new MatchStage(RPSParty game);
+        matchStage = new MatchStage(game);
         loadAssets();
         camera = createCamera();
     }
@@ -109,47 +109,5 @@ public class GameScreen extends ScreenAdapter {
                 System.out.println("HELP!");
             }});
     }
-    /*
-    *espera que um cliente se ligue ao nosso socket
-    * e le o que o cliente escreve para o socket
-     */
-    public void createThread() {
-        // Now we create a thread that will listen for incoming socket connections
-        new Thread(new Runnable(){
 
-            @Override
-            public void run() {
-                ServerSocketHints serverSocketHint = new ServerSocketHints();
-                // 0 means no timeout.  Probably not the greatest idea in production!
-                serverSocketHint.acceptTimeout = 0;
-
-                // Create the socket server using TCP protocol and listening on 9021
-                // Only one app can listen to a port at a time, keep in mind many ports are reserved
-                // especially in the lower numbers ( like 21, 80, etc )
-                ServerSocket serverSocket = Gdx.net.newServerSocket(Net.Protocol.TCP, 9021, serverSocketHint);
-
-                Socket socket = serverSocket.accept(null);//fica a espera que alguem se conecte
-                System.out.println("aceitou cliente");
-                game.setScreen(new MainMenuScreen(game));
-                /*
-                // Loop forever
-                while(true){
-                    // Create a socket; o accept bloqueia/nao se avanca no código enquanto um cliente nao se ligar ao nosso socket
-                    Socket socket = serverSocket.accept(null);
-                    //TODO: mudar de ecra mal o cliente se ligue
-                    // Read data from the socket into a BufferedReader
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                    try {
-                        // Read to the next newline (\n) and display that text on labelMessage
-                        System.out.println(buffer.readLine());
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                */
-            }
-        }).start(); // And, start the thread running
-    }
 }

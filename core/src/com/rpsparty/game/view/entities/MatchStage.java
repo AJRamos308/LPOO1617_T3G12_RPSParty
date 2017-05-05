@@ -15,7 +15,7 @@ public class MatchStage extends Stage {
     private final PaperHandActor paper;
     private final ScissorHandActor scissor;
 
-    MatchStage (RPSParty game) {
+    public MatchStage (RPSParty game) {
         world = new World(new Vector2(0,0), true);
         rock = new RockHandActor(game);
         paper = new PaperHandActor(game);
@@ -41,7 +41,7 @@ public class MatchStage extends Stage {
     public void addListenersActors() {
         rock.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                (
+
                 return true;
             }
         });

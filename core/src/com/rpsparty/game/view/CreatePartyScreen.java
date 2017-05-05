@@ -190,8 +190,9 @@ public class CreatePartyScreen extends ScreenAdapter {
                 ServerSocket serverSocket = Gdx.net.newServerSocket(Protocol.TCP, 9021, serverSocketHint);
 
                 Socket socket = serverSocket.accept(null);//fica a espera que alguem se conecte
+                game.socket = socket;
                 System.out.println("aceitou cliente");
-                    game.setScreen(new MainMenuScreen(game));
+                game.setScreen(new MainMenuScreen(game));
                 /*
                 // Loop forever
                 while(true){
