@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.net.ServerSocket;
+import com.badlogic.gdx.net.ServerSocketHints;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -20,12 +22,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.rpsparty.game.RPSParty;
+import com.rpsparty.game.controller.ConnectionSockets;
 import com.rpsparty.game.view.entities.HelpButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.Net.Protocol;
 
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
 
 import static com.badlogic.gdx.Input.Keys.T;
 import static com.badlogic.gdx.utils.Align.center;
@@ -50,11 +61,14 @@ public class JoinPartyScreen extends ScreenAdapter {
     private HelpButton helpButton;
     private TextField serverIP;
     private TextButton confirmInput;
+    private boolean startGame;
 
     public JoinPartyScreen(RPSParty game) {
         this.game = game;
         loadAssets();
         camera = createCamera();
+
+        startGame = false;
         addButtons();
         addListenersButton();
         addTextArea();
@@ -115,6 +129,9 @@ public class JoinPartyScreen extends ScreenAdapter {
             game.backpressed = true;
             game.setScreen(new MainMenuScreen(game));
             Gdx.input.setCatchBackKey(true);
+        }
+        if(startGame) {
+            game.setScreen(new MainMenuScreen(game));
         }
     }
 
@@ -182,28 +199,82 @@ public class JoinPartyScreen extends ScreenAdapter {
     public void addListenersTextButton() {
         confirmInput.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
+                createThread();
+            }});
+    }
+
+    public String getIP() {
+        List<String> addresses = new ArrayList<String>();
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            for(NetworkInterface ni : Collections.list(interfaces)){
+                for(InetAddress address : Collections.list(ni.getInetAddresses()))
+                {
+                    if(address instanceof Inet4Address){
+                        addresses.add(address.getHostAddress());
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        String ipAddress = new String("");
+        for(String str:addresses)
+        {
+            if(!str.equals("127.0.0.1"))//nao escrever o IP "127.0.0.1" porque e o localhost (igual para qualquer pc)
+                ipAddress = ipAddress + str + "\n";
+        }
+        return ipAddress;
+    }
+
+    public void createThread() {
+        new Thread(new Runnable(){
+
+            @Override
+            public void run() {
                 System.out.println("Clicked the Button!\n");
                 SocketHints socketHints = new SocketHints();
                 // Socket will time our in 4 seconds
                 socketHints.connectTimeout = 4000;
                 //create the socket and connect to the server entered in the text box ( x.x.x.x format ) on port 9021
                 try {
-                    System.out.println(serverIP.getText());
+                    System.out.println("o cliente vai se ligar ao IP "+serverIP.getText());
                     Socket socket = Gdx.net.newClientSocket(Protocol.TCP, serverIP.getText(), 9021, socketHints);
-                    game.socket = socket;
-                    } catch (GdxRuntimeException e) {
-                        System.out.println("Exception");
-                        e.printStackTrace();
-                    }
-
-
-                //CODIGO PARA ESCREVER PARA O SOCKET
-                /*try {
-                    // write our entered message to the stream
-                    socket.getOutputStream().write(textToSend.getBytes());
-                } catch (IOException e) {
+                    System.out.println("cliente esta ligado ao servidor!");
+                    ConnectionSockets.getInstance().setWriteSocketm(socket);
+                    createServerSocket(socket);
+                    System.out.println("cliente criou um socket e servidor ligou-se a ele!");
+                    startGame = true;
+                } catch (GdxRuntimeException e) {
+                    System.out.println("Exception");
                     e.printStackTrace();
-                }*/
-            }});
+                }
+            }}).start();
+    }
+
+    public boolean sendIP (Socket socket, String ip) {
+        System.out.println("o nosso IP e "+ip);
+        try {
+            // write our entered message to the stream
+            socket.getOutputStream().write(ip.getBytes());
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void createServerSocket(Socket clientSocket) {
+        System.out.println("o cliente vai criar tambem um socket");
+        ServerSocketHints serverSocketHint = new ServerSocketHints();
+        // 0 means no timeout.  Probably not the greatest idea in production!
+        serverSocketHint.acceptTimeout = 0;
+
+        ServerSocket serverSocket = Gdx.net.newServerSocket(Protocol.TCP, 9022, serverSocketHint);
+        while(!sendIP(clientSocket, getIP()));//enviar o nosso ip para criar outro socket (mas agora de forma escondida)
+        System.out.println("o cliente enviou o seu IP para o servidor");
+        Socket socket = serverSocket.accept(null);//fica a espera que alguem se conecte
+        System.out.println("o servidor ligou-se ao cliente");
+        ConnectionSockets.getInstance().setReadSocket(socket);
     }
 }

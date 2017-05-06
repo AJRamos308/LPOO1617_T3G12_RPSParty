@@ -53,6 +53,7 @@ public class MainMenuScreen extends ScreenAdapter {
         stage.addActor(helpButton);
         stage.addActor(achievementsButton);
         stage.addActor(settingsButton);
+
     }
     /**
      * Loads the assets needed by this screen.

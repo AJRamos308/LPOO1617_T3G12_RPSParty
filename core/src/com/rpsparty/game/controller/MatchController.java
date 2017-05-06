@@ -48,6 +48,10 @@ public class MatchController implements ContactListener {
         return instance;
     }
 
+    public void update(float delta) {
+
+    }
+
     public World getWorld() {
         return world;
     }

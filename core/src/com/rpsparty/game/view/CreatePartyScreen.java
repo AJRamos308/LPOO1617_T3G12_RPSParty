@@ -11,11 +11,13 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.net.ServerSocket;
 import com.badlogic.gdx.net.ServerSocketHints;
 import com.badlogic.gdx.net.Socket;
+import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
+import com.rpsparty.game.controller.ConnectionSockets;
 import com.rpsparty.game.view.entities.HelpButton;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Net.Protocol;
@@ -54,11 +56,14 @@ public class CreatePartyScreen extends ScreenAdapter {
     private HelpButton helpButton;
     private Label myIP;
     private String ipAddress;
+    private boolean startGame;
 
     public CreatePartyScreen(RPSParty game) {
         this.game = game;
         loadAssets();
         camera = createCamera();
+
+        startGame = false;
         addButtons();
         addListeners();
         addLabel();
@@ -66,39 +71,12 @@ public class CreatePartyScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
         stage.addActor(helpButton);
         stage.addActor(myIP);
-        //Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
-        //ip = new TextField("Friend's IP",uiskin);
-        //TODO: Add textfield
-        // The following code loops through the available network interfaces
-        // Keep in mind, there can be multiple interfaces per device, for example
-        // one per NIC, one per active wireless and the loopback
-        // In this case we only care about IPv4 address ( x.x.x.x format )
-        List<String> addresses = new ArrayList<String>();
-        try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            for(NetworkInterface ni : Collections.list(interfaces)){
-                for(InetAddress address : Collections.list(ni.getInetAddresses()))
-                {
-                    if(address instanceof Inet4Address){
-                        addresses.add(address.getHostAddress());
-                    }
-                }
-            }
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-
-        // Print the contents of our array to a string.  Yeah, should have used StringBuilder
-        ipAddress = new String("");
-        for(String str:addresses)
-        {
-            if(!str.equals("127.0.0.1"))//nao escrever o IP "127.0.0.1" porque e o localhost (igual para qualquer pc)
-            ipAddress = ipAddress + str + "\n";
-        }
+        getIP();
         System.out.println(ipAddress);
-        if (ipAddress.equals(" ")) System.out.println("Did not get IP");
+        if (ipAddress.equals("")) System.out.println("Did not get IP");
         else myIP.setText("YOUR IP:\n" + ipAddress);
-        //createThread();
+        createThread();
+        System.out.println("saiu do seu construtor de classe");
     }
     /**
      * Loads the assets needed by this screen.
@@ -142,6 +120,9 @@ public class CreatePartyScreen extends ScreenAdapter {
             game.backpressed = true;
             game.setScreen(new MainMenuScreen(game));
             Gdx.input.setCatchBackKey(true);
+        }
+        if(startGame) {
+            game.setScreen(new MainMenuScreen(game));
         }
     }
 
@@ -188,30 +169,63 @@ public class CreatePartyScreen extends ScreenAdapter {
                 // Only one app can listen to a port at a time, keep in mind many ports are reserved
                 // especially in the lower numbers ( like 21, 80, etc )
                 ServerSocket serverSocket = Gdx.net.newServerSocket(Protocol.TCP, 9021, serverSocketHint);
-
+                System.out.println("criou um socket");
                 Socket socket = serverSocket.accept(null);//fica a espera que alguem se conecte
-                game.socket = socket;
+                ConnectionSockets.getInstance().setReadSocket(socket);
                 System.out.println("aceitou cliente");
-                game.setScreen(new MainMenuScreen(game));
-                /*
-                // Loop forever
-                while(true){
-                    // Create a socket; o accept bloqueia/nao se avanca no código enquanto um cliente nao se ligar ao nosso socket
-                    Socket socket = serverSocket.accept(null);
-                    //TODO: mudar de ecra mal o cliente se ligue
-                    // Read data from the socket into a BufferedReader
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                    try {
-                        // Read to the next newline (\n) and display that text on labelMessage
-                        System.out.println(buffer.readLine());
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                */
+                while(!connectServerSocket(socket));
+                System.out.println("ligou-se ao cliente!");
+                startGame = true;
             }
         }).start(); // And, start the thread running
     }
+
+    public void getIP() {
+        List<String> addresses = new ArrayList<String>();
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            for(NetworkInterface ni : Collections.list(interfaces)){
+                for(InetAddress address : Collections.list(ni.getInetAddresses()))
+                {
+                    if(address instanceof Inet4Address){
+                        addresses.add(address.getHostAddress());
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
+        // Print the contents of our array to a string.  Yeah, should have used StringBuilder
+        ipAddress = new String("");
+        for(String str:addresses)
+        {
+            if(!str.equals("127.0.0.1"))//nao escrever o IP "127.0.0.1" porque e o localhost (igual para qualquer pc)
+                ipAddress = ipAddress + str + "\n";
+        }
+        System.out.println("meu ip: "+ipAddress);
+    }
+
+    public boolean connectServerSocket(Socket mySocket) {
+        // Read data from the socket into a BufferedReader
+        BufferedReader buffer = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
+        String ip = null;
+        try {
+            ip = buffer.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        System.out.println("ip a que se vai ligar: "+ip);
+        SocketHints socketHints = new SocketHints();
+        // Socket will time our in 4 seconds
+        socketHints.connectTimeout = 4000;
+        //create the socket and connect to the server entered in the text box ( x.x.x.x format ) on port 9022
+
+        // Read to the next newline (\n) and display that text on labelMessage
+        Socket socket = Gdx.net.newClientSocket(Protocol.TCP, ip, 9022, socketHints);
+        ConnectionSockets.getInstance().setWriteSocketm(socket);
+        return true;
+    }
+
 }

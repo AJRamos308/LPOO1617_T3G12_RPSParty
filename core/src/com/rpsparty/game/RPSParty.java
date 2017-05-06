@@ -5,16 +5,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.rpsparty.game.view.MainMenuScreen;
 
-import com.badlogic.gdx.net.ServerSocket;
-import com.badlogic.gdx.net.ServerSocketHints;
 import com.badlogic.gdx.net.Socket;
-import com.badlogic.gdx.Net;
 
 public class RPSParty extends Game {
 	private SpriteBatch batch;
 	private AssetManager assetManager;
 	public boolean backpressed = false;
-	public Socket socket;
 
 	/**
 	 * Creates the game. Initializes the sprite batch and asset manager.
