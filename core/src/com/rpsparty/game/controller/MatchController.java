@@ -1,5 +1,6 @@
 package com.rpsparty.game.controller;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -23,9 +24,9 @@ public class MatchController implements ContactListener {
     public static final int ARENA_HEIGHT = 480;
 
     private final World world;
-    private RockHandBody rock;
-    private PaperHandBody paper;
-    private ScissorHandBody scissor;
+    private final RockHandBody rock;
+    private final PaperHandBody paper;
+    private final ScissorHandBody scissor;
 
     private MatchController() {
         world = new World(new Vector2(0, 0), true);
@@ -56,6 +57,24 @@ public class MatchController implements ContactListener {
         return world;
     }
 
+    public void chooseRock() {
+        rock.setTransform(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8,0);
+        MatchModel.getInstance().getRock().setPosition(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8);
+        ConnectionSockets.getInstance().sendMessage("rock");
+    }
+
+    public void choosePaper() {
+        paper.setTransform(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8,0);
+        MatchModel.getInstance().getPaper().setPosition(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8);
+        ConnectionSockets.getInstance().sendMessage("paper");
+    }
+
+    public void chooseScissor() {
+        scissor.setTransform(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8,0);
+        MatchModel.getInstance().getScissor().setPosition(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8);
+        ConnectionSockets.getInstance().sendMessage("scissor");
+    }
+
     /**
      * A contact between two objects was detected
      *
@@ -84,4 +103,6 @@ public class MatchController implements ContactListener {
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
     }
+
+
 }

@@ -3,6 +3,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import com.rpsparty.game.view.GameScreen;
 import com.rpsparty.game.view.MainMenuScreen;
 
 import com.badlogic.gdx.net.Socket;
@@ -27,7 +28,7 @@ public class RPSParty extends Game {
 	 * Starts the game.
 	 */
 	private void startGame() {
-		setScreen(new MainMenuScreen(this));
+		setScreen(new GameScreen(this));
 	}
 
 	/**

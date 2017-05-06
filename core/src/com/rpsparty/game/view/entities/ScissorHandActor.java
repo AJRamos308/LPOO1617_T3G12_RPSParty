@@ -1,9 +1,12 @@
 package com.rpsparty.game.view.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.rpsparty.game.RPSParty;
 
+import com.rpsparty.game.model.MatchModel;
 import com.rpsparty.game.model.entities.EntityModel;
 
 import static com.rpsparty.game.view.MainMenuScreen.PIXEL_TO_METER;
@@ -29,6 +32,21 @@ public class ScissorHandActor extends EntityActor {
     @Override
     public Sprite createSprite(RPSParty game) {
         texture = game.getAssetManager().get("badlogic.jpg");
-        return new Sprite(texture);
+        int x = (int) MatchModel.getInstance().getScissor().getX();
+        int y = (int)MatchModel.getInstance().getScissor().getY();
+        System.out.println("> Coordenadas da tesoura:");
+        System.out.println("x: "+x);
+        System.out.println("y: "+y);
+        System.out.println("largura e altura: "+Gdx.graphics.getWidth()/6);
+        return new Sprite(texture, x, y, Gdx.graphics.getWidth()/6, Gdx.graphics.getWidth()/6);
+    }
+
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch,parentAlpha);
+    }
+
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
     }
 }
+

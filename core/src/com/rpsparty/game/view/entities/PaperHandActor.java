@@ -1,9 +1,12 @@
 package com.rpsparty.game.view.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.rpsparty.game.RPSParty;
 
+import com.rpsparty.game.model.MatchModel;
 import com.rpsparty.game.model.entities.EntityModel;
 import com.rpsparty.game.view.MainMenuScreen;
 
@@ -28,6 +31,22 @@ public class PaperHandActor extends EntityActor {
     @Override
     public Sprite createSprite(RPSParty game) {
         texture = game.getAssetManager().get("badlogic.jpg");
-        return new Sprite(texture);
+        int x = (int) MatchModel.getInstance().getPaper().getX();
+        int y = (int)MatchModel.getInstance().getPaper().getY();
+        System.out.println("> Coordenadas do papel:");
+        System.out.println("x: "+x);
+        System.out.println("y: "+y);
+        System.out.println("largura e altura: "+Gdx.graphics.getWidth()/6);
+        return new Sprite(texture, x, y, Gdx.graphics.getWidth()/6, Gdx.graphics.getWidth()/6);
     }
+
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch,parentAlpha);
+    }
+
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+    }
+
+
 }

@@ -1,18 +1,26 @@
 package com.rpsparty.game.view.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
 
 import com.rpsparty.game.model.entities.EntityModel;
+import com.rpsparty.game.view.CreatePartyScreen;
 import com.rpsparty.game.view.MainMenuScreen;
+
+import com.rpsparty.game.controller.MatchController;
 
 public abstract class EntityActor extends Actor {
     /**
      * The sprite representing this entity view.
      */
     Sprite sprite;
+    RPSParty game;
 
     /**
      * Creates a view belonging to a game.
@@ -21,7 +29,13 @@ public abstract class EntityActor extends Actor {
      *             asset manager to get textures.
      */
     EntityActor(RPSParty game) {
+        this.game = game;
+        setTouchable(Touchable.enabled);
         sprite = createSprite(game);
+        setWidth(sprite.getTexture().getWidth());
+        setHeight(sprite.getTexture().getHeight());
+        setOrigin(getWidth() / 2, getHeight() / 2);
+        sprite.setOrigin(getWidth() / 2, getHeight() / 2);
     }
 
     /**
@@ -30,6 +44,17 @@ public abstract class EntityActor extends Actor {
      * @param batch The sprite batch to be used for drawing.
      */
     public void draw(SpriteBatch batch) {
+        sprite.draw(batch);
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
+        super.setPosition(x - getWidth() / 2, y - getHeight() / 2);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        sprite.setColor(getColor());
         sprite.draw(batch);
     }
 
@@ -53,4 +78,6 @@ public abstract class EntityActor extends Actor {
         sprite.setCenter(model.getX() / MainMenuScreen.PIXEL_TO_METER, model.getY() / MainMenuScreen.PIXEL_TO_METER);
         sprite.setRotation((float) Math.toDegrees(model.getRotation()));
     }
+
+
 }

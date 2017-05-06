@@ -122,7 +122,7 @@ public class CreatePartyScreen extends ScreenAdapter {
             Gdx.input.setCatchBackKey(true);
         }
         if(startGame) {
-            game.setScreen(new MainMenuScreen(game));
+            game.setScreen(new GameScreen(game));
         }
     }
 

@@ -2,30 +2,16 @@ package com.rpsparty.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Net;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.net.ServerSocket;
-import com.badlogic.gdx.net.ServerSocketHints;
-import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.view.entities.HelpButton;
 import com.rpsparty.game.view.entities.MatchStage;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
 
 /**
  * Created by bibib on 04/05/2017.
@@ -51,9 +37,10 @@ public class GameScreen extends ScreenAdapter {
 
     public GameScreen(RPSParty game) {
         this.game = game;
-        matchStage = new MatchStage(game);
         loadAssets();
         camera = createCamera();
+        matchStage = new MatchStage(game);
+        Gdx.input.setInputProcessor(matchStage);
     }
     /**
      * Loads the assets needed by this screen.
@@ -88,8 +75,10 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor( 1, 1, 1, 1 );
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
         camera.update();
-        game.getBatch().begin();
         game.getBatch().setProjectionMatrix(camera.combined);
+        matchStage.act(delta);
+        game.getBatch().begin();
+        matchStage.draw();
         game.getBatch().end();
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             game.backpressed = true;

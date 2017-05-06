@@ -1,5 +1,6 @@
 package com.rpsparty.game.model;
 
+import com.badlogic.gdx.Gdx;
 import com.rpsparty.game.controller.MatchController;
 import com.rpsparty.game.model.entities.EntityModel;
 import com.rpsparty.game.model.entities.RockHandModel;
@@ -27,9 +28,9 @@ public class MatchModel {
     }
 
     private MatchModel(){
-        rock = new RockHandModel(MatchController.ARENA_WIDTH / 2, MatchController.ARENA_HEIGHT / 2, 0);
-        paper = new PaperHandModel(MatchController.ARENA_WIDTH / 2, MatchController.ARENA_HEIGHT / 2, 0);
-        scissor = new ScissorHandModel(MatchController.ARENA_WIDTH / 2, MatchController.ARENA_HEIGHT / 2, 0);
+        rock = new RockHandModel(0, 0, 0);
+        paper = new PaperHandModel(Gdx.graphics.getWidth()/6, 0, 0);
+        scissor = new ScissorHandModel(Gdx.graphics.getWidth()/2, 0, 0);
         currentOption = null;
     }
 

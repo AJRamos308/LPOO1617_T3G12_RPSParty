@@ -16,6 +16,8 @@ import com.rpsparty.game.view.entities.JoinPartyButton;
 import com.rpsparty.game.view.entities.SettingsButton;
 import com.badlogic.gdx.Input.Keys;
 
+import com.rpsparty.game.controller.MatchController;
+
 public class MainMenuScreen extends ScreenAdapter {
     /**
      * How much meters does a pixel represent.
@@ -53,7 +55,6 @@ public class MainMenuScreen extends ScreenAdapter {
         stage.addActor(helpButton);
         stage.addActor(achievementsButton);
         stage.addActor(settingsButton);
-
     }
     /**
      * Loads the assets needed by this screen.
