@@ -16,24 +16,27 @@ public class MatchStage extends Stage {
     private final RPSParty game;
     private World world;
 
-    private final RockHandActor rock;
+   /* private final RockHandActor rock;
     private final PaperHandActor paper;
-    private final ScissorHandActor scissor;
+    private final ScissorHandActor scissor;*/
 
     public MatchStage (RPSParty game) {
         this.game = game;
         world = new World(new Vector2(0,0), true);
         loadAssets(game);
-        rock = new RockHandActor(game);
+        /*rock = new RockHandActor(game);
         paper = new PaperHandActor(game);
         scissor = new ScissorHandActor(game);
-        rock.setPosition(Gdx.graphics.getWidth()/8,0);
-        paper.setPosition(Gdx.graphics.getWidth()/4,0);
-        scissor.setPosition(Gdx.graphics.getWidth()/2,0);
-        addListenersActors();
+        rock.setPosition(Gdx.graphics.getWidth()/8,200);
+        paper.setPosition(Gdx.graphics.getWidth()/4,200);
+        scissor.setPosition(Gdx.graphics.getWidth()/2,200);
+        rock.createSprite(game);
+        paper.createSprite(game);
+        scissor.createSprite(game);
         addActor(rock);
         addActor(paper);
         addActor(scissor);
+        addListenersActors();*/
     }
 
 
@@ -44,7 +47,7 @@ public class MatchStage extends Stage {
         game.getAssetManager().load( "settings.png" , Texture.class);
         game.getAssetManager().finishLoading();
     }
-
+/*
     public void addListenersActors() {
         rock.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -62,7 +65,7 @@ public class MatchStage extends Stage {
                 MatchController.getInstance().chooseScissor();
             }});
     }
-
+*/
     @Override
     public void draw() {
         super.draw();
@@ -72,8 +75,8 @@ public class MatchStage extends Stage {
     public void act(float delta) {
         super.act(delta);
         world.step(delta, 6, 2);
-        rock.setPosition(MatchModel.getInstance().getRock().getX(), MatchModel.getInstance().getRock().getY());
-        paper.setPosition(MatchModel.getInstance().getPaper().getX(), MatchModel.getInstance().getPaper().getY());
-        scissor.setPosition(MatchModel.getInstance().getScissor().getX(), MatchModel.getInstance().getScissor().getY());
+        //rock.setPosition(MatchModel.getInstance().getRock().getX(), MatchModel.getInstance().getRock().getY());
+        //paper.setPosition(MatchModel.getInstance().getPaper().getX(), MatchModel.getInstance().getPaper().getY());
+        //scissor.setPosition(MatchModel.getInstance().getScissor().getX(), MatchModel.getInstance().getScissor().getY());
     }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
 import com.rpsparty.game.RPSParty;
 
 import com.rpsparty.game.model.MatchModel;
@@ -31,7 +32,7 @@ public class PaperHandActor extends EntityActor {
     @Override
     public Sprite createSprite(RPSParty game) {
         texture = game.getAssetManager().get("badlogic.jpg");
-        int x = (int) MatchModel.getInstance().getPaper().getX();
+        int x = (int)MatchModel.getInstance().getPaper().getX();
         int y = (int)MatchModel.getInstance().getPaper().getY();
         System.out.println("> Coordenadas do papel:");
         System.out.println("x: "+x);
@@ -47,6 +48,4 @@ public class PaperHandActor extends EntityActor {
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
     }
-
-
 }

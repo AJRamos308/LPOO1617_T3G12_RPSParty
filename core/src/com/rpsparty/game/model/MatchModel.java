@@ -28,9 +28,9 @@ public class MatchModel {
     }
 
     private MatchModel(){
-        rock = new RockHandModel(0, 0, 0);
-        paper = new PaperHandModel(Gdx.graphics.getWidth()/6, 0, 0);
-        scissor = new ScissorHandModel(Gdx.graphics.getWidth()/2, 0, 0);
+        rock = new RockHandModel(0,100,0);
+        paper = new PaperHandModel(Gdx.graphics.getWidth()/6, 100, 0);
+        scissor = new ScissorHandModel(Gdx.graphics.getWidth()/2, 100, 0);
         currentOption = null;
     }
 

@@ -19,9 +19,4 @@ public class AndroidLauncher extends AndroidApplication {
 		game = new RPSParty();
 		initialize(game, config);
 	}
-	@Override
-	public void onBackPressed() {
-		game.setScreen(new MainMenuScreen(game));
-		return;
-	}
 }

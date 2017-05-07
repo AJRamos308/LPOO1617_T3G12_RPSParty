@@ -24,16 +24,16 @@ public class MatchController implements ContactListener {
     public static final int ARENA_HEIGHT = 480;
 
     private final World world;
-    private final RockHandBody rock;
+    /*private final RockHandBody rock;
     private final PaperHandBody paper;
-    private final ScissorHandBody scissor;
+    private final ScissorHandBody scissor;*/
 
     private MatchController() {
         world = new World(new Vector2(0, 0), true);
 
-        rock = new RockHandBody(world, MatchModel.getInstance().getRock());
+        /*rock = new RockHandBody(world, MatchModel.getInstance().getRock());
         paper = new PaperHandBody(world, MatchModel.getInstance().getPaper());
-        scissor = new ScissorHandBody(world, MatchModel.getInstance().getScissor());
+        scissor = new ScissorHandBody(world, MatchModel.getInstance().getScissor());*/
 
         world.setContactListener(this);
     }
@@ -58,19 +58,19 @@ public class MatchController implements ContactListener {
     }
 
     public void chooseRock() {
-        rock.setTransform(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8,0);
+        //rock.setTransform(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8,0);
         MatchModel.getInstance().getRock().setPosition(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8);
         ConnectionSockets.getInstance().sendMessage("rock");
     }
 
     public void choosePaper() {
-        paper.setTransform(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8,0);
+        //paper.setTransform(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8,0);
         MatchModel.getInstance().getPaper().setPosition(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8);
         ConnectionSockets.getInstance().sendMessage("paper");
     }
 
     public void chooseScissor() {
-        scissor.setTransform(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8,0);
+        //scissor.setTransform(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8,0);
         MatchModel.getInstance().getScissor().setPosition(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8);
         ConnectionSockets.getInstance().sendMessage("scissor");
     }
