@@ -16,15 +16,15 @@ public class MatchStage extends Stage {
     private final RPSParty game;
     private World world;
 
-   /* private final RockHandActor rock;
+    private final RockHandActor rock;
     private final PaperHandActor paper;
-    private final ScissorHandActor scissor;*/
+    private final ScissorHandActor scissor;
 
     public MatchStage (RPSParty game) {
         this.game = game;
         world = new World(new Vector2(0,0), true);
         loadAssets(game);
-        /*rock = new RockHandActor(game);
+        rock = new RockHandActor(game);
         paper = new PaperHandActor(game);
         scissor = new ScissorHandActor(game);
         rock.setPosition(Gdx.graphics.getWidth()/8,200);
@@ -36,7 +36,7 @@ public class MatchStage extends Stage {
         addActor(rock);
         addActor(paper);
         addActor(scissor);
-        addListenersActors();*/
+        addListenersActors();
     }
 
 
@@ -47,7 +47,7 @@ public class MatchStage extends Stage {
         game.getAssetManager().load( "settings.png" , Texture.class);
         game.getAssetManager().finishLoading();
     }
-/*
+
     public void addListenersActors() {
         rock.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -65,7 +65,7 @@ public class MatchStage extends Stage {
                 MatchController.getInstance().chooseScissor();
             }});
     }
-*/
+
     @Override
     public void draw() {
         super.draw();
