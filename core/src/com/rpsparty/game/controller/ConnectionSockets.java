@@ -1,6 +1,12 @@
 package com.rpsparty.game.controller;
 
 import com.badlogic.gdx.net.Socket;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 /**
  * Created by bibib on 06/05/2017.
  */
@@ -43,7 +49,12 @@ public class ConnectionSockets {
      * @param s o que vamos enviar
      */
     public void sendMessage (String s) {
-
+        try {
+            // write our entered message to the stream
+            writeSocket.getOutputStream().write(s.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -51,8 +62,21 @@ public class ConnectionSockets {
      * @return resposta do outro utilizador/ jogador
      */
     public String receiveMessage () {
+        if(!readSocket.isConnected())
+            return "";
         String answer = "";
-        return answer;
+        BufferedReader buffer = new BufferedReader(new InputStreamReader(readSocket.getInputStream()));
+        System.out.println("Buffer Reader criado.\no seu valor e: ");
+
+        try {
+            // Read to the next newline (\n) and display that text on labelMessage
+            answer = buffer.readLine();
+            System.out.println("vai retornar a resposta");
+            return answer;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     /**

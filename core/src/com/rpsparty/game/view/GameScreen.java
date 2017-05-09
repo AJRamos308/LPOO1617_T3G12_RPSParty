@@ -2,14 +2,19 @@ package com.rpsparty.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.net.Socket;
+import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.rpsparty.game.RPSParty;
+import com.rpsparty.game.controller.ConnectionSockets;
 import com.rpsparty.game.controller.MatchController;
 import com.rpsparty.game.view.entities.AchievementsButton;
 import com.rpsparty.game.view.entities.CreatePartyButton;
@@ -41,8 +46,12 @@ public class GameScreen extends ScreenAdapter {
     private PaperButton paperButton;
     private ScissorsButton scissorsButton;
     private RockButton rockButton;
+    private String myChoice;
+    private String opponentChoice;
+
 
     public GameScreen(RPSParty game) {
+        System.out.println("\nmudou para p GameScreen\n");
         this.game = game;
         loadAssets();
         camera = createCamera();
@@ -53,6 +62,10 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(paperButton);
         stage.addActor(scissorsButton);
         stage.addActor(rockButton);
+        myChoice = "";
+        opponentChoice = "";
+        createReadThread();
+
     }
     /**
      * Loads the assets needed by this screen.
@@ -89,10 +102,12 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
         stage.act();
-        game.getBatch().begin();
-        game.getBatch().setProjectionMatrix(camera.combined);
-        stage.draw();
-        game.getBatch().end();
+        if(myChoice == "") {
+            game.getBatch().begin();
+            game.getBatch().setProjectionMatrix(camera.combined);
+            stage.draw();
+            game.getBatch().end();
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             if (!game.backpressed) {
                 game.backpressed = true;
@@ -101,6 +116,10 @@ public class GameScreen extends ScreenAdapter {
                 Gdx.app.exit();
             }
         }
+        if(myChoice != "" && opponentChoice != "") {
+            game.setScreen(new MainMenuScreen(game));
+        }
+
     }
 
     public void addButtons() {
@@ -113,15 +132,44 @@ public class GameScreen extends ScreenAdapter {
         rockButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("ROCK");
+                ConnectionSockets.getInstance().sendMessage("rock" + ("\n"));
+                myChoice = "rock";
             }});
         scissorsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("SCISSORS");
+                ConnectionSockets.getInstance().sendMessage("scissor" + ("\n"));
+                myChoice = "scissor";
             }});
         paperButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("PAPER");
+                ConnectionSockets.getInstance().sendMessage("paper" + ("\n"));
+                myChoice = "paper";
             }});
+    }
+
+    public boolean waitForOpponent() {
+        System.out.println("\nESTA NO WAIT FOR OPPONENT|\n");
+        opponentChoice = ConnectionSockets.getInstance().receiveMessage();
+        System.out.println("consegui ler?...");
+        System.out.println(opponentChoice);
+        if(opponentChoice != "") {
+            return true;
+        }
+        return false;
+    }
+
+    public void createReadThread() {
+        new Thread(new Runnable(){
+
+            @Override
+            public void run() {
+                while(!waitForOpponent());
+                while(myChoice == "");
+
+            }
+        }).start();
     }
 /*
     public final static float PIXEL_TO_METER = 0.04f;
