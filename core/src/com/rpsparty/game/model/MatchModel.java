@@ -18,8 +18,8 @@ public class MatchModel {
     private ScissorHandModel scissor;
     private EntityModel currentOption;
 
-   // private EntityModel player1Entity;
-   // private EntityModel player2Entity;
+    private EntityModel player1Entity;
+    private EntityModel player2Entity;
 
     public static MatchModel getInstance() {
         if (instance == null)
@@ -28,8 +28,8 @@ public class MatchModel {
     }
 
     private MatchModel(){
-        rock = new RockHandModel(0,100,0);
-        paper = new PaperHandModel(Gdx.graphics.getWidth()/6, 100, 0);
+        rock = new RockHandModel(Gdx.graphics.getWidth()/8,100,0);
+        paper = new PaperHandModel(Gdx.graphics.getWidth()/4, 100, 0);
         scissor = new ScissorHandModel(Gdx.graphics.getWidth()/2, 100, 0);
         currentOption = null;
     }
