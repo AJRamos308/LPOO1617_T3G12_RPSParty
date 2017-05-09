@@ -26,6 +26,8 @@ import com.rpsparty.game.view.entities.RockButton;
 import com.rpsparty.game.view.entities.ScissorsButton;
 import com.rpsparty.game.view.entities.SettingsButton;
 
+import static javax.swing.text.html.HTML.Tag.HEAD;
+
 public class GameScreen extends ScreenAdapter {
     /**
      * How much meters does a pixel represent.
@@ -134,36 +136,28 @@ public class GameScreen extends ScreenAdapter {
                 paperButton.setBounds(6*Gdx.graphics.getWidth()/16, Gdx.graphics.getWidth()/16, Gdx.graphics.getWidth()/4, Gdx.graphics.getWidth()/4);
                 scissorsButton.setBounds(11*Gdx.graphics.getWidth()/16, Gdx.graphics.getWidth()/16, Gdx.graphics.getWidth()/4, Gdx.graphics.getWidth()/4);
                 System.out.println("ROCK");
-<<<<<<< HEAD
+
                 ConnectionSockets.getInstance().sendMessage("rock" + ("\n"));
                 myChoice = "rock";
-=======
                 rockButton.setBounds(Gdx.graphics.getWidth()/8, 4*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8);
->>>>>>> origin/master
             }});
         scissorsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 paperButton.setBounds(6*Gdx.graphics.getWidth()/16, Gdx.graphics.getWidth()/16, Gdx.graphics.getWidth()/4, Gdx.graphics.getWidth()/4);
                 rockButton.setBounds(Gdx.graphics.getWidth()/16, Gdx.graphics.getWidth()/16, Gdx.graphics.getWidth()/4, Gdx.graphics.getWidth()/4);
                 System.out.println("SCISSORS");
-<<<<<<< HEAD
                 ConnectionSockets.getInstance().sendMessage("scissor" + ("\n"));
                 myChoice = "scissor";
-=======
                 scissorsButton.setBounds(Gdx.graphics.getWidth()/8, 4*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8);
->>>>>>> origin/master
             }});
         paperButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 scissorsButton.setBounds(11*Gdx.graphics.getWidth()/16, Gdx.graphics.getWidth()/16, Gdx.graphics.getWidth()/4, Gdx.graphics.getWidth()/4);
                 rockButton.setBounds(Gdx.graphics.getWidth()/16, Gdx.graphics.getWidth()/16, Gdx.graphics.getWidth()/4, Gdx.graphics.getWidth()/4);
                 System.out.println("PAPER");
-<<<<<<< HEAD
                 ConnectionSockets.getInstance().sendMessage("paper" + ("\n"));
                 myChoice = "paper";
-=======
                 paperButton.setBounds(Gdx.graphics.getWidth()/8, 4*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8);
->>>>>>> origin/master
             }});
     }
 

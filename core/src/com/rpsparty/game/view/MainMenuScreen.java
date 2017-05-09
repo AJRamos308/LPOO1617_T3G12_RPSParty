@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
+import com.rpsparty.game.controller.ConnectionSockets;
 import com.rpsparty.game.view.entities.AchievementsButton;
 import com.rpsparty.game.view.entities.CreatePartyButton;
 import com.rpsparty.game.view.entities.HelpButton;
@@ -55,6 +56,7 @@ public class MainMenuScreen extends ScreenAdapter {
         stage.addActor(helpButton);
         stage.addActor(achievementsButton);
         stage.addActor(settingsButton);
+        resetSockets();
     }
     /**
      * Loads the assets needed by this screen.
@@ -133,5 +135,9 @@ public class MainMenuScreen extends ScreenAdapter {
                 //TODO: fazer setScreen()
                 System.out.println("HELP!");
             }});
+    }
+
+    public void resetSockets() {
+        ConnectionSockets.getInstance().reset();
     }
 }

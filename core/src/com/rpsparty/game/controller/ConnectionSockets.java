@@ -4,7 +4,6 @@ import com.badlogic.gdx.net.Socket;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
@@ -85,6 +84,10 @@ public class ConnectionSockets {
      */
     public void reset() {
         instance = null;
+        if(writeSocket != null && readSocket != null) {
+            writeSocket.dispose();
+            readSocket.dispose();
+        }
     }
 
 
