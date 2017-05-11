@@ -7,6 +7,7 @@ import com.rpsparty.game.view.GameScreen;
 import com.rpsparty.game.view.MainMenuScreen;
 
 import com.badlogic.gdx.net.Socket;
+import com.rpsparty.game.view.SplashScreen;
 
 public class RPSParty extends Game {
 	private SpriteBatch batch;
@@ -28,7 +29,7 @@ public class RPSParty extends Game {
 	 * Starts the game.
 	 */
 	private void startGame() {
-		setScreen(new MainMenuScreen(this));
+		setScreen(new SplashScreen(this));
 	}
 
 	/**
