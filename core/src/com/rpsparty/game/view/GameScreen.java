@@ -11,6 +11,7 @@ import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.rpsparty.game.RPSParty;
@@ -50,6 +51,14 @@ public class GameScreen extends ScreenAdapter {
     private RockButton rockButton;
     private String myChoice;
     private String opponentChoice;
+    private Texture areYouReady;
+
+    private float lastUpdate =0.0f;
+    private float lastX = 0.0f;
+    private int shakeStage = 0; // 0 = X do telemovel esta a aumentar ; 1 = X do telemovel esta a diminuir
+    private int updateTime = 1; // 1 = primeiro update de inicio de um shake ; 2 = segundo update de inicio de um shake
+    private int flagDirection = 2; // 0 = shake aumenta no  sentido positivo de X ; 1 = shake aumenta no  sentido negativo de X ; 2 = ainda não se sabe o sentido
+    private int count = 3;//numero de shakes a dar
 
 
     public GameScreen(RPSParty game) {
@@ -64,6 +73,7 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(paperButton);
         stage.addActor(scissorsButton);
         stage.addActor(rockButton);
+        areYouReady = new Texture(Gdx.files.internal("areuready.png"));
         myChoice = "";
         opponentChoice = "";
         createReadThread();
@@ -74,6 +84,7 @@ public class GameScreen extends ScreenAdapter {
      */
     private void loadAssets() {
         this.game.getAssetManager().load( "scissors.png" , Texture.class);
+        this.game.getAssetManager().load( "areuready.png" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
     /**
@@ -119,7 +130,27 @@ public class GameScreen extends ScreenAdapter {
             }
         }
         if(myChoice != "" && opponentChoice != "") {
-            game.setScreen(new MainMenuScreen(game));
+            //game.setScreen(new MainMenuScreen(game));
+            if(count == 0) {
+                /*
+                *mostrar o resultado deste match
+                 */
+            }
+            game.getBatch().begin();
+            game.getBatch().draw(areYouReady,Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+            game.getBatch().end();
+            lastUpdate += delta;
+            if(lastUpdate > 0.25f) {
+                if(Math.abs(lastX - Gdx.input.getAccelerometerX()) > 3) {
+                    if (verifyDirectionShake()) {
+                        if (shake()) {
+                            System.out.println("SHAKE!");
+                            count--;
+                        }
+                    }
+                }
+                lastUpdate = 0;
+            }
         }
 
     }
@@ -140,6 +171,8 @@ public class GameScreen extends ScreenAdapter {
                 ConnectionSockets.getInstance().sendMessage("rock" + ("\n"));
                 myChoice = "rock";
                 rockButton.setBounds(Gdx.graphics.getWidth()/8, 4*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8);
+                rockButton.setDisabled(true);
+                rockButton.setTouchable(Touchable.disabled);
             }});
         scissorsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -150,6 +183,8 @@ public class GameScreen extends ScreenAdapter {
                 ConnectionSockets.getInstance().sendMessage("scissor" + ("\n"));
                 myChoice = "scissor";
                 scissorsButton.setBounds(Gdx.graphics.getWidth()/8, 4*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8);
+                scissorsButton.setDisabled(true);
+                scissorsButton.setTouchable(Touchable.disabled);
             }});
         paperButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -160,6 +195,8 @@ public class GameScreen extends ScreenAdapter {
                 ConnectionSockets.getInstance().sendMessage("paper" + ("\n"));
                 myChoice = "paper";
                 paperButton.setBounds(Gdx.graphics.getWidth()/8, 4*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8);
+                paperButton.setDisabled(true);
+                paperButton.setTouchable(Touchable.disabled);
             }});
     }
 
@@ -184,6 +221,62 @@ public class GameScreen extends ScreenAdapter {
 
             }
         }).start();
+    }
+
+    public boolean shake() {
+        float currX = Gdx.input.getAccelerometerX();
+        System.out.println("\n\nX: "+Gdx.input.getAccelerometerX()+"\n\n");
+        if(shakeStage == 0) {//primeira parte do shake
+            System.out.println("no shake stage 0");
+            if(((flagDirection == 0) && (currX < lastX)) || ((flagDirection == 1) && (currX > lastX))) {//um shake
+                System.out.println("transicao da direcao");
+                lastX = currX;
+                shakeStage = 1;
+                return true;
+            }
+        } else {
+            System.out.println("no shake stage 1");
+            if(((flagDirection == 0) && (currX > lastX)) || ((flagDirection == 1) && (currX < lastX))) {
+                lastX = updateLastX();
+                shakeStage = 0;
+                return false;
+            }
+        }
+        lastX = updateLastX();
+        return false;
+    }
+
+    public boolean verifyDirectionShake() {
+        if(updateTime > 2) {
+            return true;
+        }
+        if(flagDirection == 2) {
+            if(updateTime == 1) {//primeira vez no render
+                System.out.println("primeira vez a verificar a direcao");
+                lastX = Gdx.input.getAccelerometerX();
+                updateTime++;
+            } else {//ja da para concluir a direcao do shake
+                System.out.println("vamos concluir a direcao...");
+                if(Gdx.input.getAccelerometerX() > lastX) {
+                    System.out.println("aumenta no sentido positivo");
+                    flagDirection = 0;
+                } else {
+                    System.out.println("aumenta no sentido negativo");
+                    flagDirection = 1;
+                }
+                updateTime++;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public float updateLastX() {
+        float currX = Gdx.input.getAccelerometerX();
+        if(Math.abs(lastX - currX) > 3) {
+            return currX;
+        }
+        return lastX;
     }
 /*
     public final static float PIXEL_TO_METER = 0.04f;

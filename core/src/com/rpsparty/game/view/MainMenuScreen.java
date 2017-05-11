@@ -16,8 +16,13 @@ import com.rpsparty.game.view.entities.HelpButton;
 import com.rpsparty.game.view.entities.JoinPartyButton;
 import com.rpsparty.game.view.entities.SettingsButton;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Input.Orientation;
+import com.badlogic.gdx.Input.Peripheral;
 
 import com.rpsparty.game.controller.MatchController;
+
+import static com.badlogic.gdx.Input.Orientation.Landscape;
+import static com.badlogic.gdx.Input.Orientation.Portrait;
 
 public class MainMenuScreen extends ScreenAdapter {
     /**
@@ -109,6 +114,7 @@ public class MainMenuScreen extends ScreenAdapter {
                 Gdx.app.exit();
             }
         }
+
     }
 
     public void addButtons() {
@@ -140,4 +146,6 @@ public class MainMenuScreen extends ScreenAdapter {
     public void resetSockets() {
         ConnectionSockets.getInstance().reset();
     }
+
+
 }
