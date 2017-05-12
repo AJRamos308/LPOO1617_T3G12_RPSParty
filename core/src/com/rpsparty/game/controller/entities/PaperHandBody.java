@@ -9,7 +9,7 @@ public class PaperHandBody extends EntityBody {
     public PaperHandBody(World world, PaperHandModel model) {
         super(world, model);
         float density = 0.3f, friction = 0.4f, restitution = 0.1f;
-        int width = 75, height = 75;
+        int width = 190, height = 190;
         PolygonShape shape =new PolygonShape();
         shape.setAsBox(width/2,height/2);
 

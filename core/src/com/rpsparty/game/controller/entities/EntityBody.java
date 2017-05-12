@@ -65,10 +65,17 @@ public class EntityBody {
         body.setTransform(x, y, angle);
     }
 
-    public void setLinearVelocity(float velocity) {
+    /*public void setLinearVelocity(float velocity) {
         body.setLinearVelocity((float)(velocity * -Math.sin(getAngle())), (float) (velocity * Math.cos(getAngle())));
+    }*/
+
+    public void setLinearVelocity(float vX, float vY) {
+        body.setLinearVelocity(vX, vY);
     }
 
+    public void applyTorque(float torque, boolean wake) {
+        body.applyTorque(torque, wake);
+    }
     public void setAngularVelocity(float omega) {
         body.setAngularVelocity(omega);
     }

@@ -9,10 +9,16 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 
+import com.badlogic.gdx.utils.Array;
+import com.rpsparty.game.controller.entities.EntityBody;
 import com.rpsparty.game.controller.entities.PaperHandBody;
 import com.rpsparty.game.controller.entities.RockHandBody;
 import com.rpsparty.game.controller.entities.ScissorHandBody;
 import com.rpsparty.game.model.MatchModel;
+import com.rpsparty.game.model.entities.EntityModel;
+import com.rpsparty.game.model.entities.PaperHandModel;
+import com.rpsparty.game.model.entities.RockHandModel;
+import com.rpsparty.game.model.entities.ScissorHandModel;
 
 import java.util.ArrayList;
 
@@ -26,9 +32,17 @@ public class MatchController implements ContactListener {
     public static final int ARENA_HEIGHT = 480;
 
     private final World world;
-    private final RockHandBody rock;
+    /**
+     * Accumulator used to calculate the simulation step.
+     */
+    private float accumulator;
+   /* private final RockHandBody rock;
     private final PaperHandBody paper;
     private final ScissorHandBody scissor;
+   */
+    private EntityBody player1Entity = null;
+    private EntityBody player2Entity =  null;
+
 
     private String myChoice;
     private String opponentChoice;
@@ -38,18 +52,20 @@ public class MatchController implements ContactListener {
     private int shakeStage = 0; // 0 = X do telemovel esta a aumentar ; 1 = X do telemovel esta a diminuir
     private int updateTime = 1; // 1 = primeiro update de inicio de um shake ; 2 = segundo update de inicio de um shake
     private int flagDirection = 2; // 0 = shake aumenta no  sentido positivo de X ; 1 = shake aumenta no  sentido negativo de X ; 2 = ainda não se sabe o sentido
-    private int count = 3;//numero de shakes a dar
+    private int count = 0;//numero de shakes a dar
 
-    private int currSet = 0;
+    private int currSet = 1;
     private ArrayList sets;
+
+    private boolean animation = false;
 
     private MatchController() {
         world = new World(new Vector2(0, 0), true);
 
-        rock = new RockHandBody(world, MatchModel.getInstance().getRock());
+       /* rock = new RockHandBody(world, MatchModel.getInstance().getRock());
         paper = new PaperHandBody(world, MatchModel.getInstance().getPaper());
         scissor = new ScissorHandBody(world, MatchModel.getInstance().getScissor());
-
+        */
         world.setContactListener(this);
         myChoice = "";
         opponentChoice = "";
@@ -68,28 +84,59 @@ public class MatchController implements ContactListener {
 
     public void update(float delta) {
 
+        float frameTime = Math.min(delta, 0.25f);
+        accumulator += frameTime;
+        while (accumulator >= 1/60f) {
+            world.step(1/60f, 6, 2);
+            accumulator -= 1/60f;
+        }
+        Array<Body> bodies = new Array<Body>();
+        world.getBodies(bodies);
+        for (Body body : bodies) {
+            ((EntityModel) body.getUserData()).setPosition(body.getPosition().x, body.getPosition().y);
+            ((EntityModel) body.getUserData()).setRotation(body.getAngle());
+        }
     }
 
     public World getWorld() {
         return world;
     }
 
+    public boolean isAnimation() {
+        return animation;
+    }
+
     public void chooseRock() {
-        rock.setTransform(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8,0);
-        MatchModel.getInstance().getRock().setPosition(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8);
+        player1Entity = new RockHandBody(world, (RockHandModel)MatchModel.getInstance().setMyChoice("rock"));
+        player1Entity.setLinearVelocity(0f,200f);
         ConnectionSockets.getInstance().sendMessage("rock");
     }
 
     public void choosePaper() {
-        paper.setTransform(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8,0);
-        MatchModel.getInstance().getPaper().setPosition(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8);
+        player1Entity = new PaperHandBody(world, (PaperHandModel)MatchModel.getInstance().setMyChoice("paper"));
+        player1Entity.setLinearVelocity(0f,200f);
         ConnectionSockets.getInstance().sendMessage("paper");
     }
 
     public void chooseScissor() {
-        scissor.setTransform(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8,0);
-        MatchModel.getInstance().getScissor().setPosition(Gdx.graphics.getWidth()/12, 5*Gdx.graphics.getHeight()/8);
+        player1Entity = new ScissorHandBody(world, (ScissorHandModel)MatchModel.getInstance().setMyChoice("scissor"));
+        player1Entity.setLinearVelocity(0f,200f);
         ConnectionSockets.getInstance().sendMessage("scissor");
+    }
+
+    public void opponentChooseRock() {
+        player2Entity = new RockHandBody(world, (RockHandModel)MatchModel.getInstance().setOpponentChoice("rock"));
+        player2Entity.setLinearVelocity(0f,-200f);
+    }
+
+    public void opponentChoosePaper() {
+        player2Entity = new PaperHandBody(world, (PaperHandModel)MatchModel.getInstance().setOpponentChoice("paper"));
+        player2Entity.setLinearVelocity(0f,-200f);
+    }
+
+    public void opponentChooseScissor() {
+        player2Entity = new ScissorHandBody(world, (ScissorHandModel)MatchModel.getInstance().setOpponentChoice("scissor"));
+        player2Entity.setLinearVelocity(0f,-200f);
     }
 
     /**
@@ -103,12 +150,12 @@ public class MatchController implements ContactListener {
         Body bodyB = contact.getFixtureB().getBody();
 
         //TODO: adicionar animacao ao choque de elementos
-
+        System.out.println("CHOQUE!");
     }
 
     @Override
     public void endContact(Contact contact) {
-
+        //resetMatch();
     }
 
     @Override
@@ -133,10 +180,6 @@ public class MatchController implements ContactListener {
         myChoice = choice;
     }
 
-    public void setOpponentChoice(String choice) {
-        opponentChoice = choice;
-    }
-
     public boolean waitForOpponent() {
         System.out.println("\nESTA NO WAIT FOR OPPONENT|\n");
         opponentChoice = ConnectionSockets.getInstance().receiveMessage();
@@ -154,6 +197,12 @@ public class MatchController implements ContactListener {
             @Override
             public void run() {
                 while(!waitForOpponent());
+                if(opponentChoice.equals("rock"))
+                    opponentChooseRock();
+                else if(opponentChoice.equals("paper"))
+                    opponentChoosePaper();
+                else if(opponentChoice.equals("scissor"))
+                    opponentChooseScissor();
                 while(myChoice == "");
 
             }
@@ -218,8 +267,8 @@ public class MatchController implements ContactListener {
 
     public void shakeUpdate(float delta) {
         lastUpdate += delta;
-        if(lastUpdate > 0.25f) {
-            if(Math.abs(lastX - Gdx.input.getAccelerometerX()) > 3) {
+        if (lastUpdate > 0.25f) {
+            if (Math.abs(lastX - Gdx.input.getAccelerometerX()) > 3) {
                 if (verifyDirectionShake()) {
                     if (shake()) {
                         System.out.println("SHAKE!");
@@ -230,29 +279,55 @@ public class MatchController implements ContactListener {
             }
             lastUpdate = 0;
         }
+
     }
 
     public boolean isVictory() {
         boolean result = false;
         if(myChoice == "paper") {
-            result = opponentChoice == "rock" ? true : false;
+            result = opponentChoice.equals("rock") ? true : false;
         } else if(myChoice == "rock") {
-            result = opponentChoice == "scissor" ? true : false;
+            result = opponentChoice.equals("scissor") ? true : false;
         } else if(myChoice == "scissor") {
-            result = opponentChoice == "paper" ? true : false;
+            result = opponentChoice.equals("paper") ? true : false;
         }
         return result;
     }
 
-    public void finalResult() {
+    public boolean finalResult() {
         if(count == 0) {
+            animation = true;
             if(isVictory()) {
                 System.out.println("ganhaste esta partida!");
+                return true;
             } else {
                 System.out.println("perdeste esta partida...");
+                return true;
             }
         }
+        return false;
     }
 
+    public void resetMatch() {
+        Array<Body> bodies = new Array<Body>();
+        world.getBodies(bodies);
+        for (Body body : bodies) {
+            world.destroyBody(body);
+        }
+        player1Entity = null;
+        player2Entity = null;
+
+        myChoice = "";
+        opponentChoice = "";
+
+        lastUpdate =0.0f;
+        lastX = 0.0f;
+        shakeStage = 0;
+        updateTime = 1;
+        flagDirection = 2;
+        count = 0;
+        animation = false;
+        currSet++;
+    }
 
 }

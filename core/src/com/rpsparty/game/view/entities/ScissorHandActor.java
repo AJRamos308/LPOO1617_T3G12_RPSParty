@@ -31,7 +31,7 @@ public class ScissorHandActor extends EntityActor {
      */
     @Override
     public Sprite createSprite(RPSParty game) {
-        texture = game.getAssetManager().get("badlogic.jpg");
+        texture = game.getAssetManager().get("scissor.png");
         int x = (int) MatchModel.getInstance().getScissor().getX();
         int y = (int)MatchModel.getInstance().getScissor().getY();
         System.out.println("> Coordenadas da tesoura:");

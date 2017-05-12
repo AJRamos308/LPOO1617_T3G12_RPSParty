@@ -32,9 +32,11 @@ public class MatchModel {
         paper = new PaperHandModel(Gdx.graphics.getWidth()/4, 100, 0);
         scissor = new ScissorHandModel(Gdx.graphics.getWidth()/2, 100, 0);
         currentOption = null;
+        player1Entity = null;
+        player2Entity = null;
     }
 
-    public void setCurrentOption(String option) {
+   /* public void setCurrentOption(String option) {
         if(option.equals("null")) {
             currentOption = null;
         } else if(option.equals("rock")) {
@@ -44,8 +46,42 @@ public class MatchModel {
         } else if(option.equals("scissor")) {
             currentOption = new ScissorHandModel(50, 50, 0);
         }
+    }*/
+
+    public EntityModel setMyChoice(String s) {
+        float width;
+        width = Gdx.graphics.getWidth();
+        if (s.equals("rock")) {
+            player1Entity = new RockHandModel(width/2,0,0);
+        } else if (s.equals("paper")) {
+            player1Entity = new PaperHandModel(width/2,0,0);
+        } else if (s.equals("scissor")) {
+            player1Entity = new ScissorHandModel(width/2,0,0);
+        }
+        return player1Entity;
+    }
+
+    public EntityModel setOpponentChoice(String s) {
+        float width, height;
+        width = Gdx.graphics.getWidth();
+        height = Gdx.graphics.getHeight();
+        if (s.equals("rock")) {
+            player2Entity = new RockHandModel(width/2,height-height/6,0);
+        } else if (s.equals("paper")) {
+            player2Entity = new PaperHandModel(width/2,height-height/6,0);
+        } else if (s.equals("scissor")) {
+            player2Entity = new ScissorHandModel(width/2,height-height/6,0);
+        }
+        return player2Entity;
     }
     public RockHandModel getRock() { return rock; }
     public PaperHandModel getPaper() { return paper; }
     public ScissorHandModel getScissor() { return scissor; }
+
+    public EntityModel getPlayer1Entity() {
+        return player1Entity;
+    }
+    public EntityModel getPlayer2Entity() {
+        return player2Entity;
+    }
 }

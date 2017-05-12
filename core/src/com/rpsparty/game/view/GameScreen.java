@@ -13,8 +13,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.controller.ConnectionSockets;
 import com.rpsparty.game.controller.MatchController;
+import com.rpsparty.game.model.MatchModel;
+import com.rpsparty.game.model.entities.EntityModel;
+import com.rpsparty.game.model.entities.PaperHandModel;
+import com.rpsparty.game.model.entities.RockHandModel;
+import com.rpsparty.game.model.entities.ScissorHandModel;
+import com.rpsparty.game.view.entities.EntityView;
 import com.rpsparty.game.view.entities.PaperButton;
+import com.rpsparty.game.view.entities.PaperView;
 import com.rpsparty.game.view.entities.RockButton;
+import com.rpsparty.game.view.entities.RockView;
+import com.rpsparty.game.view.entities.ScissorView;
 import com.rpsparty.game.view.entities.ScissorsButton;
 
 public class GameScreen extends ScreenAdapter {
@@ -62,6 +71,9 @@ public class GameScreen extends ScreenAdapter {
     private void loadAssets() {
         this.game.getAssetManager().load( "scissors.png" , Texture.class);
         this.game.getAssetManager().load( "areuready.png" , Texture.class);
+        this.game.getAssetManager().load( "paper.png" , Texture.class);
+        this.game.getAssetManager().load( "rock.png" , Texture.class);
+        this.game.getAssetManager().load( "scissor.png" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
     /**
@@ -90,6 +102,9 @@ public class GameScreen extends ScreenAdapter {
         game.backpressed = false;
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        MatchController.getInstance().update(delta);
+
         camera.update();
         stage.act();
         if(MatchController.getInstance().getMyChoice() == "") {
@@ -108,12 +123,18 @@ public class GameScreen extends ScreenAdapter {
         }
         if(MatchController.getInstance().getMyChoice() != "" && MatchController.getInstance().getOpponentChoice() != "") {
             //game.setScreen(new MainMenuScreen(game));
-            MatchController.getInstance().finalResult();
-            game.getBatch().begin();
-            game.getBatch().draw(areYouReady,Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-            game.getBatch().end();
+            if(MatchController.getInstance().isAnimation()) {
+                game.getBatch().begin();
+                game.getBatch().draw(areYouReady, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+                game.getBatch().end();
 
-            MatchController.getInstance().shakeUpdate(delta);
+                MatchController.getInstance().shakeUpdate(delta);
+                MatchController.getInstance().finalResult();
+            } else {
+                game.getBatch().begin();
+                drawAnimation();
+                game.getBatch().end();
+            }
         }
 
     }
@@ -133,6 +154,7 @@ public class GameScreen extends ScreenAdapter {
 
                 ConnectionSockets.getInstance().sendMessage("rock" + ("\n"));
                 MatchController.getInstance().setMyChoice("rock");
+                MatchController.getInstance().chooseRock();
                 rockButton.setBounds(Gdx.graphics.getWidth()/8, 4*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8);
                 rockButton.setDisabled(true);
                 rockButton.setTouchable(Touchable.disabled);
@@ -145,6 +167,7 @@ public class GameScreen extends ScreenAdapter {
 
                 ConnectionSockets.getInstance().sendMessage("scissor" + ("\n"));
                 MatchController.getInstance().setMyChoice("scissor");
+                MatchController.getInstance().chooseScissor();
                 scissorsButton.setBounds(Gdx.graphics.getWidth()/8, 4*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8);
                 scissorsButton.setDisabled(true);
                 scissorsButton.setTouchable(Touchable.disabled);
@@ -157,10 +180,40 @@ public class GameScreen extends ScreenAdapter {
 
                 ConnectionSockets.getInstance().sendMessage("paper" + ("\n"));
                 MatchController.getInstance().setMyChoice("paper");
+                MatchController.getInstance().choosePaper();
                 paperButton.setBounds(Gdx.graphics.getWidth()/8, 4*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8);
                 paperButton.setDisabled(true);
                 paperButton.setTouchable(Touchable.disabled);
             }});
+    }
+
+    public void drawAnimation() {
+        EntityModel player1Choice = MatchModel.getInstance().getPlayer1Entity();
+        EntityModel player2Choice = MatchModel.getInstance().getPlayer2Entity();
+
+        EntityView view1 = null;
+
+        if(player1Choice instanceof RockHandModel) {
+            view1 = new RockView(game);
+        } else if(player1Choice instanceof PaperHandModel) {
+            view1 = new PaperView(game);
+        } if(player1Choice instanceof ScissorHandModel) {
+            view1 = new ScissorView(game);
+        }
+        view1.update(player1Choice);
+        view1.draw(game.getBatch());
+
+        EntityView view2 = null;
+
+        if(player2Choice instanceof RockHandModel) {
+            view2 = new RockView(game);
+        } else if(player2Choice instanceof PaperHandModel) {
+            view2 = new PaperView(game);
+        } if(player2Choice instanceof ScissorHandModel) {
+            view2 = new ScissorView(game);
+        }
+        view2.update(player2Choice);
+        view2.draw(game.getBatch());
     }
 
 /*

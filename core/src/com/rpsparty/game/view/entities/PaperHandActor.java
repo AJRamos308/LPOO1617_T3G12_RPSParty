@@ -31,7 +31,7 @@ public class PaperHandActor extends EntityActor {
      */
     @Override
     public Sprite createSprite(RPSParty game) {
-        texture = game.getAssetManager().get("badlogic.jpg");
+        texture = game.getAssetManager().get("paper.png");
         int x = (int)MatchModel.getInstance().getPaper().getX();
         int y = (int)MatchModel.getInstance().getPaper().getY();
         System.out.println("> Coordenadas do papel:");

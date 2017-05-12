@@ -15,7 +15,7 @@ public class RockButton extends EntityButton {
     }
 
     public void editStyle(RPSParty game) {
-        skin.add("Rock", game.getAssetManager().get("scissors.png"));//a imagem e primeiro posta numa skin porque Skin consegue converter o seu conteudo em diferentes tipo como Drawable que e o que nos precisamos para atribuir uma imagem ao butao
+        skin.add("Rock", game.getAssetManager().get("rock.png"));//a imagem e primeiro posta numa skin porque Skin consegue converter o seu conteudo em diferentes tipo como Drawable que e o que nos precisamos para atribuir uma imagem ao butao
         style = new Button.ButtonStyle();
         style.up = skin.getDrawable("Rock");
     }

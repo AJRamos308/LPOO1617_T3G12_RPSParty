@@ -30,7 +30,7 @@ public class RockHandActor extends EntityActor {
      */
     @Override
     public Sprite createSprite(RPSParty game) {
-        texture = game.getAssetManager().get("badlogic.jpg");
+        texture = game.getAssetManager().get("rock.png");
         int x = (int)MatchModel.getInstance().getRock().getX();
         int y = (int)MatchModel.getInstance().getRock().getY();
         System.out.println("> Coordenadas da pedra:");
