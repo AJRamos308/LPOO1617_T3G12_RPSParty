@@ -145,6 +145,12 @@ public class GameScreen extends ScreenAdapter {
         paperButton = new PaperButton(game);
     }
 
+    public void disableButtons() {
+        rockButton.setTouchable(Touchable.disabled);
+        scissorsButton.setTouchable(Touchable.disabled);
+        paperButton.setTouchable(Touchable.disabled);
+    }
+
     public void addListeners() {
         rockButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -156,8 +162,8 @@ public class GameScreen extends ScreenAdapter {
                 MatchController.getInstance().setMyChoice("rock");
                 MatchController.getInstance().chooseRock();
                 rockButton.setBounds(Gdx.graphics.getWidth()/8, 4*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8);
-                rockButton.setDisabled(true);
-                rockButton.setTouchable(Touchable.disabled);
+
+                disableButtons();
             }});
         scissorsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -169,8 +175,8 @@ public class GameScreen extends ScreenAdapter {
                 MatchController.getInstance().setMyChoice("scissor");
                 MatchController.getInstance().chooseScissor();
                 scissorsButton.setBounds(Gdx.graphics.getWidth()/8, 4*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8);
-                scissorsButton.setDisabled(true);
-                scissorsButton.setTouchable(Touchable.disabled);
+
+                disableButtons();
             }});
         paperButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -182,8 +188,8 @@ public class GameScreen extends ScreenAdapter {
                 MatchController.getInstance().setMyChoice("paper");
                 MatchController.getInstance().choosePaper();
                 paperButton.setBounds(Gdx.graphics.getWidth()/8, 4*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8, 6*Gdx.graphics.getWidth()/8);
-                paperButton.setDisabled(true);
-                paperButton.setTouchable(Touchable.disabled);
+
+                disableButtons();
             }});
     }
 
