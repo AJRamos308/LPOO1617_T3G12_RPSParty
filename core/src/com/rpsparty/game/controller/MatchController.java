@@ -54,10 +54,11 @@ public class MatchController implements ContactListener {
     private int flagDirection = 2; // 0 = shake aumenta no  sentido positivo de X ; 1 = shake aumenta no  sentido negativo de X ; 2 = ainda não se sabe o sentido
     private int count = 0;//numero de shakes a dar
 
-    private int currSet = 1;
-    private ArrayList sets;
+    private int currSet;
+    private ArrayList<Integer> sets = new ArrayList<Integer>();
 
     private boolean animation = false;
+    private boolean collision = false;
 
     private MatchController() {
         world = new World(new Vector2(0, 0), true);
@@ -69,6 +70,7 @@ public class MatchController implements ContactListener {
         world.setContactListener(this);
         myChoice = "";
         opponentChoice = "";
+        currSet = 1;
     }
 
     /**
@@ -151,6 +153,7 @@ public class MatchController implements ContactListener {
 
         //TODO: adicionar animacao ao choque de elementos
         System.out.println("CHOQUE!");
+        collision = true;
     }
 
     @Override
@@ -299,35 +302,49 @@ public class MatchController implements ContactListener {
             animation = true;
             if(isVictory()) {
                 System.out.println("ganhaste esta partida!");
-                return true;
+                sets.add(1);
             } else {
                 System.out.println("perdeste esta partida...");
-                return true;
+                if(!myChoice.equals(opponentChoice)) //senao e empate
+                    sets.add(0);
             }
+            currSet++;
+            return true;
         }
         return false;
     }
 
-    public void resetMatch() {
-        Array<Body> bodies = new Array<Body>();
-        world.getBodies(bodies);
-        for (Body body : bodies) {
-            world.destroyBody(body);
+    public boolean resetMatch(float delta) {
+        lastUpdate += delta;
+        if(lastUpdate >= 3) {
+            Array<Body> bodies = new Array<Body>();
+            world.getBodies(bodies);
+            for (Body body : bodies) {
+                world.destroyBody(body);
+            }
+            player1Entity = null;
+            player2Entity = null;
+
+            myChoice = "";
+            opponentChoice = "";
+
+            lastUpdate = 0.0f;
+            lastX = 0.0f;
+            shakeStage = 0;
+            updateTime = 1;
+            flagDirection = 2;
+            count = 0;
+            animation = false;
+            collision = false;
+            return true;
         }
-        player1Entity = null;
-        player2Entity = null;
-
-        myChoice = "";
-        opponentChoice = "";
-
-        lastUpdate =0.0f;
-        lastX = 0.0f;
-        shakeStage = 0;
-        updateTime = 1;
-        flagDirection = 2;
-        count = 0;
-        animation = false;
-        currSet++;
+        return false;
     }
+
+    public ArrayList<Integer> getSets() {
+        return sets;
+    }
+
+    public boolean isCollision() { return collision; }
 
 }
