@@ -34,7 +34,7 @@ public class ConnectionSockets {
         readSocket = null;
     }
 
-    public void setWriteSocketm(Socket socket) {
+    public void setWriteSocket(Socket socket) {
         writeSocket = socket;
     }
 

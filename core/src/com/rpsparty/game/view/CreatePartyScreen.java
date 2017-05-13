@@ -224,7 +224,7 @@ public class CreatePartyScreen extends ScreenAdapter {
 
         // Read to the next newline (\n) and display that text on labelMessage
         Socket socket = Gdx.net.newClientSocket(Protocol.TCP, ip, 9022, socketHints);
-        ConnectionSockets.getInstance().setWriteSocketm(socket);
+        ConnectionSockets.getInstance().setWriteSocket(socket);
         return true;
     }
 

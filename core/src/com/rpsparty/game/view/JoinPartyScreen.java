@@ -241,7 +241,7 @@ public class JoinPartyScreen extends ScreenAdapter {
                     System.out.println("o cliente vai se ligar ao IP "+serverIP.getText());
                     Socket socket = Gdx.net.newClientSocket(Protocol.TCP, serverIP.getText(), 9021, socketHints);
                     System.out.println("cliente esta ligado ao servidor!");
-                    ConnectionSockets.getInstance().setWriteSocketm(socket);
+                    ConnectionSockets.getInstance().setWriteSocket(socket);
                     createServerSocket(socket);
                     System.out.println("cliente criou um socket e servidor ligou-se a ele!");
                     startGame = true;

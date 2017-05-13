@@ -74,7 +74,6 @@ public class GameScreen extends ScreenAdapter {
      * Loads the assets needed by this screen.
      */
     private void loadAssets() {
-        this.game.getAssetManager().load( "scissors.png" , Texture.class);
         this.game.getAssetManager().load( "areuready.png" , Texture.class);
         this.game.getAssetManager().load( "paper.png" , Texture.class);
         this.game.getAssetManager().load( "rock.png" , Texture.class);
@@ -128,11 +127,22 @@ public class GameScreen extends ScreenAdapter {
         if(MatchController.getInstance().getMyChoice() != "" && MatchController.getInstance().getOpponentChoice() != "") {
             //game.setScreen(new MainMenuScreen(game));
             if(MatchController.getInstance().finalResult()) {
-                if(MatchController.getInstance().isAnimation()) {
-                    if(!MatchController.getInstance().resetMatch(delta)) {
+                String s;
+                ConnectionSockets.getInstance().sendMessage("lixo\n");
+                System.out.println("escreveu lixo");
+                s = ConnectionSockets.getInstance().receiveMessage();
+                System.out.println("leu: "+ s);
+                if(!MatchController.getInstance().isCollision()) {
+                    game.getBatch().begin();
+                    drawAnimation();
+                    game.getBatch().end();
+                } else {
+                    if(!MatchController.getInstance().resetMatch(delta)) {//se ainda nao passaram os 3 segundos depois da colisao...
                         game.getBatch().begin();
-                        drawAnimation();
+                        drawAnimation();//...continua a desenhar a animacao
                         game.getBatch().end();
+                    } else {
+                        MatchController.getInstance().createReadThread();
                     }
                 }
             } else {

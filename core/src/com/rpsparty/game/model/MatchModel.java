@@ -74,6 +74,11 @@ public class MatchModel {
         }
         return player2Entity;
     }
+
+    public void reset() {
+        player1Entity = null;
+        player2Entity = null;
+    }
     public RockHandModel getRock() { return rock; }
     public PaperHandModel getPaper() { return paper; }
     public ScissorHandModel getScissor() { return scissor; }
