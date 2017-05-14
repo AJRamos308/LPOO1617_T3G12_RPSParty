@@ -109,8 +109,6 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        MatchController.getInstance().update(delta);
-
         camera.update();
         stage.act();
         if(MatchController.getInstance().getMyChoice() == "") {
@@ -127,7 +125,7 @@ public class GameScreen extends ScreenAdapter {
         //game.setScreen(new MainMenuScreen(game));
         if(MatchController.getInstance().getMyChoice() != "" && MatchController.getInstance().getOpponentChoice() != "") {
             if (MatchController.getInstance().finalResult()) {
-
+                MatchController.getInstance().update(delta);
                 if (!MatchController.getInstance().isCollision()) {
                     game.getBatch().begin();
                     drawAnimation();
@@ -257,9 +255,9 @@ public class GameScreen extends ScreenAdapter {
         int height = Gdx.graphics.getHeight();
         for(Integer result : MatchController.getInstance().getSets()) {
             if(result == 1) {
-                game.getBatch().draw(won, width/4*nResult, height - 100);
+                game.getBatch().draw(won, width/4*nResult, height*(5/7));
             } else {
-                game.getBatch().draw(lost, width/4*nResult, height - 100);
+                game.getBatch().draw(lost, width/4*nResult, height*(5/7));
             }
             nResult++;
         }
