@@ -70,7 +70,7 @@ public class ConnectionSockets {
         try {
             // Read to the next newline (\n) and display that text on labelMessage
             answer = buffer.readLine();
-            System.out.println("vai retornar a resposta");
+            System.out.println("vai retornar a resposta: " + answer);
             return answer;
         } catch (IOException e) {
             e.printStackTrace();

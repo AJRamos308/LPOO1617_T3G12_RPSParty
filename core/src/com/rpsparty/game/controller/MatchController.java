@@ -52,11 +52,12 @@ public class MatchController implements ContactListener {
     private int shakeStage = 0; // 0 = X do telemovel esta a aumentar ; 1 = X do telemovel esta a diminuir
     private int updateTime = 1; // 1 = primeiro update de inicio de um shake ; 2 = segundo update de inicio de um shake
     private int flagDirection = 2; // 0 = shake aumenta no  sentido positivo de X ; 1 = shake aumenta no  sentido negativo de X ; 2 = ainda não se sabe o sentido
-    private int count = 3;//numero de shakes a dar
+    private int count = 0;//numero de shakes a dar
 
     private int currSet;
     private ArrayList<Integer> sets = new ArrayList<Integer>();
 
+    private boolean sync = false;
     private boolean animation = false;
     private boolean collision = false;
 
@@ -308,6 +309,12 @@ public class MatchController implements ContactListener {
                     sets.add(0);
             }
             currSet++;
+            if(!sync) {
+                String s;
+                ConnectionSockets.getInstance().sendMessage("lixo\n");
+                s = ConnectionSockets.getInstance().receiveMessage();
+                sync = true;
+            }
             return true;
         }
         return false;
@@ -332,7 +339,8 @@ public class MatchController implements ContactListener {
             shakeStage = 0;
             updateTime = 1;
             flagDirection = 2;
-            count = 3;
+            count = 0;
+            sync = false;
             animation = false;
             collision = false;
             MatchModel.getInstance().reset();
