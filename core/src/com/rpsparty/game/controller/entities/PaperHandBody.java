@@ -1,5 +1,6 @@
 package com.rpsparty.game.controller.entities;
 
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -12,7 +13,6 @@ public class PaperHandBody extends EntityBody {
         int width = 190, height = 190;
         PolygonShape shape =new PolygonShape();
         shape.setAsBox(width/2,height/2);
-
         createFixture(shape, width, height, density, friction, restitution, PAPER_BODY, (short) (ROCK_BODY | PAPER_BODY | SCISSOR_BODY));
     }
 }

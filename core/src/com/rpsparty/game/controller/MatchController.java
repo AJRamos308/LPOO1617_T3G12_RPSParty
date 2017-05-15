@@ -294,6 +294,7 @@ public class MatchController implements ContactListener {
         } else if(myChoice == "scissor") {
             result = opponentChoice.equals("paper") ? true : false;
         }
+
         return result;
     }
 

@@ -52,11 +52,11 @@ public class MatchModel {
         float width;
         width = Gdx.graphics.getWidth();
         if (s.equals("rock")) {
-            player1Entity = new RockHandModel(width/2,0,0);
+            player1Entity = new RockHandModel(width/4,0,0);
         } else if (s.equals("paper")) {
-            player1Entity = new PaperHandModel(width/2,0,0);
+            player1Entity = new PaperHandModel(width/4,0,0);
         } else if (s.equals("scissor")) {
-            player1Entity = new ScissorHandModel(width/2,0,0);
+            player1Entity = new ScissorHandModel(width/4,0,0);
         }
         return player1Entity;
     }
@@ -66,11 +66,11 @@ public class MatchModel {
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
         if (s.equals("rock")) {
-            player2Entity = new RockHandModel(width/2,height-height/6,0);
+            player2Entity = new RockHandModel(width/4,height-height/4,0);
         } else if (s.equals("paper")) {
-            player2Entity = new PaperHandModel(width/2,height-height/6,0);
+            player2Entity = new PaperHandModel(width/4,height-height/4,0);
         } else if (s.equals("scissor")) {
-            player2Entity = new ScissorHandModel(width/2,height-height/6,0);
+            player2Entity = new ScissorHandModel(width/4,height-height/4,0);
         }
         return player2Entity;
     }
