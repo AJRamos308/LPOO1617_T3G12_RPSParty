@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -12,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
 import com.badlogic.gdx.Input.Keys;
+import com.rpsparty.game.controller.RockGameController;
+import com.rpsparty.game.model.RockGameModel;
 import com.rpsparty.game.view.entities.RockGameButton;
 
 import java.util.Random;
@@ -38,8 +41,7 @@ public class RockGameScreen extends ScreenAdapter {
     private RockGameButton Rock3;
     private RockGameButton Rock4;
     private RockGameButton Rock5;
-    private int nCoins;
-    Random random = new Random();
+
 
     public RockGameScreen(RPSParty game) {
         this.game = game;
@@ -54,13 +56,15 @@ public class RockGameScreen extends ScreenAdapter {
         stage.addActor(Rock3);
         stage.addActor(Rock4);
         stage.addActor(Rock5);
-        nCoins = 0;
+
     }
     /**
      * Loads the assets needed by this screen.
      */
     private void loadAssets() {
-        //this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
+        this.game.getAssetManager().load( "paper.png" , Texture.class);
+        this.game.getAssetManager().load( "rock.png" , Texture.class);
+        this.game.getAssetManager().load( "scissor.png" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
     /**
@@ -90,7 +94,14 @@ public class RockGameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
-        stage.act();
+        RockGameController.getInstance().update(delta);
+        //stage.act();
+        changeButtonStyle(Rock1);
+        changeButtonStyle(Rock2);
+        changeButtonStyle(Rock3);
+        changeButtonStyle(Rock4);
+        changeButtonStyle(Rock5);
+
         game.getBatch().begin();
         game.getBatch().setProjectionMatrix(camera.combined);
         stage.draw();
@@ -107,46 +118,39 @@ public class RockGameScreen extends ScreenAdapter {
     }
 
     public void addButtons() {
-        Rock1 = new RockGameButton(game);
-        Rock1.editBounds(game,Gdx.graphics.getWidth()/6,Gdx.graphics.getWidth()/6, 5*Gdx.graphics.getWidth()/6,5*Gdx.graphics.getWidth()/6);
-        Rock1.editStyle(game, "scissors.png"); //Serves as demonstration
-        Rock2 = new RockGameButton(game);
-        Rock3 = new RockGameButton(game);
-        Rock4 = new RockGameButton(game);
-        Rock5 = new RockGameButton(game);
+        Rock1 = new RockGameButton(game, RockGameModel.getInstance().getRockOne());
+        Rock2 = new RockGameButton(game, RockGameModel.getInstance().getRockTwo());
+        Rock3 = new RockGameButton(game, RockGameModel.getInstance().getRockThree());
+        Rock4 = new RockGameButton(game, RockGameModel.getInstance().getRockFour());
+        Rock5 = new RockGameButton(game, RockGameModel.getInstance().getRockFive());
 
     }
 
     public void addListeners() {
         Rock1.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                int odd = random.nextInt(10) + 1;
-                if (odd == 1)
-                    nCoins++;
+                RockGameController.getInstance().touchRockOne();
             }});
         Rock2.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                int odd = random.nextInt(10) + 1;
-                if (odd == 1)
-                    nCoins++;
+                RockGameController.getInstance().touchRockTwo();
             }});
         Rock3.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                int odd = random.nextInt(10) + 1;
-                if (odd == 1)
-                    nCoins++;
+                RockGameController.getInstance().touchRockThree();
             }});
         Rock4.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                int odd = random.nextInt(10) + 1;
-                if (odd == 1)
-                    nCoins++;
+                RockGameController.getInstance().touchRockFour();
             }});
         Rock5.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                int odd = random.nextInt(10) + 1;
-                if (odd == 1)
-                    nCoins++;
+                RockGameController.getInstance().touchRockFive();
             }});
+    }
+    public void changeButtonStyle (RockGameButton btn) {
+        if(RockGameModel.getInstance().isDestroid(btn.getModel())) {
+            btn.changeStyle();
+        }
     }
 }

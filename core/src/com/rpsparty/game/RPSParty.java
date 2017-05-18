@@ -7,6 +7,7 @@ import com.rpsparty.game.view.GameScreen;
 import com.rpsparty.game.view.MainMenuScreen;
 
 import com.badlogic.gdx.net.Socket;
+import com.rpsparty.game.view.RockGameScreen;
 import com.rpsparty.game.view.SplashScreen;
 
 public class RPSParty extends Game {
@@ -29,7 +30,8 @@ public class RPSParty extends Game {
 	 * Starts the game.
 	 */
 	private void startGame() {
-		setScreen(new SplashScreen(this));
+		setScreen(new RockGameScreen(this));
+		//setScreen(new SplashScreen(this));
 	}
 
 	/**

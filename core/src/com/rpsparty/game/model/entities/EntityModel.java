@@ -1,7 +1,7 @@
 package com.rpsparty.game.model.entities;
 
 public abstract class EntityModel {
-    public enum ModelType {ROCKHAND, PAPERHAND, SCISSORHAND, ROCKMINIGAME, PAPERMINIGAME, SCISSORMINIGAME};
+    public enum ModelType {ROCKHAND, PAPERHAND, SCISSORHAND, ROCKGAMEONE, ROCKGAMETWO, ROCKGAMETHREE, ROCKGAMEFOUR, ROCKGAMEFIVE, PAPERMINIGAME, SCISSORMINIGAME};
     /**
      * coordenada x em metros
      */

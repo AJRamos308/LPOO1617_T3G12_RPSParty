@@ -163,6 +163,7 @@ public class GameScreen extends ScreenAdapter {
     public void addButtons() {
         rockButton = new RockButton(game);
         scissorsButton = new ScissorsButton(game);
+        scissorsButton = new ScissorsButton(game);
         paperButton = new PaperButton(game);
         resultsActor = new ResultsActor();
     }
