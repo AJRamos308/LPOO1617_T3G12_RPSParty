@@ -21,6 +21,7 @@ import com.rpsparty.game.model.entities.ScissorHandModel;
 import com.rpsparty.game.view.entities.EntityView;
 import com.rpsparty.game.view.entities.PaperButton;
 import com.rpsparty.game.view.entities.PaperView;
+import com.rpsparty.game.view.entities.ResultsActor;
 import com.rpsparty.game.view.entities.RockButton;
 import com.rpsparty.game.view.entities.RockView;
 import com.rpsparty.game.view.entities.ScissorView;
@@ -48,9 +49,8 @@ public class GameScreen extends ScreenAdapter {
     private PaperButton paperButton;
     private ScissorsButton scissorsButton;
     private RockButton rockButton;
+    private ResultsActor resultsActor;
     private Texture areYouReady;
-    private Texture won, lost;
-
 
     public GameScreen(RPSParty game) {
         System.out.println("\nmudou para GameScreen\n");
@@ -64,9 +64,8 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(paperButton);
         stage.addActor(scissorsButton);
         stage.addActor(rockButton);
+        stage.addActor(resultsActor);
         areYouReady = new Texture(Gdx.files.internal("areuready.png"));
-        won = new Texture(Gdx.files.internal("check.png"));
-        lost = new Texture(Gdx.files.internal("x.png"));
         MatchController.getInstance().createReadThread();
 
     }
@@ -115,8 +114,8 @@ public class GameScreen extends ScreenAdapter {
             enableButtons();
             game.getBatch().begin();
             game.getBatch().setProjectionMatrix(camera.combined);
+            //drawMatchResults();
             stage.draw();
-            drawMatchResults();
             game.getBatch().end();
         }
 
@@ -136,6 +135,7 @@ public class GameScreen extends ScreenAdapter {
                         drawAnimation();//...continua a desenhar a animacao
                         game.getBatch().end();
                     } else {
+
                         MatchController.getInstance().createReadThread();
                     }
                 }
@@ -164,6 +164,7 @@ public class GameScreen extends ScreenAdapter {
         rockButton = new RockButton(game);
         scissorsButton = new ScissorsButton(game);
         paperButton = new PaperButton(game);
+        resultsActor = new ResultsActor();
     }
 
     public void disableButtons() {
@@ -248,21 +249,7 @@ public class GameScreen extends ScreenAdapter {
         view2.update(player2Choice);
         view2.draw(game.getBatch());
     }
-
-    public void drawMatchResults() {
-        int nResult = 1;
-        int width = Gdx.graphics.getWidth();
-        int height = Gdx.graphics.getHeight();
-        for(Integer result : MatchController.getInstance().getSets()) {
-            if(result == 1) {
-                game.getBatch().draw(won, width/4*nResult, height*(5/7));
-            } else {
-                game.getBatch().draw(lost, width/4*nResult, height*(5/7));
-            }
-            nResult++;
-        }
-        }
-    }
+}
 
 
 

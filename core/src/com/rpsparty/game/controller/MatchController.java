@@ -54,7 +54,7 @@ public class MatchController implements ContactListener {
     private int flagDirection = 2; // 0 = shake aumenta no  sentido positivo de X ; 1 = shake aumenta no  sentido negativo de X ; 2 = ainda não se sabe o sentido
     private int count = 0;//numero de shakes a dar
 
-    private int currSet;
+    private int currSet = 1;
     private ArrayList<Integer> sets = new ArrayList<Integer>();
 
     private boolean sync = false;
@@ -355,5 +355,7 @@ public class MatchController implements ContactListener {
     }
 
     public boolean isCollision() { return collision; }
+
+    public int getCurrSet() {return  currSet; }
 
 }
