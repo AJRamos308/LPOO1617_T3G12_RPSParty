@@ -42,7 +42,7 @@ public class RockGameScreen extends ScreenAdapter {
     private RockGameButton Rock3;
     private RockGameButton Rock4;
     private RockGameButton Rock5;
-
+    private float timeToPlay = 30; //mini-jogo de 30 segundos
 
     public RockGameScreen(RPSParty game) {
         this.game = game;
@@ -113,6 +113,11 @@ public class RockGameScreen extends ScreenAdapter {
                 game.backpressed = false;
                 Gdx.app.exit();
             }
+        }
+        timeToPlay -= delta;
+        if(timeToPlay <= 0) {
+            //fim do mini-jogo
+            game.setScreen(new GameScreen(game));
         }
 
     }

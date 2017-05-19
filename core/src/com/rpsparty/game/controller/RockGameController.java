@@ -1,20 +1,11 @@
 package com.rpsparty.game.controller;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
 import com.rpsparty.game.controller.entities.RockGameBody;
 import com.rpsparty.game.model.RockGameModel;
-import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.rpsparty.game.model.entities.RockObjectGameModel;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  * Created by bibib on 18/05/2017.
@@ -32,7 +23,7 @@ public class RockGameController{
     private RockGameBody rockBodyFive;
     private final ArrayList<RockGameBody> rocks;
     private boolean update1 = false, update2 = false, update3 = false, update4 = false, update5 = false;
-
+    private int points = 0;
     /**
      * Creates a new GameController that controls the physics of a certain GameModel.
      *
@@ -100,6 +91,9 @@ public class RockGameController{
             rockBodyOne.setTouchTime();
             if (rockBodyOne.getTouchTime() >= 20) {
                 RockGameModel.getInstance().destroyRock(rockBodyOne.getModel());
+                if(RockGameModel.getInstance().hasCoin(rockBodyOne.getModel())) {
+                    points++;
+                }
             }
         }
     }
@@ -108,6 +102,9 @@ public class RockGameController{
             rockBodyTwo.setTouchTime();
             if (rockBodyTwo.getTouchTime() >= 20) {
                 RockGameModel.getInstance().destroyRock(rockBodyTwo.getModel());
+                if(RockGameModel.getInstance().hasCoin(rockBodyTwo.getModel())) {
+                    points++;
+                }
             }
         }
     }
@@ -116,6 +113,9 @@ public class RockGameController{
             rockBodyThree.setTouchTime();
             if (rockBodyThree.getTouchTime() >= 20) {
                 RockGameModel.getInstance().destroyRock(rockBodyThree.getModel());
+                if(RockGameModel.getInstance().hasCoin(rockBodyThree.getModel())) {
+                    points++;
+                }
             }
         }
     }
@@ -124,6 +124,9 @@ public class RockGameController{
             rockBodyFour.setTouchTime();
             if (rockBodyFour.getTouchTime() >= 20) {
                 RockGameModel.getInstance().destroyRock(rockBodyFour.getModel());
+                if(RockGameModel.getInstance().hasCoin(rockBodyFour.getModel())) {
+                    points++;
+                }
             }
         }
     }
@@ -132,6 +135,9 @@ public class RockGameController{
             rockBodyFive.setTouchTime();
             if (rockBodyFive.getTouchTime() >= 20) {
                 RockGameModel.getInstance().destroyRock(rockBodyFive.getModel());
+                if(RockGameModel.getInstance().hasCoin(rockBodyFive.getModel())) {
+                    points++;
+                }
             }
         }
     }
@@ -161,5 +167,7 @@ public class RockGameController{
         }
         return result;
     }
+
+    public int getPoints() { return points; }
 
 }

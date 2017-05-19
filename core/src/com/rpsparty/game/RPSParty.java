@@ -30,8 +30,7 @@ public class RPSParty extends Game {
 	 * Starts the game.
 	 */
 	private void startGame() {
-		setScreen(new RockGameScreen(this));
-		//setScreen(new SplashScreen(this));
+		setScreen(new SplashScreen(this));
 	}
 
 	/**

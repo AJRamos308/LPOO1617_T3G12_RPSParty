@@ -285,6 +285,8 @@ public class MatchController implements ContactListener {
 
     }
 
+    public boolean arePlayersReady() { return (myChoice != "" && opponentChoice != ""); }
+
     public boolean isVictory() {
         boolean result = false;
         if(myChoice == "paper") {
@@ -300,17 +302,20 @@ public class MatchController implements ContactListener {
 
     public boolean finalResult() {
         if(count == 0) {
+            if(!animation) {
+                currSet++;
+            }
             animation = true;
             if(isVictory()) {
                 System.out.println("ganhaste esta partida!");
                 sets.add(1);
             } else {
                 System.out.println("perdeste esta partida...");
-                if(!myChoice.equals(opponentChoice)) //senao e empate
+                if(!isTie()) //senao e empate
                     sets.add(0);
             }
-            currSet++;
-            if(!sync) {
+
+            if(!sync) {//sincronizar os shakes dos dois jogadores
                 String s;
                 ConnectionSockets.getInstance().sendMessage("lixo\n");
                 s = ConnectionSockets.getInstance().receiveMessage();
@@ -320,6 +325,8 @@ public class MatchController implements ContactListener {
         }
         return false;
     }
+
+    public boolean isTie() { return myChoice.equals(opponentChoice); }
 
     public boolean resetMatch(float delta) {
         lastUpdate += delta;
@@ -331,9 +338,6 @@ public class MatchController implements ContactListener {
             }
             player1Entity = null;
             player2Entity = null;
-
-            myChoice = "";
-            opponentChoice = "";
 
             lastUpdate = 0.0f;
             lastX = 0.0f;
@@ -348,6 +352,11 @@ public class MatchController implements ContactListener {
             return true;
         }
         return false;
+    }
+
+    public void resetChoices() {
+        myChoice = "";
+        opponentChoice = "";
     }
 
     public ArrayList<Integer> getSets() {

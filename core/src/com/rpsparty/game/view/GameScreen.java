@@ -28,6 +28,7 @@ import com.rpsparty.game.view.entities.ScissorView;
 import com.rpsparty.game.view.entities.ScissorsButton;
 
 import static com.badlogic.gdx.Gdx.graphics;
+import static com.badlogic.gdx.Input.Keys.T;
 
 public class GameScreen extends ScreenAdapter {
     /**
@@ -110,7 +111,7 @@ public class GameScreen extends ScreenAdapter {
 
         camera.update();
         stage.act();
-        if(MatchController.getInstance().getMyChoice() == "") {
+        if(MatchController.getInstance().getMyChoice() == "") {//so desenhar butoes enquanto o utilizador nao escolher opcao
             enableButtons();
             game.getBatch().begin();
             game.getBatch().setProjectionMatrix(camera.combined);
@@ -122,23 +123,9 @@ public class GameScreen extends ScreenAdapter {
         goBack();
 
         //game.setScreen(new MainMenuScreen(game));
-        if(MatchController.getInstance().getMyChoice() != "" && MatchController.getInstance().getOpponentChoice() != "") {
+        if(MatchController.getInstance().arePlayersReady()) {
             if (MatchController.getInstance().finalResult()) {
-                MatchController.getInstance().update(delta);
-                if (!MatchController.getInstance().isCollision()) {
-                    game.getBatch().begin();
-                    drawAnimation();
-                    game.getBatch().end();
-                } else {
-                    if (!MatchController.getInstance().resetMatch(delta)) {//se ainda nao passaram os 3 segundos depois da colisao...
-                        game.getBatch().begin();
-                        drawAnimation();//...continua a desenhar a animacao
-                        game.getBatch().end();
-                    } else {
-
-                        MatchController.getInstance().createReadThread();
-                    }
-                }
+                processChoices(delta);
             } else {
                 game.getBatch().begin();
                 game.getBatch().draw(areYouReady, graphics.getWidth() / 2, graphics.getHeight() / 2);
@@ -226,29 +213,72 @@ public class GameScreen extends ScreenAdapter {
         EntityModel player1Choice = MatchModel.getInstance().getPlayer1Entity();
         EntityModel player2Choice = MatchModel.getInstance().getPlayer2Entity();
 
-        EntityView view1 = null;
+        EntityView view1 = getPlayerView(player1Choice);
 
-        if(player1Choice instanceof RockHandModel) {
-            view1 = new RockView(game);
-        } else if(player1Choice instanceof PaperHandModel) {
-            view1 = new PaperView(game);
-        } if(player1Choice instanceof ScissorHandModel) {
-            view1 = new ScissorView(game);
-        }
-        view1.update(player1Choice);
+        EntityView view2 = getPlayerView(player2Choice);
+
+        game.getBatch().begin();
         view1.draw(game.getBatch());
-
-        EntityView view2 = null;
-
-        if(player2Choice instanceof RockHandModel) {
-            view2 = new RockView(game);
-        } else if(player2Choice instanceof PaperHandModel) {
-            view2 = new PaperView(game);
-        } if(player2Choice instanceof ScissorHandModel) {
-            view2 = new ScissorView(game);
-        }
-        view2.update(player2Choice);
         view2.draw(game.getBatch());
+        game.getBatch().end();
+    }
+
+    public EntityView getPlayerView (EntityModel playerChoice) {
+        EntityView view = null;
+
+        if(playerChoice instanceof RockHandModel) {
+            view = new RockView(game);
+        } else if(playerChoice instanceof PaperHandModel) {
+            view = new PaperView(game);
+        } if(playerChoice instanceof ScissorHandModel) {
+            view = new ScissorView(game);
+        }
+        view.update(playerChoice);
+
+        return view;
+    }
+
+
+
+    public void processChoices(float delta) {
+        if (MatchController.getInstance().finalResult()) {//ainda nao deram os 3 shakes; ainda nao se pode mostrar o resultado
+            startAnimation(delta);
+        } else {
+            game.getBatch().begin();
+            game.getBatch().draw(areYouReady, graphics.getWidth() / 2, graphics.getHeight() / 2);
+            game.getBatch().end();
+            MatchController.getInstance().shakeUpdate(delta);
+        }
+    }
+
+
+    public void startAnimation(float delta) {
+        MatchController.getInstance().update(delta);
+        if (!MatchController.getInstance().isCollision()) {
+            drawAnimation();
+        } else {
+            if (!MatchController.getInstance().resetMatch(delta)) {//se ainda nao passaram os 3 segundos depois da colisao...
+                drawAnimation();//...continua a desenhar a animacao
+            } else {
+                if(MatchController.getInstance().isTie()) {
+                    String element = MatchController.getInstance().getMyChoice();
+                    MatchController.getInstance().resetChoices();
+                    playMiniGame(element);
+                } else {
+                    MatchController.getInstance().createReadThread();
+                }
+            }
+        }
+    }
+
+    public void playMiniGame(String element) {
+        if(element.equals("rock")) {
+            game.setScreen(new RockGameScreen(game));
+        } else if(element.equals("paper")) {
+            //TODO: mini jogo do papel
+        } else if(element.equals("scissor")) {
+            //TODO: mini jogo da tesoura
+        }
     }
 }
 
