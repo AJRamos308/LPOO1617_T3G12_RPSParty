@@ -14,23 +14,24 @@ import com.rpsparty.game.controller.MatchController;
 public class ResultsActor extends Actor{
     private Texture won, lost;
 
-    public ResultsActor() {
+    public ResultsActor(RPSParty game) {
         super();
+        won = game.getAssetManager().get("check.png");
+        lost = game.getAssetManager().get("x.png");
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha){
-        won = new Texture(Gdx.files.internal("check.png"));
-        lost = new Texture(Gdx.files.internal("x.png"));
+        int nResult = 0;
+        System.out.println("tamanha da lista: "+ MatchController.getInstance().getSets().size());
         for(Integer result : MatchController.getInstance().getSets()) {
-            System.out.println("RESULTADO SO FAR: " + result);
+
             if(result == 1) {
-                System.out.println("PRINT" + MatchController.getInstance().getCurrSet());
-                batch.draw(won, MatchController.getInstance().getCurrSet() * 2 * Gdx.graphics.getWidth()/8 + Gdx.graphics.getWidth()/8, 7*Gdx.graphics.getHeight()/8, Gdx.graphics.getWidth()/8, Gdx.graphics.getWidth()/8);
+                batch.draw(won, 2 * nResult * Gdx.graphics.getWidth()/16, 7*Gdx.graphics.getHeight()/8, Gdx.graphics.getWidth()/8, Gdx.graphics.getWidth()/8);
             } else {
-                System.out.println("PRINT" + MatchController.getInstance().getCurrSet());
-                batch.draw(lost, MatchController.getInstance().getCurrSet() * 2 * Gdx.graphics.getWidth()/8 + Gdx.graphics.getWidth()/8, 7*Gdx.graphics.getHeight()/8, Gdx.graphics.getWidth()/8, Gdx.graphics.getWidth()/8);
+                batch.draw(lost, 6 * nResult * Gdx.graphics.getWidth()/16, 7*Gdx.graphics.getHeight()/8, Gdx.graphics.getWidth()/8, Gdx.graphics.getWidth()/8);
             }
+            nResult++;
         }
     }
 }

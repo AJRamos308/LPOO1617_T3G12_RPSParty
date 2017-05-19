@@ -124,14 +124,7 @@ public class GameScreen extends ScreenAdapter {
 
         //game.setScreen(new MainMenuScreen(game));
         if(MatchController.getInstance().arePlayersReady()) {
-            if (MatchController.getInstance().finalResult()) {
-                processChoices(delta);
-            } else {
-                game.getBatch().begin();
-                game.getBatch().draw(areYouReady, graphics.getWidth() / 2, graphics.getHeight() / 2);
-                game.getBatch().end();
-                MatchController.getInstance().shakeUpdate(delta);
-            }
+            processChoices(delta);
         }
 
     }
@@ -152,7 +145,7 @@ public class GameScreen extends ScreenAdapter {
         scissorsButton = new ScissorsButton(game);
         scissorsButton = new ScissorsButton(game);
         paperButton = new PaperButton(game);
-        resultsActor = new ResultsActor();
+        resultsActor = new ResultsActor(game);
     }
 
     public void disableButtons() {
@@ -265,6 +258,7 @@ public class GameScreen extends ScreenAdapter {
                     MatchController.getInstance().resetChoices();
                     playMiniGame(element);
                 } else {
+                    MatchController.getInstance().resetChoices();
                     MatchController.getInstance().createReadThread();
                 }
             }
