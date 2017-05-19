@@ -24,6 +24,7 @@ public class RockGameController{
     private final ArrayList<RockGameBody> rocks;
     private boolean update1 = false, update2 = false, update3 = false, update4 = false, update5 = false;
     private int points = 0;
+    private int opponentPoints;
     /**
      * Creates a new GameController that controls the physics of a certain GameModel.
      *
@@ -169,5 +170,21 @@ public class RockGameController{
     }
 
     public int getPoints() { return points; }
+
+    public void finalResult() {//ve quem e que ganhou o jogo
+        ConnectionSockets.getInstance().sendMessage(Integer.toString(points)+"\n");
+        System.out.println("escreveu para o oponente");
+        opponentPoints = Integer.parseInt(ConnectionSockets.getInstance().receiveMessage());
+        System.out.println("leu do oponente");
+        if(points != opponentPoints) {
+            if (points > opponentPoints) {//ganhei
+                MatchController.getInstance().getSets().add(1);
+            } else {
+                MatchController.getInstance().getSets().add(0);
+            }
+            MatchController.getInstance().increaseSet();
+        }
+    }
+
 
 }

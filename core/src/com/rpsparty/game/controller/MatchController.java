@@ -304,16 +304,18 @@ public class MatchController implements ContactListener {
         if(count == 0) {
             if(!animation) {
                 currSet++;
+                System.out.println("incrementou currSet");
+                if(isVictory()) {
+                    System.out.println("ganhaste esta partida!");
+                    sets.add(1);
+                } else {
+                    System.out.println("perdeste esta partida...");
+                    if(!isTie()) //senao e empate
+                        sets.add(0);
+                }
             }
             animation = true;
-            if(isVictory()) {
-                System.out.println("ganhaste esta partida!");
-                sets.add(1);
-            } else {
-                System.out.println("perdeste esta partida...");
-                if(!isTie()) //senao e empate
-                    sets.add(0);
-            }
+
 
             if(!sync) {//sincronizar os shakes dos dois jogadores
                 String s;
@@ -365,6 +367,6 @@ public class MatchController implements ContactListener {
 
     public boolean isCollision() { return collision; }
 
-    public int getCurrSet() {return  currSet; }
+    public void increaseSet() { currSet++; }
 
 }

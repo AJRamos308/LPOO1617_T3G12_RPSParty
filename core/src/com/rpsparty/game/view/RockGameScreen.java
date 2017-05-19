@@ -117,6 +117,7 @@ public class RockGameScreen extends ScreenAdapter {
         timeToPlay -= delta;
         if(timeToPlay <= 0) {
             //fim do mini-jogo
+            RockGameController.getInstance().finalResult();
             game.setScreen(new GameScreen(game));
         }
 

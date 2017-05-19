@@ -259,6 +259,7 @@ public class GameScreen extends ScreenAdapter {
                     playMiniGame(element);
                 } else {
                     MatchController.getInstance().resetChoices();
+                    System.out.println("vai criar thread");
                     MatchController.getInstance().createReadThread();
                 }
             }
