@@ -25,26 +25,25 @@ public class RockGameController{
      * The singleton instance of this controller
      */
     private static RockGameController instance;
-    private final World world;
     private RockGameBody rockBodyOne;
     private RockGameBody rockBodyTwo;
     private RockGameBody rockBodyThree;
     private RockGameBody rockBodyFour;
     private RockGameBody rockBodyFive;
     private final ArrayList<RockGameBody> rocks;
+    private boolean update1 = false, update2 = false, update3 = false, update4 = false, update5 = false;
 
     /**
      * Creates a new GameController that controls the physics of a certain GameModel.
      *
      */
     private RockGameController() {
-        world = new World(new Vector2(0, 0), true);
 
-        rockBodyOne = new RockGameBody(world, RockGameModel.getInstance().getRockOne());
-        rockBodyTwo = new RockGameBody(world, RockGameModel.getInstance().getRockTwo());
-        rockBodyThree = new RockGameBody(world, RockGameModel.getInstance().getRockThree());
-        rockBodyFour = new RockGameBody(world, RockGameModel.getInstance().getRockFour());
-        rockBodyFive = new RockGameBody(world, RockGameModel.getInstance().getRockFive());
+        rockBodyOne = new RockGameBody(RockGameModel.getInstance().getRockOne());
+        rockBodyTwo = new RockGameBody(RockGameModel.getInstance().getRockTwo());
+        rockBodyThree = new RockGameBody(RockGameModel.getInstance().getRockThree());
+        rockBodyFour = new RockGameBody(RockGameModel.getInstance().getRockFour());
+        rockBodyFive = new RockGameBody(RockGameModel.getInstance().getRockFive());
         rocks = new ArrayList<RockGameBody>() {{add(rockBodyOne); add(rockBodyTwo); add(rockBodyThree); add(rockBodyFour); add(rockBodyFive);}};
     }
 
@@ -55,10 +54,11 @@ public class RockGameController{
     }
 
     public void update(float delta) {
-        for(int i = 0; i < 5; i++) {
-            if(RockGameModel.getInstance().isDestroid((RockObjectGameModel)rocks.get(i).getUserData())) {//se pedra destruida
+        for(int i = 0; i < rocks.size(); i++) {
+            if(RockGameModel.getInstance().isDestroid(rocks.get(i).getModel())) {//se pedra destruida
                 if(rocks.get(i).getLatentTime() <= 0) {//pedra desaparece; é criada uma nova pedra
-                    createNewRock((RockObjectGameModel)rocks.get(i).getUserData());
+                    rocks.add(i+1, createNewRock(rocks.get(i).getModel()));
+                    rocks.remove(i);
                 } else {
                     rocks.get(i).decreaseLatentTime(delta);
                     System.out.println("tempo latente: "+rocks.get(i).getLatentTime());
@@ -67,66 +67,99 @@ public class RockGameController{
         }
     }
 
-    public void createNewRock(RockObjectGameModel model) {
+    public RockGameBody createNewRock(RockObjectGameModel model) {
         RockGameModel.getInstance().resetModel(model);
         if(model.getNumber() == RockObjectGameModel.RockNumber.ONE) {
-            rockBodyOne = new RockGameBody(world, RockGameModel.getInstance().getRockOne());
+            update1 = true;
+            rockBodyOne = new RockGameBody(RockGameModel.getInstance().getRockOne());
+            return rockBodyOne;
         } else if(model.getNumber() == RockObjectGameModel.RockNumber.TWO) {
-            rockBodyTwo = new RockGameBody(world, RockGameModel.getInstance().getRockTwo());
+            update2 = true;
+            rockBodyTwo = new RockGameBody(RockGameModel.getInstance().getRockTwo());
+            return rockBodyTwo;
         } else if(model.getNumber() == RockObjectGameModel.RockNumber.THREE) {
-            rockBodyThree = new RockGameBody(world, RockGameModel.getInstance().getRockThree());
+            update3 = true;
+            rockBodyThree = new RockGameBody(RockGameModel.getInstance().getRockThree());
+            return rockBodyThree;
         } else if(model.getNumber() == RockObjectGameModel.RockNumber.FOUR) {
-            rockBodyFour = new RockGameBody(world, RockGameModel.getInstance().getRockFour());
+            update4 = true;
+            rockBodyFour = new RockGameBody(RockGameModel.getInstance().getRockFour());
+            return rockBodyFour;
         } else if(model.getNumber() == RockObjectGameModel.RockNumber.FIVE) {
-            rockBodyFive = new RockGameBody(world, RockGameModel.getInstance().getRockFive());
+            update5 = true;
+            rockBodyFive = new RockGameBody(RockGameModel.getInstance().getRockFive());
+            return rockBodyFive;
         }
-    }
-    public World getWorld() {
-        return world;
+        System.out.println("MAL!");
+        return null;
+
     }
 
     public void touchRockOne() {
-        if(!RockGameModel.getInstance().isDestroid((RockObjectGameModel)rockBodyOne.getUserData())) {
+        if(!RockGameModel.getInstance().isDestroid(rockBodyOne.getModel())) {
             rockBodyOne.setTouchTime();
             if (rockBodyOne.getTouchTime() >= 20) {
-                RockGameModel.getInstance().destroyRock((RockObjectGameModel)rockBodyOne.getUserData());
+                RockGameModel.getInstance().destroyRock(rockBodyOne.getModel());
             }
         }
     }
     public void touchRockTwo() {
-        if(!RockGameModel.getInstance().isDestroid((RockObjectGameModel)rockBodyTwo.getUserData())) {
+        if(!RockGameModel.getInstance().isDestroid(rockBodyTwo.getModel())) {
             rockBodyTwo.setTouchTime();
             if (rockBodyTwo.getTouchTime() >= 20) {
-                RockGameModel.getInstance().destroyRock((RockObjectGameModel)rockBodyTwo.getUserData());
+                RockGameModel.getInstance().destroyRock(rockBodyTwo.getModel());
             }
         }
     }
     public void touchRockThree() {
-        if(!RockGameModel.getInstance().isDestroid((RockObjectGameModel)rockBodyThree.getUserData())) {
+        if(!RockGameModel.getInstance().isDestroid(rockBodyThree.getModel())) {
             rockBodyThree.setTouchTime();
             if (rockBodyThree.getTouchTime() >= 20) {
-                RockGameModel.getInstance().destroyRock((RockObjectGameModel)rockBodyThree.getUserData());
+                RockGameModel.getInstance().destroyRock(rockBodyThree.getModel());
             }
         }
     }
     public void touchRockFour() {
-        if(!RockGameModel.getInstance().isDestroid((RockObjectGameModel)rockBodyFour.getUserData())) {
+        if(!RockGameModel.getInstance().isDestroid(rockBodyFour.getModel())) {
             rockBodyFour.setTouchTime();
             if (rockBodyFour.getTouchTime() >= 20) {
-                RockGameModel.getInstance().destroyRock((RockObjectGameModel)rockBodyFour.getUserData());
+                RockGameModel.getInstance().destroyRock(rockBodyFour.getModel());
             }
         }
     }
     public void touchRockFive() {
-        if(!RockGameModel.getInstance().isDestroid((RockObjectGameModel)rockBodyFive.getUserData())) {
+        if(!RockGameModel.getInstance().isDestroid(rockBodyFive.getModel())) {
             rockBodyFive.setTouchTime();
             if (rockBodyFive.getTouchTime() >= 20) {
-                RockGameModel.getInstance().destroyRock((RockObjectGameModel)rockBodyFive.getUserData());
+                RockGameModel.getInstance().destroyRock(rockBodyFive.getModel());
             }
         }
     }
 
-
-
+    public boolean isButtonToUpdate(RockObjectGameModel model) {
+        boolean result = false;
+        if(model.getNumber() == RockObjectGameModel.RockNumber.ONE) {
+            result = update1;
+            update1 = false;
+            return result;
+        } else if(model.getNumber() == RockObjectGameModel.RockNumber.TWO) {
+            result = update2;
+            update2 = false;
+            return result;
+        } else if(model.getNumber() == RockObjectGameModel.RockNumber.THREE) {
+            result = update3;
+            update3 = false;
+            return result;
+        } else if(model.getNumber() == RockObjectGameModel.RockNumber.FOUR) {
+            result = update4;
+            update4 = false;
+            return result;
+        } else if(model.getNumber() == RockObjectGameModel.RockNumber.FIVE) {
+            result = update5;
+            update5 = false;
+            return result;
+        }
+        return result;
+    }
 
 }

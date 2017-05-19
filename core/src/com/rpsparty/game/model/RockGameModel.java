@@ -38,10 +38,10 @@ public class RockGameModel {
     private RockGameModel(){
 
         rockOne = new RockObjectGameModel(Gdx.graphics.getWidth()/16,Gdx.graphics.getHeight()/16,0, ONE);
-        rockTwo = new RockObjectGameModel(3*Gdx.graphics.getWidth()/16,Gdx.graphics.getHeight()/16,0, TWO);
-        rockThree = new RockObjectGameModel(6*Gdx.graphics.getWidth()/16,Gdx.graphics.getHeight()/16,0, THREE);
-        rockFour = new RockObjectGameModel(Gdx.graphics.getWidth()/16,5*Gdx.graphics.getHeight()/16,0, FOUR);
-        rockFive = new RockObjectGameModel(5*Gdx.graphics.getWidth()/16,7*Gdx.graphics.getHeight()/16,0, FIVE);
+        rockTwo = new RockObjectGameModel(6*Gdx.graphics.getWidth()/16,Gdx.graphics.getHeight()/16,0, TWO);
+        rockThree = new RockObjectGameModel(Gdx.graphics.getWidth()/16,5*Gdx.graphics.getHeight()/16,0, THREE);
+        rockFour = new RockObjectGameModel(10*Gdx.graphics.getWidth()/16,6*Gdx.graphics.getHeight()/16,0, FOUR);
+        rockFive = new RockObjectGameModel(2*Gdx.graphics.getWidth()/16,10*Gdx.graphics.getHeight()/16,0, FIVE);
     }
 
     public RockObjectGameModel getRockOne() { return rockOne; }
@@ -51,7 +51,7 @@ public class RockGameModel {
     public RockObjectGameModel getRockFive() { return rockFive; }
 
     public boolean hasCoin(RockObjectGameModel model) {
-        if(model.getNumber() == RockObjectGameModel.RockNumber.ONE) {
+        /*if(model.getNumber() == RockObjectGameModel.RockNumber.ONE) {
             return rockOne.hasCoin();
         } else if(model.getNumber() == RockObjectGameModel.RockNumber.TWO) {
             return rockTwo.hasCoin();
@@ -62,51 +62,36 @@ public class RockGameModel {
         } else if(model.getNumber() == RockObjectGameModel.RockNumber.FIVE) {
             return rockFive.hasCoin();
         }
-        return false;
+        return false;*/
+        return model.hasCoin();
     }
 
     public boolean isDestroid (RockObjectGameModel model) {
-        if(model.getNumber() == RockObjectGameModel.RockNumber.ONE) {
-            return rockOne.isDestroied();
-        } else if(model.getNumber() == RockObjectGameModel.RockNumber.TWO) {
-            return rockTwo.isDestroied();
-        } else if(model.getNumber() == RockObjectGameModel.RockNumber.THREE) {
-            return rockThree.isDestroied();
-        } else if(model.getNumber() == RockObjectGameModel.RockNumber.FOUR) {
-            return rockFour.isDestroied();
-        } else if(model.getNumber() == RockObjectGameModel.RockNumber.FIVE) {
-            return rockFive.isDestroied();
-        }
-        return false;
+        return model.isDestroied();
     }
 
     public void destroyRock(RockObjectGameModel model) {
-        if(model.getNumber() == RockObjectGameModel.RockNumber.ONE) {
-            rockOne.destroy();
-        } else if(model.getNumber() == RockObjectGameModel.RockNumber.TWO) {
-            rockTwo.destroy();
-        } else if(model.getNumber() == RockObjectGameModel.RockNumber.THREE) {
-            rockThree.destroy();
-        } else if(model.getNumber() == RockObjectGameModel.RockNumber.FOUR) {
-            rockFour.destroy();
-        } else if(model.getNumber() == RockObjectGameModel.RockNumber.FIVE) {
-            rockFive.destroy();
-        }
+        model.destroy();
     }
 
     public void resetModel(RockObjectGameModel model) {
-        if(model.getNumber() == RockObjectGameModel.RockNumber.ONE) {
+        if(model.getNumber().equals(RockObjectGameModel.RockNumber.ONE)) {
             rockOne = new RockObjectGameModel(Gdx.graphics.getWidth()/16,Gdx.graphics.getHeight()/16,0, ONE);
+            return;
         } else if(model.getNumber() == RockObjectGameModel.RockNumber.TWO) {
-            rockTwo = new RockObjectGameModel(3*Gdx.graphics.getWidth()/16,Gdx.graphics.getHeight()/16,0, TWO);
+            rockTwo = new RockObjectGameModel(6*Gdx.graphics.getWidth()/16,Gdx.graphics.getHeight()/16,0, TWO);
+            return;
         } else if(model.getNumber() == RockObjectGameModel.RockNumber.THREE) {
-            rockThree = new RockObjectGameModel(6*Gdx.graphics.getWidth()/16,Gdx.graphics.getHeight()/16,0, THREE);
+            rockThree = new RockObjectGameModel(Gdx.graphics.getWidth()/16,5*Gdx.graphics.getHeight()/16,0, THREE);
+            return;
         } else if(model.getNumber() == RockObjectGameModel.RockNumber.FOUR) {
-            rockFour = new RockObjectGameModel(Gdx.graphics.getWidth()/16,5*Gdx.graphics.getHeight()/16,0, FOUR);
+            rockFour = new RockObjectGameModel(10*Gdx.graphics.getWidth()/16,6*Gdx.graphics.getHeight()/16,0, FOUR);
+            return;
         } else if(model.getNumber() == RockObjectGameModel.RockNumber.FIVE) {
-            rockFive = new RockObjectGameModel(5*Gdx.graphics.getWidth()/16,7*Gdx.graphics.getHeight()/16,0, FIVE);
+            rockFive = new RockObjectGameModel(2*Gdx.graphics.getWidth()/16,10*Gdx.graphics.getHeight()/16,0, FIVE);
+            return;
         }
-        System.out.println("model not found...");
+        System.out.println("MAL RESET!");
     }
 
 }

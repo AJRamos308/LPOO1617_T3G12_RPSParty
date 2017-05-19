@@ -15,6 +15,7 @@ import com.rpsparty.game.RPSParty;
 import com.badlogic.gdx.Input.Keys;
 import com.rpsparty.game.controller.RockGameController;
 import com.rpsparty.game.model.RockGameModel;
+import com.rpsparty.game.model.entities.RockObjectGameModel;
 import com.rpsparty.game.view.entities.RockGameButton;
 
 import java.util.Random;
@@ -51,12 +52,7 @@ public class RockGameScreen extends ScreenAdapter {
         addListeners();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        stage.addActor(Rock1);
-        stage.addActor(Rock2);
-        stage.addActor(Rock3);
-        stage.addActor(Rock4);
-        stage.addActor(Rock5);
-
+        addButtonsToStage();
     }
     /**
      * Loads the assets needed by this screen.
@@ -82,6 +78,13 @@ public class RockGameScreen extends ScreenAdapter {
         return camera;
     }
 
+    public void addButtonsToStage() {
+        stage.addActor(Rock1);
+        stage.addActor(Rock2);
+        stage.addActor(Rock3);
+        stage.addActor(Rock4);
+        stage.addActor(Rock5);
+    }
     /**
      * Renders this screen.
      *
@@ -95,13 +98,10 @@ public class RockGameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
         RockGameController.getInstance().update(delta);
-        //stage.act();
-        changeButtonStyle(Rock1);
-        changeButtonStyle(Rock2);
-        changeButtonStyle(Rock3);
-        changeButtonStyle(Rock4);
-        changeButtonStyle(Rock5);
 
+        changeButtonsStyle();
+        updateButtons();
+        stage.act();
         game.getBatch().begin();
         game.getBatch().setProjectionMatrix(camera.combined);
         stage.draw();
@@ -127,22 +127,38 @@ public class RockGameScreen extends ScreenAdapter {
     }
 
     public void addListeners() {
+        rock1Listener();
+        rock2Listener();
+        rock3Listener();
+        rock4Listener();
+        rock5Listener();
+    }
+    public void rock1Listener() {
         Rock1.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 RockGameController.getInstance().touchRockOne();
+                System.out.println("TOQUE");
             }});
+    }
+    public void rock2Listener() {
         Rock2.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 RockGameController.getInstance().touchRockTwo();
             }});
+    }
+    public void rock3Listener() {
         Rock3.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 RockGameController.getInstance().touchRockThree();
             }});
+    }
+    public void rock4Listener() {
         Rock4.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 RockGameController.getInstance().touchRockFour();
             }});
+    }
+    public void rock5Listener() {
         Rock5.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 RockGameController.getInstance().touchRockFive();
@@ -151,6 +167,50 @@ public class RockGameScreen extends ScreenAdapter {
     public void changeButtonStyle (RockGameButton btn) {
         if(RockGameModel.getInstance().isDestroid(btn.getModel())) {
             btn.changeStyle();
+        }
+    }
+
+    public void changeButtonsStyle () {
+        changeButtonStyle(Rock1);
+        changeButtonStyle(Rock2);
+        changeButtonStyle(Rock3);
+        changeButtonStyle(Rock4);
+        changeButtonStyle(Rock5);
+
+    }
+
+    public void updateButton(RockGameButton btn) {
+        if(RockGameController.getInstance().isButtonToUpdate(btn.getModel())) {
+            btn.remove();
+
+            if(btn.getModel().getNumber() == RockObjectGameModel.RockNumber.ONE) {
+                Rock1 = new RockGameButton(game, RockGameModel.getInstance().getRockOne());
+                rock1Listener();
+                stage.addActor(Rock1);
+            } else if(btn.getModel().getNumber() == RockObjectGameModel.RockNumber.TWO) {
+                Rock2 = new RockGameButton(game, RockGameModel.getInstance().getRockTwo());
+                rock2Listener();
+                stage.addActor(Rock2);
+            } else if(btn.getModel().getNumber() == RockObjectGameModel.RockNumber.THREE) {
+                Rock3 = new RockGameButton(game, RockGameModel.getInstance().getRockThree());
+                rock3Listener();
+                stage.addActor(Rock3);
+            } else if(btn.getModel().getNumber() == RockObjectGameModel.RockNumber.FOUR) {
+                Rock4 = new RockGameButton(game, RockGameModel.getInstance().getRockFour());
+                rock4Listener();
+                stage.addActor(Rock4);
+            } else if(btn.getModel().getNumber() == RockObjectGameModel.RockNumber.FIVE) {
+                Rock5 = new RockGameButton(game, RockGameModel.getInstance().getRockFive());
+                rock5Listener();
+                stage.addActor(Rock5);
+            }
+        }
+
+    }
+
+    public void updateButtons() {
+        for(Actor btn : stage.getActors()) {
+            updateButton((RockGameButton)btn);
         }
     }
 }

@@ -10,21 +10,14 @@ import com.rpsparty.game.model.entities.RockObjectGameModel;
  * Created by bibib on 18/05/2017.
  */
 
-public class RockGameBody extends EntityBody {
+public class RockGameBody {
     private int touchTime = 0;
     private float latentTime;
+    private RockObjectGameModel model;
 
-
-    public RockGameBody(World world, RockObjectGameModel model) {
-        super(world, model);
-        float density = 1.2f, friction = 0.8f, restitution = 0.2f;
-        int width = 190, height = 190;
-        PolygonShape shape =new PolygonShape();
-        shape.setAsBox(width/2,height/2);
-
-        createFixture(shape, width, height, density, friction, restitution, ROCK_BODY, (short) (ROCK_BODY | PAPER_BODY | SCISSOR_BODY));
+    public RockGameBody(RockObjectGameModel model) {
         latentTime = 2; //2 segundos visivel depois de destruido
-
+        this.model = model;
     }
 
     public int getTouchTime() { return touchTime; }
@@ -38,5 +31,7 @@ public class RockGameBody extends EntityBody {
     public float getLatentTime() {
         return latentTime;
     }
+
+    public RockObjectGameModel getModel() { return model; }
 
 }

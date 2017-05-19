@@ -15,31 +15,10 @@ public class RockObjectGameModel extends EntityModel {
      * @param rotation rotacao
      */
     public RockObjectGameModel(float x, float y, float rotation, RockNumber number) {
-        /*float x = 0, y = 0;
-        if(number == RockNumber.ONE){
-            x = Gdx.graphics.getWidth()/16;
-            y = Gdx.graphics.getHeight()/16;
-        }
-        else if(number == RockNumber.TWO) {
-            x = 3*Gdx.graphics.getWidth()/16;
-            y = Gdx.graphics.getHeight()/16;
-        }
-        else if(number == RockNumber.THREE){
-            x = 6*Gdx.graphics.getWidth()/16;
-            y = Gdx.graphics.getHeight()/16;
-        }
-        else if(number == RockNumber.FOUR) {
-            x = Gdx.graphics.getWidth()/16;
-            y = 5*Gdx.graphics.getHeight()/16;
-        }
-        else if(number == RockNumber.FIVE) {
-            x = 5*Gdx.graphics.getWidth()/16;
-            y = 7*Gdx.graphics.getHeight()/16;
-        }*/
         super(x, y, rotation);
         this.number = number;
         Random rand = new Random();
-        int  n = rand.nextInt(2);
+        int  n = rand.nextInt(3);
         coin = n == 0 ? true : false;
 
     }
