@@ -270,7 +270,7 @@ public class GameScreen extends ScreenAdapter {
         if(element.equals("rock")) {
             game.setScreen(new RockGameScreen(game));
         } else if(element.equals("paper")) {
-            //TODO: mini jogo do papel
+            game.setScreen(new PaperGameScreen(game));
         } else if(element.equals("scissor")) {
             game.setScreen(new ScissorsGameScreen(game));
         }

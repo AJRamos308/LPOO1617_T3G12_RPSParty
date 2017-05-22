@@ -22,7 +22,7 @@ public class PaperGameActor extends Actor {
         addListener(new ActorGestureListener(){
             public void fling(InputEvent event, float velocityX, float velocityY, int button) {
                 if (velocityY < 0)
-                    System.out.println("SAD");
+                    System.out.println(velocityY);
             }
             public void tap(InputEvent event, float x, float y, int count, int button){
                 System.out.println("Why");
