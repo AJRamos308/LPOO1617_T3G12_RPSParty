@@ -134,7 +134,7 @@ public class CreatePartyScreen extends ScreenAdapter {
         Label.LabelStyle style = new Label.LabelStyle();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 170;
+        parameter.size = (Gdx.graphics.getHeight()/12);
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
         style.font = font;
