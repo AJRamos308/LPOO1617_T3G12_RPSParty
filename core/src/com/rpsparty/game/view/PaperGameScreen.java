@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.rpsparty.game.RPSParty;
 import com.badlogic.gdx.Input.Keys;
+import com.rpsparty.game.view.entities.PaperGameActor;
 
 public class PaperGameScreen extends ScreenAdapter {
     /**
@@ -35,10 +37,10 @@ public class PaperGameScreen extends ScreenAdapter {
         loadAssets();
         camera = createCamera();
         addActors();
-        addListeners();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(Paper);
+        Paper.setTouchable(Touchable.enabled);
     }
     /**
      * Loads the assets needed by this screen.
@@ -87,24 +89,9 @@ public class PaperGameScreen extends ScreenAdapter {
                 Gdx.app.exit();
             }
         }
-
     }
 
     public void addActors() {
-        Paper = new Actor();
+        Paper = new PaperGameActor();
     }
-
-    public void addListeners() {
-        Paper.addListener(new ActorGestureListener() {
-            @Override
-            public void fling(InputEvent event, float velocityX, float velocityY, int button) {
-                if (velocityY < 0){ //Swipe para baixo
-                    //TODO: Cenas
-                }
-            }});
-    }
-
-
-
-
 }
