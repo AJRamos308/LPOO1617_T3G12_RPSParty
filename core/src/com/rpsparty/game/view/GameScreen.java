@@ -272,7 +272,7 @@ public class GameScreen extends ScreenAdapter {
         } else if(element.equals("paper")) {
             //TODO: mini jogo do papel
         } else if(element.equals("scissor")) {
-            //TODO: mini jogo da tesoura
+            game.setScreen(new ScissorsGameScreen(game));
         }
     }
 }

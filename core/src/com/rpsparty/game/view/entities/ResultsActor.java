@@ -23,7 +23,6 @@ public class ResultsActor extends Actor{
     @Override
     public void draw(Batch batch, float parentAlpha){
         int nResult = 0;
-        System.out.println("tamanha da lista: "+ MatchController.getInstance().getSets().size());
         for(Integer result : MatchController.getInstance().getSets()) {
 
             if(result == 1) {

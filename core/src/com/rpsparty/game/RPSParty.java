@@ -8,6 +8,7 @@ import com.rpsparty.game.view.MainMenuScreen;
 
 import com.badlogic.gdx.net.Socket;
 import com.rpsparty.game.view.RockGameScreen;
+import com.rpsparty.game.view.ScissorsGameScreen;
 import com.rpsparty.game.view.SplashScreen;
 
 public class RPSParty extends Game {

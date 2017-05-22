@@ -65,12 +65,12 @@ public class ConnectionSockets {
             return "";
         String answer = "";
         BufferedReader buffer = new BufferedReader(new InputStreamReader(readSocket.getInputStream()));
-        System.out.println("Buffer Reader criado.\no seu valor e: ");
+        System.out.println("Buffer Reader criado.");
 
         try {
             // Read to the next newline (\n) and display that text on labelMessage
             answer = buffer.readLine();
-            System.out.println("vai retornar a resposta: " + answer);
+            System.out.println("valor lido: " + answer);
             return answer;
         } catch (IOException e) {
             e.printStackTrace();
