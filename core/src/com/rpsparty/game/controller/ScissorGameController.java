@@ -2,12 +2,7 @@ package com.rpsparty.game.controller;
 
 import com.badlogic.gdx.Gdx;
 import java.util.Random;
-import com.rpsparty.game.controller.entities.RockGameBody;
-import com.rpsparty.game.model.RockGameModel;
 
-import java.util.ArrayList;
-
-import static com.badlogic.gdx.graphics.g2d.ParticleEmitter.SpawnShape.point;
 
 /**
  * Created by bibib on 22/05/2017.
@@ -16,12 +11,19 @@ import static com.badlogic.gdx.graphics.g2d.ParticleEmitter.SpawnShape.point;
 public class ScissorGameController {
 
     private static ScissorGameController instance;
-    private float points = 0;
-    private float opponentPoints = 0;
+    private Float points;
+    private Float opponentPoints;
     private Integer radius;
-    private Integer centerX = Gdx.graphics.getWidth()/2;
-    private Integer centerY = Gdx.graphics.getHeight()/2;
+    private Integer centerX;
+    private Integer centerY;
     private int circleSize;
+    private double scissorPosition[];
+    private double scissorLastVel[];
+    private double scissorVel[];
+    private float scissorAng;
+    private double w;//constante a multiplicar por t, sendo angulo = w*t
+    private float stateTime;
+
 
     /**
      * Creates a new GameController that controls the physics of a certain GameModel.
@@ -30,7 +32,17 @@ public class ScissorGameController {
     private ScissorGameController() {
         Random rand = new Random();
         circleSize = rand.nextInt(4);
-
+        points = 0.0f;
+        opponentPoints = 0.0f;
+        radius = 1;
+        centerX = Gdx.graphics.getWidth()/2;
+        centerY = Gdx.graphics.getHeight()/2;
+        scissorPosition = new double[] {0, 0};
+        scissorLastVel = new double[] {0, 1};
+        scissorVel = new double[] {0, 1};
+        scissorAng = 0;
+        w = 1;
+        stateTime = 0;
     }
 
     public static ScissorGameController getInstance() {
@@ -54,17 +66,17 @@ public class ScissorGameController {
             if (deltaDist == 0) {
                 points++;
             } else {
-                points += 1 / deltaDist;
+                points += (float)(1 / deltaDist);
             }
             System.out.println(points);
         }
     }
 
     public void finalResult() {//ve quem e que ganhou o jogo
+        points /= radius;//para os pontos serem proporcionais ao tamanho da circunferencia
         ConnectionSockets.getInstance().sendMessage(Float.toString(points)+"\n");
-        System.out.println("escreveu para o oponente");
         opponentPoints = Float.parseFloat(ConnectionSockets.getInstance().receiveMessage());
-        System.out.println("leu do oponente");
+
         if(points != opponentPoints) {
             if (points > opponentPoints) {//ganhei
                 MatchController.getInstance().getSets().add(1);
@@ -73,5 +85,32 @@ public class ScissorGameController {
             }
             MatchController.getInstance().increaseSet();
         }
+    }
+
+    public void setScissorPosition (float delta, float x, float y) {
+        stateTime += delta;
+
+        scissorPosition[0] = centerX+radius*Math.cos(w*stateTime);
+        scissorPosition[1] = centerY+radius*Math.sin(w*stateTime);
+        scissorLastVel[0] = scissorVel[0];
+        scissorLastVel[1] = scissorVel[1];
+        scissorVel[0] = -radius*w*Math.sin(w*stateTime);
+        scissorVel[1] = radius*w*Math.cos(w*stateTime);
+        double prevNorma = Math.sqrt(Math.pow(scissorLastVel[0],2)+Math.pow(scissorLastVel[1],2));
+        double norma = Math.sqrt(Math.pow(scissorVel[0],2)+Math.pow(scissorVel[1],2));
+        System.out.println("prevNorma: "+prevNorma);
+        System.out.println("norma: "+norma);
+        System.out.println("scissorLastVel[0]*scissorVel[0]+scissorLastVel[1]*scissorVel[1] = "+scissorLastVel[0]*scissorVel[0]+scissorLastVel[1]*scissorVel[1]);
+        scissorAng = (float)Math.acos((scissorLastVel[0]*scissorVel[0]+scissorLastVel[1]*scissorVel[1])/(prevNorma*norma));//angulo que a sprite vai ter de rodar (em radianos)
+
+        System.out.println("angulo a rodar: "+scissorAng);
+    }
+
+    public double[] getScissorPosition() { return scissorPosition; }
+    public double[] getScissorVel() { return scissorVel; }
+    public float getScissorAng() { return scissorAng; }
+
+    public void reset() {
+        instance = null;
     }
 }

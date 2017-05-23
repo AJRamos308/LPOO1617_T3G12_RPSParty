@@ -5,6 +5,9 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.rpsparty.game.RPSParty;
@@ -12,6 +15,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.rpsparty.game.controller.RockGameController;
 import com.rpsparty.game.controller.ScissorGameController;
+import com.badlogic.gdx.graphics.g2d.Animation;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -35,6 +39,12 @@ public class ScissorsGameScreen extends ScreenAdapter{
      * automatically calculated using the screen ratio.
      */
     private static final float VIEWPORT_WIDTH = 20;
+    /**
+     * The animation
+     */
+    private Animation<TextureRegion> animation;
+    private Texture animationTexture;
+    private Sprite sprite;
     private Texture semiCircle;
     private ShapeRenderer quad = new ShapeRenderer();
 
@@ -42,6 +52,7 @@ public class ScissorsGameScreen extends ScreenAdapter{
     private LinkedHashSet<Integer> hashSet = new LinkedHashSet<Integer>();
     private int circleSize;
     private float timeToPlay = 5;//3 segundos para o mini-jogo
+    private float stateTime = 0;
 
     public ScissorsGameScreen(RPSParty game) {
         this.game = game;
@@ -49,6 +60,8 @@ public class ScissorsGameScreen extends ScreenAdapter{
         camera = createCamera();
         circleSize = ScissorGameController.getInstance().getCircleSize();
         setSemiCircleTexture();
+
+        createAnimation();
     }
     /**
      * Loads the assets needed by this screen.
@@ -58,6 +71,7 @@ public class ScissorsGameScreen extends ScreenAdapter{
         this.game.getAssetManager().load( "mediumSemiCirc.png" , Texture.class);
         this.game.getAssetManager().load( "smallSemiCirc.png" , Texture.class);
         this.game.getAssetManager().load( "extrasmallSemiCirc.png" , Texture.class);
+        this.game.getAssetManager().load( "scissorsAnimation.png" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
     /**
@@ -74,6 +88,19 @@ public class ScissorsGameScreen extends ScreenAdapter{
         return camera;
     }
 
+    public void createAnimation() {
+        animationTexture = game.getAssetManager().get("scissorsAnimation.png");
+        // Split the texture into frame
+        TextureRegion[][] thrustRegion = TextureRegion.split(animationTexture, animationTexture.getWidth()/2, animationTexture.getHeight());
+
+        // Put the frames into a uni-dimensional array
+        TextureRegion[] frames = new TextureRegion[2];
+        System.arraycopy(thrustRegion[0], 0, frames, 0, 2);
+        // Create the animation
+        animation = new Animation<TextureRegion>(.25f, frames);
+        sprite = new Sprite(animation.getKeyFrame(0));
+
+    }
     /**
      * Renders this screen.
      *
@@ -86,8 +113,13 @@ public class ScissorsGameScreen extends ScreenAdapter{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
         saveFingerPosition();
+        stateTime += delta;
+        if(stateTime < 2*Math.PI) {
+            playAnimation(delta);
+        }
         game.getBatch().begin();
         game.getBatch().draw(semiCircle, Gdx.graphics.getWidth()/2 - semiCircle.getWidth(), Gdx.graphics.getHeight()/2-semiCircle.getHeight()/2);
+        sprite.draw(game.getBatch());
         game.getBatch().end();
         drawLine();
         if (Gdx.input.isKeyPressed(Keys.BACK)) {
@@ -102,12 +134,21 @@ public class ScissorsGameScreen extends ScreenAdapter{
         timeToPlay -= delta;
         if(timeToPlay <= 0) {
             //fim do mini-jogo
-            RockGameController.getInstance().finalResult();
+            ScissorGameController.getInstance().finalResult();
+            ScissorGameController.getInstance().reset();
             game.setScreen(new GameScreen(game));
         }
 
     }
 
+    public void playAnimation(float delta) {
+        Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        camera.unproject(touchPos);
+        ScissorGameController.getInstance().setScissorPosition(delta, touchPos.x, touchPos.y);
+        sprite.setRegion(animation.getKeyFrame(stateTime, true));
+        sprite.setPosition((float)ScissorGameController.getInstance().getScissorPosition()[0],(float)ScissorGameController.getInstance().getScissorPosition()[1]);
+        sprite.rotate((float)(ScissorGameController.getInstance().getScissorAng()*180/Math.PI));
+    }
 
     public void saveFingerPosition() {
         if(Gdx.input.getX() < Gdx.graphics.getWidth()/2)//so desenhar de metade do ecra para a direita
