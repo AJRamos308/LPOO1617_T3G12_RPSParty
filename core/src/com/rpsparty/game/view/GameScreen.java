@@ -79,6 +79,7 @@ public class GameScreen extends ScreenAdapter {
         this.game.getAssetManager().load( "rock.png" , Texture.class);
         this.game.getAssetManager().load( "scissor.png" , Texture.class);
         this.game.getAssetManager().load( "check.png" , Texture.class);
+        this.game.getAssetManager().load( "paperanime.png" , Texture.class);
         this.game.getAssetManager().load( "x.png" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }

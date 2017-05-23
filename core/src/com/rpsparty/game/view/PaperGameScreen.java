@@ -5,12 +5,16 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.rpsparty.game.RPSParty;
 import com.badlogic.gdx.Input.Keys;
+import com.rpsparty.game.controller.PaperGameController;
 import com.rpsparty.game.view.entities.PaperGameActor;
 
 public class PaperGameScreen extends ScreenAdapter {
@@ -30,23 +34,30 @@ public class PaperGameScreen extends ScreenAdapter {
      */
     private static final float VIEWPORT_WIDTH = 20;
     private Stage stage;
-    private Actor Paper;
+    private Actor paper;
+    private float timeToPlay;
+    private Animation<TextureRegion> rolling;
+    private Sprite sprite;
+    private float stateTime;
 
     public PaperGameScreen(RPSParty game) {
         this.game = game;
         loadAssets();
         camera = createCamera();
+        rolling = createPaperAnimation();
         addActors();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        stage.addActor(Paper);
-        Paper.setTouchable(Touchable.enabled);
+        stage.addActor(paper);
+        paper.setTouchable(Touchable.enabled);
+        timeToPlay = 20;
+        stateTime = 0;
     }
     /**
      * Loads the assets needed by this screen.
      */
     private void loadAssets() {
-        //this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
+        this.game.getAssetManager().load( "paperanime.png" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
     /**
@@ -67,6 +78,21 @@ public class PaperGameScreen extends ScreenAdapter {
     /**
      * Renders this screen.
      *
+     * @param game time since last renders in seconds.
+     */
+    private Animation<TextureRegion> createPaperAnimation(){
+        Texture paper = game.getAssetManager().get("paperanime.png");
+        TextureRegion[][] rollPaper = TextureRegion.split(paper,paper.getWidth()/5,paper.getHeight());
+
+        TextureRegion[] frames = new TextureRegion[5];
+        System.arraycopy(rollPaper[0],0,frames,0,5);
+
+        return new Animation<TextureRegion>(0.1f,frames);
+    }
+
+    /**
+     * Renders this screen.
+     *
      * @param delta time since last renders in seconds.
      */
     @Override
@@ -77,9 +103,10 @@ public class PaperGameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
         stage.act();
+        stage.draw();
         game.getBatch().begin();
         game.getBatch().setProjectionMatrix(camera.combined);
-        stage.draw();
+        sprite.draw(game.getBatch());
         game.getBatch().end();
         if (Gdx.input.isKeyPressed(Keys.BACK)) {
             if (!game.backpressed) {
@@ -89,9 +116,22 @@ public class PaperGameScreen extends ScreenAdapter {
                 Gdx.app.exit();
             }
         }
+        timeToPlay -= delta;
+        stateTime += delta;
+        if (timeToPlay < 0) {
+            PaperGameController.getInstance().finalResult();
+            game.setScreen(new GameScreen(game));
+        }
+        updateSprite();
+    }
+
+    public void updateSprite(){
+        sprite.setRegion(rolling.getKeyFrame(stateTime,true));
     }
 
     public void addActors() {
-        Paper = new PaperGameActor();
+        paper = new PaperGameActor();
+        sprite = new Sprite(new Texture(Gdx.files.internal("Achieve.png")));
+        sprite.setBounds(2*Gdx.graphics.getWidth()/8,Gdx.graphics.getHeight()/8,3*Gdx.graphics.getWidth()/8,2*Gdx.graphics.getHeight()/8);
     }
 }
