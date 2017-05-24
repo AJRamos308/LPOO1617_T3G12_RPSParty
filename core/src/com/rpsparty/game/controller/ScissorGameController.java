@@ -87,23 +87,23 @@ public class ScissorGameController {
         }
     }
 
-    public void setScissorPosition (float delta, float x, float y) {
+    public Integer getRadius () { return radius; }
+    public boolean setScissorPosition (float delta, float x, float y) {
         stateTime += delta;
+        if(stateTime*w < 2*Math.PI) {
+            scissorPosition[0] = centerX + radius * Math.cos(w * stateTime);
+            scissorPosition[1] = centerY + radius * Math.sin(w * stateTime);
+            scissorLastVel[0] = scissorVel[0];
+            scissorLastVel[1] = scissorVel[1];
+            scissorVel[0] = -radius * w * Math.sin(w * stateTime);
+            scissorVel[1] = radius * w * Math.cos(w * stateTime);
+            double prevNorma = Math.sqrt(Math.pow(scissorLastVel[0], 2) + Math.pow(scissorLastVel[1], 2));
+            double norma = Math.sqrt(Math.pow(scissorVel[0], 2) + Math.pow(scissorVel[1], 2));
+            scissorAng = (float) Math.acos((scissorLastVel[0] * scissorVel[0] + scissorLastVel[1] * scissorVel[1]) / (prevNorma * norma));//angulo que a sprite vai ter de rodar (em radianos)
 
-        scissorPosition[0] = centerX+radius*Math.cos(w*stateTime);
-        scissorPosition[1] = centerY+radius*Math.sin(w*stateTime);
-        scissorLastVel[0] = scissorVel[0];
-        scissorLastVel[1] = scissorVel[1];
-        scissorVel[0] = -radius*w*Math.sin(w*stateTime);
-        scissorVel[1] = radius*w*Math.cos(w*stateTime);
-        double prevNorma = Math.sqrt(Math.pow(scissorLastVel[0],2)+Math.pow(scissorLastVel[1],2));
-        double norma = Math.sqrt(Math.pow(scissorVel[0],2)+Math.pow(scissorVel[1],2));
-        System.out.println("prevNorma: "+prevNorma);
-        System.out.println("norma: "+norma);
-        System.out.println("scissorLastVel[0]*scissorVel[0]+scissorLastVel[1]*scissorVel[1] = "+scissorLastVel[0]*scissorVel[0]+scissorLastVel[1]*scissorVel[1]);
-        scissorAng = (float)Math.acos((scissorLastVel[0]*scissorVel[0]+scissorLastVel[1]*scissorVel[1])/(prevNorma*norma));//angulo que a sprite vai ter de rodar (em radianos)
-
-        System.out.println("angulo a rodar: "+scissorAng);
+            return true;
+        }
+        return false;
     }
 
     public double[] getScissorPosition() { return scissorPosition; }

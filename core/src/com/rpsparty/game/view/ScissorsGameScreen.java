@@ -112,16 +112,35 @@ public class ScissorsGameScreen extends ScreenAdapter{
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
-        saveFingerPosition();
+
+
         stateTime += delta;
-        if(stateTime < 2*Math.PI) {
-            playAnimation(delta);
+        timeToPlay -= delta;
+        if(timeToPlay <= 0) {
+            //fim do mini-jogo
+            if(!playAnimation(delta)) {//a animacao ja foi reproduzida
+                ScissorGameController.getInstance().finalResult();
+                ScissorGameController.getInstance().reset();
+                game.setScreen(new GameScreen(game));
+            }
+            drawLine();
+            game.getBatch().begin();
+            game.getBatch().draw(semiCircle, Gdx.graphics.getWidth()/2 - semiCircle.getWidth(), Gdx.graphics.getHeight()/2-semiCircle.getHeight()/2);
+            sprite.draw(game.getBatch());
+            game.getBatch().end();
+        } else {
+            saveFingerPosition();
+            drawLine();
+            game.getBatch().begin();
+            game.getBatch().draw(semiCircle, Gdx.graphics.getWidth()/2 - semiCircle.getWidth(), Gdx.graphics.getHeight()/2-semiCircle.getHeight()/2);
+            game.getBatch().end();
         }
-        game.getBatch().begin();
-        game.getBatch().draw(semiCircle, Gdx.graphics.getWidth()/2 - semiCircle.getWidth(), Gdx.graphics.getHeight()/2-semiCircle.getHeight()/2);
-        sprite.draw(game.getBatch());
-        game.getBatch().end();
-        drawLine();
+
+        goBack();
+    }
+
+
+    public void goBack() {
         if (Gdx.input.isKeyPressed(Keys.BACK)) {
             if (!game.backpressed) {
                 game.backpressed = true;
@@ -131,23 +150,21 @@ public class ScissorsGameScreen extends ScreenAdapter{
             }
         }
 
-        timeToPlay -= delta;
-        if(timeToPlay <= 0) {
-            //fim do mini-jogo
-            ScissorGameController.getInstance().finalResult();
-            ScissorGameController.getInstance().reset();
-            game.setScreen(new GameScreen(game));
-        }
-
     }
 
-    public void playAnimation(float delta) {
+    public boolean playAnimation(float delta) {
         Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         camera.unproject(touchPos);
-        ScissorGameController.getInstance().setScissorPosition(delta, touchPos.x, touchPos.y);
-        sprite.setRegion(animation.getKeyFrame(stateTime, true));
-        sprite.setPosition((float)ScissorGameController.getInstance().getScissorPosition()[0],(float)ScissorGameController.getInstance().getScissorPosition()[1]);
-        sprite.rotate((float)(ScissorGameController.getInstance().getScissorAng()*180/Math.PI));
+        if(ScissorGameController.getInstance().setScissorPosition(delta, touchPos.x, touchPos.y)) {
+            sprite.setRegion(animation.getKeyFrame(stateTime, true));
+            float spriteOriginX = sprite.getOriginX();
+            float spriteOriginY = sprite.getOriginY();
+            sprite.setPosition((float)ScissorGameController.getInstance().getScissorPosition()[0]-spriteOriginX,(float)ScissorGameController.getInstance().getScissorPosition()[1]-spriteOriginY);
+            sprite.rotate((float)(ScissorGameController.getInstance().getScissorAng()*180/Math.PI));
+            return true;
+        }
+        return false;
+
     }
 
     public void saveFingerPosition() {
