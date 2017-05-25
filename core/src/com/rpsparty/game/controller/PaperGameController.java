@@ -9,8 +9,15 @@ public class PaperGameController {
      * The singleton instance of this controller
      */
     private static PaperGameController instance;
-    private float distance = 0;
-    private float opponentDistance = 0;
+    private float timeToNextFrame;
+    private float distance;
+    private float opponentDistance;
+
+    private PaperGameController() {
+        timeToNextFrame = 0.1f;
+        distance = 0;
+        opponentDistance = 0;
+    }
 
     public static PaperGameController getInstance() {
         if (instance == null)
@@ -22,11 +29,17 @@ public class PaperGameController {
         distance += Math.abs(increment);
     }
 
+    public void setDistance(float d) { distance += d;}
+
+    public void setTimeToNextFrame(float time) { timeToNextFrame = time; }
+
+    public float getTimeToNextFrame() { return  timeToNextFrame; }
+
     public void finalResult() {//ve quem e que ganhou o jogo
 
-        ConnectionSockets.getInstance().sendMessage(Integer.toString((int)distance)+"\n");
+        ConnectionSockets.getInstance().sendMessage(Float.toString(distance)+"\n");
         System.out.println("escreveu para o oponente");
-        opponentDistance = Integer.parseInt(ConnectionSockets.getInstance().receiveMessage());
+        opponentDistance = Float.parseFloat(ConnectionSockets.getInstance().receiveMessage());
         System.out.println("leu do oponente");
         if(distance != opponentDistance) {
             if (distance > opponentDistance) {//ganhei
@@ -37,4 +50,6 @@ public class PaperGameController {
             MatchController.getInstance().increaseSet();
         }
     }
+
+    public void reset() { instance = null; }
 }
