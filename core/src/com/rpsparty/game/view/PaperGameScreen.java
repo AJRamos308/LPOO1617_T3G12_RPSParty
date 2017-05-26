@@ -86,6 +86,7 @@ public class PaperGameScreen extends ScreenAdapter {
         rolling = new Animation<TextureRegion>(0.0f,frames);
         paperSprite = new Sprite(rolling.getKeyFrame(0));
 
+        paperSprite.setBounds(Gdx.graphics.getWidth()/5, Gdx.graphics.getHeight()/5, Gdx.graphics.getWidth()/5, Gdx.graphics.getHeight()/5);
     }
 
     /**
