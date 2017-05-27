@@ -2,25 +2,29 @@ package com.rpsparty.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.rpsparty.game.RPSParty;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.rpsparty.game.controller.RockGameController;
 import com.rpsparty.game.controller.ScissorGameController;
-import com.badlogic.gdx.graphics.g2d.Animation;
-
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Vector;
+
+import static com.badlogic.gdx.utils.Align.center;
 
 
 public class ScissorsGameScreen extends ScreenAdapter{
@@ -51,13 +55,17 @@ public class ScissorsGameScreen extends ScreenAdapter{
     private Map<Integer,Vector<Integer>> positions =new HashMap<Integer,Vector<Integer>>();
     private LinkedHashSet<Integer> hashSet = new LinkedHashSet<Integer>();
     private int circleSize;
-    private float timeToPlay = 5;//3 segundos para o mini-jogo
+    private float timeToPlay = 5;//5 segundos para o mini-jogo
     private float stateTime = 0;
+    private Integer timerValue = 5;
+    private Label timer;
+    private Stage stage;
 
     public ScissorsGameScreen(RPSParty game) {
         this.game = game;
         loadAssets();
         camera = createCamera();
+        addLabel();
         circleSize = ScissorGameController.getInstance().getCircleSize();
         setSemiCircleTexture();
 
@@ -80,12 +88,29 @@ public class ScissorsGameScreen extends ScreenAdapter{
      * @return the camera
      */
     private OrthographicCamera createCamera() {
-        float ratio = ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
-        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
 
+        float ratio = ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
+        //OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
+        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
         return camera;
+    }
+
+    public void addLabel() {
+        stage = new Stage();
+        Label.LabelStyle style = new Label.LabelStyle();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = (Gdx.graphics.getHeight()/15);
+        BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
+        generator.dispose(); // don't forget to dispose to avoid memory leaks!
+        style.font = font;
+        style.fontColor = Color.BLACK;
+        timer = new Label(Integer.toString(timerValue), style);
+        timer.setBounds(4*Gdx.graphics.getWidth()/6, 12*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/8);
+        timer.setAlignment(center);
+        stage.addActor(timer);
     }
 
     public void createAnimation() {
@@ -109,36 +134,49 @@ public class ScissorsGameScreen extends ScreenAdapter{
     @Override
     public void render(float delta) {
         game.backpressed = false;
+        camera.update();
+        game.getBatch().setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        camera.update();
+        updateTime(delta);
 
-
-        stateTime += delta;
-        timeToPlay -= delta;
         if(timeToPlay <= 0) {
             //fim do mini-jogo
             if(!playAnimation(delta)) {//a animacao ja foi reproduzida
                 ScissorGameController.getInstance().finalResult();
                 ScissorGameController.getInstance().reset();
+                this.dispose();
                 game.setScreen(new GameScreen(game));
             }
             drawLine();
             game.getBatch().begin();
             game.getBatch().draw(semiCircle, Gdx.graphics.getWidth()/2 - semiCircle.getWidth(), Gdx.graphics.getHeight()/2-semiCircle.getHeight()/2);
+            //sprite.draw(game.getBatch());
+            game.getBatch().end();
+
+            game.getBatch().setProjectionMatrix(camera.combined);
+            game.getBatch().begin();
             sprite.draw(game.getBatch());
             game.getBatch().end();
         } else {
+            stage.draw();
             saveFingerPosition();
             drawLine();
             game.getBatch().begin();
             game.getBatch().draw(semiCircle, Gdx.graphics.getWidth()/2 - semiCircle.getWidth(), Gdx.graphics.getHeight()/2-semiCircle.getHeight()/2);
             game.getBatch().end();
+
         }
 
         goBack();
     }
 
+    public void updateTime(float delta) {
+        stateTime += delta;
+        timeToPlay -= delta;
+        timerValue = Math.round(timeToPlay);
+        timer.setText(Integer.toString(timerValue));
+    }
 
     public void goBack() {
         if (Gdx.input.isKeyPressed(Keys.BACK)) {
@@ -153,12 +191,12 @@ public class ScissorsGameScreen extends ScreenAdapter{
     }
 
     public boolean playAnimation(float delta) {
-        Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        camera.unproject(touchPos);
-        if(ScissorGameController.getInstance().setScissorPosition(delta, touchPos.x, touchPos.y)) {
+
+        if(ScissorGameController.getInstance().setScissorPosition(delta)) {
             sprite.setRegion(animation.getKeyFrame(stateTime, true));
             float spriteOriginX = sprite.getOriginX();
             float spriteOriginY = sprite.getOriginY();
+
             sprite.setPosition((float)ScissorGameController.getInstance().getScissorPosition()[0]-spriteOriginX,(float)ScissorGameController.getInstance().getScissorPosition()[1]-spriteOriginY);
             sprite.rotate((float)(ScissorGameController.getInstance().getScissorAng()*180/Math.PI));
             return true;

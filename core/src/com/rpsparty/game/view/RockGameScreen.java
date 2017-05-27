@@ -2,14 +2,16 @@ package com.rpsparty.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
 import com.badlogic.gdx.Input.Keys;
@@ -19,6 +21,8 @@ import com.rpsparty.game.model.entities.RockObjectGameModel;
 import com.rpsparty.game.view.entities.RockGameButton;
 
 import java.util.Random;
+
+import static com.badlogic.gdx.utils.Align.center;
 
 public class RockGameScreen extends ScreenAdapter {
     /**
@@ -43,13 +47,15 @@ public class RockGameScreen extends ScreenAdapter {
     private RockGameButton Rock4;
     private RockGameButton Rock5;
     private float timeToPlay = 30; //mini-jogo de 30 segundos
-
+    private Integer timerValue = 30;
+    private Label timer;
     public RockGameScreen(RPSParty game) {
         this.game = game;
         loadAssets();
         camera = createCamera();
         addButtons();
         addListeners();
+        addLabel();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         addButtonsToStage();
@@ -70,7 +76,8 @@ public class RockGameScreen extends ScreenAdapter {
      */
     private OrthographicCamera createCamera() {
         float ratio = ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
-        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
+        //OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
+        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
@@ -84,6 +91,7 @@ public class RockGameScreen extends ScreenAdapter {
         stage.addActor(Rock3);
         stage.addActor(Rock4);
         stage.addActor(Rock5);
+        stage.addActor(timer);
     }
     /**
      * Renders this screen.
@@ -94,16 +102,19 @@ public class RockGameScreen extends ScreenAdapter {
     public void render(float delta) {
         //Gdx.gl.glClearColor( 103/255f, 69/255f, 117/255f, 1 );
         game.backpressed = false;
+        camera.update();
+        game.getBatch().setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        camera.update();
+
         RockGameController.getInstance().update(delta);
 
         changeButtonsStyle();
         updateButtons();
         stage.act();
+
+        updateTime(delta);
         game.getBatch().begin();
-        game.getBatch().setProjectionMatrix(camera.combined);
         stage.draw();
         game.getBatch().end();
         if (Gdx.input.isKeyPressed(Keys.BACK)) {
@@ -114,13 +125,33 @@ public class RockGameScreen extends ScreenAdapter {
                 Gdx.app.exit();
             }
         }
-        timeToPlay -= delta;
+
         if(timeToPlay <= 0) {
             //fim do mini-jogo
             RockGameController.getInstance().finalResult();
+            RockGameController.getInstance().reset();
+            this.dispose();
             game.setScreen(new GameScreen(game));
         }
 
+    }
+    public void updateTime(float delta) {
+        timeToPlay -= delta;
+        timerValue = Math.round(timeToPlay);
+        timer.setText(Integer.toString(timerValue));
+    }
+    public void addLabel() {
+        Label.LabelStyle style = new Label.LabelStyle();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = (Gdx.graphics.getHeight()/15);
+        BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
+        generator.dispose(); // don't forget to dispose to avoid memory leaks!
+        style.font = font;
+        style.fontColor = Color.BLACK;
+        timer = new Label(Integer.toString(timerValue), style);
+        timer.setBounds(4*Gdx.graphics.getWidth()/6, 12*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/8);
+        timer.setAlignment(center);
     }
 
     public void addButtons() {
@@ -129,7 +160,6 @@ public class RockGameScreen extends ScreenAdapter {
         Rock3 = new RockGameButton(game, RockGameModel.getInstance().getRockThree());
         Rock4 = new RockGameButton(game, RockGameModel.getInstance().getRockFour());
         Rock5 = new RockGameButton(game, RockGameModel.getInstance().getRockFive());
-
     }
 
     public void addListeners() {
@@ -216,7 +246,15 @@ public class RockGameScreen extends ScreenAdapter {
 
     public void updateButtons() {
         for(Actor btn : stage.getActors()) {
+            if(!(btn instanceof Label))
             updateButton((RockGameButton)btn);
         }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+        camera.update();
     }
 }

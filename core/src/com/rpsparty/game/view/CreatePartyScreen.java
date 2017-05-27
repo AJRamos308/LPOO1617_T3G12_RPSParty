@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.net.ServerSocket;
 import com.badlogic.gdx.net.ServerSocketHints;
 import com.badlogic.gdx.net.Socket;
-import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -21,10 +20,6 @@ import com.rpsparty.game.controller.ConnectionSockets;
 import com.rpsparty.game.view.entities.HelpButton;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Net.Protocol;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -33,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+
 
 import static com.badlogic.gdx.utils.Align.center;
 
@@ -71,10 +67,13 @@ public class CreatePartyScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
         stage.addActor(helpButton);
         stage.addActor(myIP);
-        getIP();
+        ipAddress = "";
+        while(ipAddress.equals("")) {
+            getIP();
+        }
         System.out.println(ipAddress);
-        if (ipAddress.equals("")) System.out.println("Did not get IP");
-        else myIP.setText("YOUR IP:\n" + ipAddress);
+       // if (ipAddress.equals("")) System.out.println("Did not get IP");
+        myIP.setText("YOUR IP:\n" + ipAddress);
         createThread();
         System.out.println("saiu do seu construtor de classe");
     }
@@ -92,8 +91,8 @@ public class CreatePartyScreen extends ScreenAdapter {
      */
     private OrthographicCamera createCamera() {
         float ratio = ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
-        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
-
+        //OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
+        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
@@ -108,21 +107,28 @@ public class CreatePartyScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         //Gdx.gl.glClearColor( 103/255f, 69/255f, 117/255f, 1 );
+        camera.update();
+        game.getBatch().setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor( 1, 1, 1, 1 );
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
-        camera.update();
+
         stage.act();
         game.getBatch().begin();
-        game.getBatch().setProjectionMatrix(camera.combined);
         stage.draw();
         game.getBatch().end();
+        goBack();
+        if(startGame) {
+            this.dispose();
+            game.setScreen(new GameScreen(game));
+        }
+    }
+
+    public void goBack() {
         if (Gdx.input.isKeyPressed(Keys.BACK)) {
             game.backpressed = true;
+            this.dispose();
             game.setScreen(new MainMenuScreen(game));
             Gdx.input.setCatchBackKey(true);
-        }
-        if(startGame) {
-            game.setScreen(new GameScreen(game));
         }
     }
 
@@ -139,7 +145,7 @@ public class CreatePartyScreen extends ScreenAdapter {
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
         style.font = font;
         style.fontColor = Color.BLACK;
-        myIP = new Label(" ", style);
+        myIP = new Label("", style);
         myIP.setBounds(Gdx.graphics.getWidth()/4, 5*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/4);
         myIP.setAlignment(center);
     }
@@ -170,14 +176,14 @@ public class CreatePartyScreen extends ScreenAdapter {
                 // especially in the lower numbers ( like 21, 80, etc )
                 ServerSocket serverSocket = Gdx.net.newServerSocket(Protocol.TCP, 9021, serverSocketHint);
                 System.out.println("criou um socket");
-                Socket socket = serverSocket.accept(null);//fica a espera que alguem se conecte
-                ConnectionSockets.getInstance().setReadSocket(socket);
+                Socket client = serverSocket.accept(null);//fica a espera que alguem se conecte
+                ConnectionSockets.getInstance().setSocket(client);
                 System.out.println("aceitou cliente");
-                while(!connectServerSocket(socket));
-                System.out.println("ligou-se ao cliente!");
                 startGame = true;
+
             }
         }).start(); // And, start the thread running
+
     }
 
     public void getIP() {
@@ -206,26 +212,11 @@ public class CreatePartyScreen extends ScreenAdapter {
         System.out.println("meu ip: "+ipAddress);
     }
 
-    public boolean connectServerSocket(Socket mySocket) {
-        // Read data from the socket into a BufferedReader
-        BufferedReader buffer = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
-        String ip = null;
-        try {
-            ip = buffer.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        System.out.println("ip a que se vai ligar: "+ip);
-        SocketHints socketHints = new SocketHints();
-        // Socket will time our in 4 seconds
-        socketHints.connectTimeout = 4000;
-        //create the socket and connect to the server entered in the text box ( x.x.x.x format ) on port 9022
-
-        // Read to the next newline (\n) and display that text on labelMessage
-        Socket socket = Gdx.net.newClientSocket(Protocol.TCP, ip, 9022, socketHints);
-        ConnectionSockets.getInstance().setWriteSocket(socket);
-        return true;
+    @Override
+    public void resize(int width, int height) {
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+        camera.update();
     }
 
 }

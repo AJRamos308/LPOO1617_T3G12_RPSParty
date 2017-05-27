@@ -2,20 +2,25 @@ package com.rpsparty.game.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.rpsparty.game.RPSParty;
 import com.badlogic.gdx.Input.Keys;
 import com.rpsparty.game.controller.PaperGameController;
 import com.rpsparty.game.view.entities.PaperGameActor;
+
+import static com.badlogic.gdx.utils.Align.center;
 
 public class PaperGameScreen extends ScreenAdapter {
     /**
@@ -37,22 +42,25 @@ public class PaperGameScreen extends ScreenAdapter {
     private Actor paper;
     private float timeToPlay;
     private Texture paperTexture;
-    private Sprite paperSprite;
     private Animation<TextureRegion> rolling;
     private Sprite sprite;
     private float stateTime;
+    private Integer timerValue = 45;
+    private Label timer;
 
     public PaperGameScreen(RPSParty game) {
         this.game = game;
         loadAssets();
         camera = createCamera();
         addActors();
+        addLabel();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(paper);
+        stage.addActor(timer);
         paper.setTouchable(Touchable.enabled);
         createPaperAnimation();
-        timeToPlay = 120;
+        timeToPlay = 45;
         stateTime = 0;
     }
     /**
@@ -69,12 +77,28 @@ public class PaperGameScreen extends ScreenAdapter {
      */
     private OrthographicCamera createCamera() {
         float ratio = ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
-        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
-
+        //OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
+        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
         return camera;
+    }
+
+    public void addLabel() {
+        stage = new Stage();
+        Label.LabelStyle style = new Label.LabelStyle();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = (Gdx.graphics.getHeight()/15);
+        BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
+        generator.dispose(); // don't forget to dispose to avoid memory leaks!
+        style.font = font;
+        style.fontColor = Color.BLACK;
+        timer = new Label(Integer.toString(timerValue), style);
+        timer.setBounds(4*Gdx.graphics.getWidth()/6, 12*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/8);
+        timer.setAlignment(center);
+        stage.addActor(timer);
     }
 
     private void createPaperAnimation(){
@@ -84,8 +108,6 @@ public class PaperGameScreen extends ScreenAdapter {
         TextureRegion[] frames = new TextureRegion[5];
         System.arraycopy(rollPaper[0],0,frames,0,5);
         rolling = new Animation<TextureRegion>(0.0f,frames);
-        paperSprite = new Sprite(rolling.getKeyFrame(0));
-
     }
 
     /**
@@ -97,22 +119,24 @@ public class PaperGameScreen extends ScreenAdapter {
     public void render(float delta) {
         //Gdx.gl.glClearColor( 103/255f, 69/255f, 117/255f, 1 );
         game.backpressed = false;
+        camera.update();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        camera.update();
+
+        updateTime(delta);
+
         stage.act(delta);
         stage.draw();
         updateSprite();
         game.getBatch().begin();
-        game.getBatch().setProjectionMatrix(camera.combined);
         sprite.draw(game.getBatch());
         game.getBatch().end();
         goBack();
-        timeToPlay -= delta;
-        stateTime += delta;
+
         if (timeToPlay < 0) {
             PaperGameController.getInstance().finalResult();
             PaperGameController.getInstance().reset();
+            this.dispose();
             game.setScreen(new GameScreen(game));
         }
     }
@@ -128,6 +152,12 @@ public class PaperGameScreen extends ScreenAdapter {
         }
     }
 
+    public void updateTime(float delta) {
+        timeToPlay -= delta;
+        timerValue = Math.round(timeToPlay);
+        timer.setText(Integer.toString(timerValue));
+        stateTime += delta;
+    }
     public void updateSprite(){
         rolling.setFrameDuration(PaperGameController.getInstance().getTimeToNextFrame());
         sprite.setRegion(rolling.getKeyFrame(stateTime,true));
@@ -137,5 +167,12 @@ public class PaperGameScreen extends ScreenAdapter {
         paper = new PaperGameActor();
         sprite = new Sprite(new Texture(Gdx.files.internal("Achieve.png")));
         sprite.setBounds(2*Gdx.graphics.getWidth()/8,Gdx.graphics.getHeight()/8,3*Gdx.graphics.getWidth()/8,2*Gdx.graphics.getHeight()/8);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+        camera.update();
     }
 }

@@ -319,7 +319,7 @@ public class MatchController implements ContactListener {
 
             if(!sync) {//sincronizar os shakes dos dois jogadores
                 String s;
-                ConnectionSockets.getInstance().sendMessage("lixo\n");
+                ConnectionSockets.getInstance().sendMessage("lixo"+"\n");
                 s = ConnectionSockets.getInstance().receiveMessage();
                 sync = true;
             }

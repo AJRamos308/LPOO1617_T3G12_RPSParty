@@ -16,13 +16,6 @@ import com.rpsparty.game.view.entities.HelpButton;
 import com.rpsparty.game.view.entities.JoinPartyButton;
 import com.rpsparty.game.view.entities.SettingsButton;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Input.Orientation;
-import com.badlogic.gdx.Input.Peripheral;
-
-import com.rpsparty.game.controller.MatchController;
-
-import static com.badlogic.gdx.Input.Orientation.Landscape;
-import static com.badlogic.gdx.Input.Orientation.Portrait;
 
 public class MainMenuScreen extends ScreenAdapter {
     /**
@@ -98,12 +91,12 @@ public class MainMenuScreen extends ScreenAdapter {
     public void render(float delta) {
         //Gdx.gl.glClearColor( 103/255f, 69/255f, 117/255f, 1 );
         game.backpressed = false;
+        camera.update();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        camera.update();
+
         stage.act();
         game.getBatch().begin();
-        game.getBatch().setProjectionMatrix(camera.combined);
         stage.draw();
         game.getBatch().end();
         if (Gdx.input.isKeyPressed(Keys.BACK)) {
@@ -147,5 +140,10 @@ public class MainMenuScreen extends ScreenAdapter {
         ConnectionSockets.getInstance().reset();
     }
 
-
+    @Override
+    public void resize(int width, int height) {
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+        camera.update();
+    }
 }

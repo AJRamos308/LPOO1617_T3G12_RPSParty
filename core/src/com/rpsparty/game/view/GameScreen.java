@@ -90,8 +90,8 @@ public class GameScreen extends ScreenAdapter {
      */
     private OrthographicCamera createCamera() {
         float ratio = ((float) graphics.getHeight() / (float) graphics.getWidth());
-        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
-
+        //OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
+        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
@@ -107,26 +107,23 @@ public class GameScreen extends ScreenAdapter {
     public void render(float delta) {
         //Gdx.gl.glClearColor( 103/255f, 69/255f, 117/255f, 1 );
         game.backpressed = false;
+        camera.update();
+        game.getBatch().setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        camera.update();
         stage.act();
         if(MatchController.getInstance().getMyChoice() == "") {//so desenhar butoes enquanto o utilizador nao escolher opcao
             enableButtons();
             game.getBatch().begin();
-            game.getBatch().setProjectionMatrix(camera.combined);
             //drawMatchResults();
             stage.draw();
             game.getBatch().end();
+        } else if(MatchController.getInstance().arePlayersReady()) {
+            processChoices(delta);
         }
 
         goBack();
-
-        //game.setScreen(new MainMenuScreen(game));
-        if(MatchController.getInstance().arePlayersReady()) {
-            processChoices(delta);
-        }
 
     }
 
@@ -164,41 +161,29 @@ public class GameScreen extends ScreenAdapter {
     public void addListeners() {
         rockButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-               // paperButton.setBounds(6* graphics.getWidth()/16, graphics.getWidth()/16, graphics.getWidth()/4, graphics.getWidth()/4);
-               // scissorsButton.setBounds(11* graphics.getWidth()/16, graphics.getWidth()/16, graphics.getWidth()/4, graphics.getWidth()/4);
                 System.out.println("ROCK");
 
                 ConnectionSockets.getInstance().sendMessage("rock" + ("\n"));
                 MatchController.getInstance().setMyChoice("rock");
                 MatchController.getInstance().chooseRock();
-              //  rockButton.setBounds(graphics.getWidth()/8, 4* graphics.getWidth()/8, 6* graphics.getWidth()/8, 6* graphics.getWidth()/8);
-
                 disableButtons();
             }});
         scissorsButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-              //  paperButton.setBounds(6* graphics.getWidth()/16, graphics.getWidth()/16, graphics.getWidth()/4, graphics.getWidth()/4);
-              //  rockButton.setBounds(graphics.getWidth()/16, graphics.getWidth()/16, graphics.getWidth()/4, graphics.getWidth()/4);
                 System.out.println("SCISSORS");
 
                 ConnectionSockets.getInstance().sendMessage("scissor" + ("\n"));
                 MatchController.getInstance().setMyChoice("scissor");
                 MatchController.getInstance().chooseScissor();
-              //  scissorsButton.setBounds(graphics.getWidth()/8, 4* graphics.getWidth()/8, 6* graphics.getWidth()/8, 6* graphics.getWidth()/8);
-
                 disableButtons();
             }});
         paperButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-              //  scissorsButton.setBounds(11* graphics.getWidth()/16, graphics.getWidth()/16, graphics.getWidth()/4, graphics.getWidth()/4);
-              //  rockButton.setBounds(graphics.getWidth()/16, graphics.getWidth()/16, graphics.getWidth()/4, graphics.getWidth()/4);
                 System.out.println("PAPER");
 
                 ConnectionSockets.getInstance().sendMessage("paper" + ("\n"));
                 MatchController.getInstance().setMyChoice("paper");
                 MatchController.getInstance().choosePaper();
-              //  paperButton.setBounds(graphics.getWidth()/8, 4* graphics.getWidth()/8, 6* graphics.getWidth()/8, 6* graphics.getWidth()/8);
-
                 disableButtons();
             }});
     }
@@ -269,13 +254,24 @@ public class GameScreen extends ScreenAdapter {
 
     public void playMiniGame(String element) {
         if(element.equals("rock")) {
+            this.dispose();
             game.setScreen(new RockGameScreen(game));
         } else if(element.equals("paper")) {
+            this.dispose();
             game.setScreen(new PaperGameScreen(game));
         } else if(element.equals("scissor")) {
+            this.dispose();
             game.setScreen(new ScissorsGameScreen(game));
         }
     }
+
+    @Override
+    public void resize(int width, int height) {
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+        camera.update();
+    }
+
 }
 
 

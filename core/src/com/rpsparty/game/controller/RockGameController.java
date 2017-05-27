@@ -22,15 +22,16 @@ public class RockGameController{
     private RockGameBody rockBodyFour;
     private RockGameBody rockBodyFive;
     private final ArrayList<RockGameBody> rocks;
-    private boolean update1 = false, update2 = false, update3 = false, update4 = false, update5 = false;
-    private int points = 0;
+    private boolean update1, update2, update3, update4, update5;
+    private int points;
     private int opponentPoints;
     /**
      * Creates a new GameController that controls the physics of a certain GameModel.
      *
      */
     private RockGameController() {
-
+        points = 0; opponentPoints = 0;
+        update1 = false; update2 = false; update3 = false; update4 = false; update5 = false;
         rockBodyOne = new RockGameBody(RockGameModel.getInstance().getRockOne());
         rockBodyTwo = new RockGameBody(RockGameModel.getInstance().getRockTwo());
         rockBodyThree = new RockGameBody(RockGameModel.getInstance().getRockThree());
@@ -186,5 +187,6 @@ public class RockGameController{
         }
     }
 
+    public void reset() { instance = null; }
 
 }

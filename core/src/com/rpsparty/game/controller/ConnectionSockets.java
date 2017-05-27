@@ -16,8 +16,7 @@ public class ConnectionSockets {
      */
     private static ConnectionSockets instance;
 
-    private Socket writeSocket; //client socket; para onde vamos escrever
-    private Socket readSocket; //server socket; de onde vamos ler
+    private Socket socket; //client socket; para onde vamos escrever
     /**
      * Returns a singleton instance of a game controller
      *
@@ -30,18 +29,14 @@ public class ConnectionSockets {
     }
 
     ConnectionSockets () {
-        writeSocket = null;
-        readSocket = null;
+        socket = null;
     }
 
-    public void setWriteSocket(Socket socket) {
-        writeSocket = socket;
+    public void setSocket(Socket socket) {
+        this.socket = socket;
     }
 
 
-    public void setReadSocket(Socket socket) {
-        readSocket = socket;
-    }
 
     /**
      * enviar mensagem para o outro jogador; escrever no server socket
@@ -50,7 +45,7 @@ public class ConnectionSockets {
     public void sendMessage (String s) {
         try {
             // write our entered message to the stream
-            writeSocket.getOutputStream().write(s.getBytes());
+            socket.getOutputStream().write(s.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,10 +56,10 @@ public class ConnectionSockets {
      * @return resposta do outro utilizador/ jogador
      */
     public String receiveMessage () {
-        if(!readSocket.isConnected())
+        if(!socket.isConnected())
             return "";
         String answer = "";
-        BufferedReader buffer = new BufferedReader(new InputStreamReader(readSocket.getInputStream()));
+        BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         System.out.println("Buffer Reader criado.");
 
         try {
@@ -84,9 +79,8 @@ public class ConnectionSockets {
      */
     public void reset() {
         instance = null;
-        if(writeSocket != null && readSocket != null) {
-            writeSocket.dispose();
-            readSocket.dispose();
+        if(socket != null && socket != null) {
+            socket.dispose();
         }
     }
 

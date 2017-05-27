@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.net.ServerSocket;
-import com.badlogic.gdx.net.ServerSocketHints;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -24,11 +22,8 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.controller.ConnectionSockets;
 import com.rpsparty.game.view.entities.HelpButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.Net.Protocol;
-
-import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -37,8 +32,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
-
-import static com.badlogic.gdx.Input.Keys.T;
 import static com.badlogic.gdx.utils.Align.center;
 
 public class JoinPartyScreen extends ScreenAdapter {
@@ -79,11 +72,6 @@ public class JoinPartyScreen extends ScreenAdapter {
         stage.addActor(helpButton);
         stage.addActor(serverIP);
         stage.addActor(confirmInput);
-        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
-            game.backpressed = true;
-            game.setScreen(new MainMenuScreen(game));
-            Gdx.input.setCatchBackKey(true);
-        }
     }
     /**
      * Loads the assets needed by this screen.
@@ -101,8 +89,8 @@ public class JoinPartyScreen extends ScreenAdapter {
      */
     private OrthographicCamera createCamera() {
         float ratio = ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
-        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
-
+        //OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
+        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
@@ -117,21 +105,27 @@ public class JoinPartyScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         //Gdx.gl.glClearColor( 103/255f, 69/255f, 117/255f, 1 );
+        camera.update();
         Gdx.gl.glClearColor( 1, 1, 1, 1 );
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
-        camera.update();
+
         stage.act();
+
         game.getBatch().begin();
-        game.getBatch().setProjectionMatrix(camera.combined);
         stage.draw();
         game.getBatch().end();
-        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
-            game.backpressed = true;
-            game.setScreen(new MainMenuScreen(game));
-            Gdx.input.setCatchBackKey(true);
-        }
+        goBack();
         if(startGame) {
             game.setScreen(new GameScreen(game));
+        }
+    }
+
+    public void goBack() {
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            game.backpressed = true;
+            this.dispose();
+            game.setScreen(new MainMenuScreen(game));
+            Gdx.input.setCatchBackKey(true);
         }
     }
 
@@ -155,7 +149,6 @@ public class JoinPartyScreen extends ScreenAdapter {
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
         style.font = font;
-        //style.font.getData().setScale(4f);
         style.fontColor = Color.BLACK;
         Skin skin = new Skin();
         skin.add("cursor", this.game.getAssetManager().get("cursor.png"));
@@ -176,9 +169,6 @@ public class JoinPartyScreen extends ScreenAdapter {
         serverIP.setMaxLength(15);
     }
 
-    public void addListenersTextArea() {
-
-    }
 
     public void addTextButton() {
         TextButtonStyle style = new TextButtonStyle();
@@ -221,8 +211,10 @@ public class JoinPartyScreen extends ScreenAdapter {
         String ipAddress = new String("");
         for(String str:addresses)
         {
-            if(!str.equals("127.0.0.1"))//nao escrever o IP "127.0.0.1" porque e o localhost (igual para qualquer pc)
-                ipAddress = ipAddress + str + "\n";
+            if(!str.equals("127.0.0.1")) {//nao escrever o IP "127.0.0.1" porque e o localhost (igual para qualquer pc)
+                ipAddress = str + "\n";
+                return ipAddress;//envia o primeiro id valido que encontra
+            }
         }
         return ipAddress;
     }
@@ -241,8 +233,7 @@ public class JoinPartyScreen extends ScreenAdapter {
                     System.out.println("o cliente vai se ligar ao IP "+serverIP.getText());
                     Socket socket = Gdx.net.newClientSocket(Protocol.TCP, serverIP.getText(), 9021, socketHints);
                     System.out.println("cliente esta ligado ao servidor!");
-                    ConnectionSockets.getInstance().setWriteSocket(socket);
-                    createServerSocket(socket);
+                    ConnectionSockets.getInstance().setSocket(socket);
                     System.out.println("cliente criou um socket e servidor ligou-se a ele!");
                     startGame = true;
                 } catch (GdxRuntimeException e) {
@@ -252,29 +243,14 @@ public class JoinPartyScreen extends ScreenAdapter {
             }}).start();
     }
 
-    public boolean sendIP (Socket socket, String ip) {
-        System.out.println("o nosso IP e "+ip);
-        try {
-            // write our entered message to the stream
-            socket.getOutputStream().write(ip.getBytes());
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
+
+    @Override
+    public void resize(int width, int height) {
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+        camera.update();
     }
 
-    public void createServerSocket(Socket clientSocket) {
-        System.out.println("o cliente vai criar tambem um socket");
-        ServerSocketHints serverSocketHint = new ServerSocketHints();
-        // 0 means no timeout.  Probably not the greatest idea in production!
-        serverSocketHint.acceptTimeout = 0;
 
-        ServerSocket serverSocket = Gdx.net.newServerSocket(Protocol.TCP, 9022, serverSocketHint);
-        while(!sendIP(clientSocket, getIP()));//enviar o nosso ip para criar outro socket (mas agora de forma escondida)
-        System.out.println("o cliente enviou o seu IP para o servidor");
-        Socket socket = serverSocket.accept(null);//fica a espera que alguem se conecte
-        System.out.println("o servidor ligou-se ao cliente");
-        ConnectionSockets.getInstance().setReadSocket(socket);
-    }
+
 }

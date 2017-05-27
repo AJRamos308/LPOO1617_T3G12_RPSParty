@@ -88,7 +88,7 @@ public class ScissorGameController {
     }
 
     public Integer getRadius () { return radius; }
-    public boolean setScissorPosition (float delta, float x, float y) {
+    public boolean setScissorPosition (float delta) {
         stateTime += delta;
         if(stateTime*w < 2*Math.PI) {
             scissorPosition[0] = centerX + radius * Math.cos(w * stateTime);
