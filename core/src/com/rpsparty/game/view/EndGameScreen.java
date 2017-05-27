@@ -39,15 +39,7 @@ public class EndGameScreen extends ScreenAdapter {
         loadAssets();
         camera = createCamera();
         winner = new WinOrLoseView(game);
-        //winner.setWinner(game, true);
-        if (MatchController.getInstance().getSets().size() > 0) {
-            for (int i = 0; i < MatchController.getInstance().getSets().size(); i++)
-                wins += MatchController.getInstance().getSets().get(i);
-            /*if (wins / MatchController.getInstance().getSets().size() > 0.5)
-                winner.setWinner(game, true);
-            else
-                winner.setWinner(game, false);*/
-        }
+        
     }
 
     /**

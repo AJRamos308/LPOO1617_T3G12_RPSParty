@@ -52,6 +52,7 @@ public class GameScreen extends ScreenAdapter {
     private RockButton rockButton;
     private ResultsActor resultsActor;
     private Texture areYouReady;
+    private int bestOf = 3;
 
     public GameScreen(RPSParty game) {
         System.out.println("\nmudou para GameScreen\n");
@@ -116,9 +117,12 @@ public class GameScreen extends ScreenAdapter {
         if(MatchController.getInstance().getMyChoice() == "") {//so desenhar butoes enquanto o utilizador nao escolher opcao
             enableButtons();
             game.getBatch().begin();
-            //drawMatchResults();
             stage.draw();
             game.getBatch().end();
+            if (MatchController.getInstance().getSets().size() >= bestOf){
+                game.setScreen(new EndGameScreen(game));
+                //TODO:Fechar sockets
+            }
         } else if(MatchController.getInstance().arePlayersReady()) {
             processChoices(delta);
         }
