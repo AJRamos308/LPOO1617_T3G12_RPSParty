@@ -108,6 +108,7 @@ public class PaperGameScreen extends ScreenAdapter {
         TextureRegion[] frames = new TextureRegion[5];
         System.arraycopy(rollPaper[0],0,frames,0,5);
         rolling = new Animation<TextureRegion>(0.0f,frames);
+
     }
 
     /**

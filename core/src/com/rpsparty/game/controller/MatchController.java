@@ -323,6 +323,7 @@ public class MatchController implements ContactListener {
                 s = ConnectionSockets.getInstance().receiveMessage();
                 sync = true;
             }
+
             return true;
         }
         return false;
