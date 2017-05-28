@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import static com.badlogic.gdx.utils.Align.center;
+import static com.badlogic.gdx.utils.Align.left;
 
 
 public class ScissorsGameScreen extends ScreenAdapter{
@@ -100,7 +101,7 @@ public class ScissorsGameScreen extends ScreenAdapter{
     public void addLabel() {
         stage = new Stage();
         Label.LabelStyle style = new Label.LabelStyle();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Mf I Love Glitter.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (Gdx.graphics.getHeight()/15);
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels

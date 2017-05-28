@@ -65,7 +65,7 @@ public class SplashScreen extends ScreenAdapter{
     public void show(){
 
         stage = new Stage();
-        splashActor = new Image(new TextureRegion(new Texture("splash.jpg")));
+        splashActor = new Image(new TextureRegion(new Texture("SplashScreen.jpg")));
         splashActor.setFillParent(true);
         SequenceAction actions = new SequenceAction(sequence(fadeIn(2f), delay(1.5f),
                 run(new Runnable() {

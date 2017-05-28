@@ -7,12 +7,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.net.ServerSocket;
 import com.badlogic.gdx.net.ServerSocketHints;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
@@ -53,6 +55,7 @@ public class CreatePartyScreen extends ScreenAdapter {
     private Label myIP;
     private String ipAddress;
     private boolean startGame;
+    private Image background;
 
     public CreatePartyScreen(RPSParty game) {
         this.game = game;
@@ -65,7 +68,8 @@ public class CreatePartyScreen extends ScreenAdapter {
         addLabel();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        stage.addActor(helpButton);
+        stage.addActor(background);
+       // stage.addActor(helpButton);
         stage.addActor(myIP);
         ipAddress = "";
         while(ipAddress.equals("")) {
@@ -73,7 +77,7 @@ public class CreatePartyScreen extends ScreenAdapter {
         }
         System.out.println(ipAddress);
        // if (ipAddress.equals("")) System.out.println("Did not get IP");
-        myIP.setText("YOUR IP:\n" + ipAddress);
+        myIP.setText("YOUR IP:\n\n" + ipAddress);
         createThread();
         System.out.println("saiu do seu construtor de classe");
     }
@@ -81,6 +85,7 @@ public class CreatePartyScreen extends ScreenAdapter {
      * Loads the assets needed by this screen.
      */
     private void loadAssets() {
+        this.game.getAssetManager().load( "background.jpg" , Texture.class);
         this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
@@ -133,12 +138,14 @@ public class CreatePartyScreen extends ScreenAdapter {
     }
 
     public void addButtons() {
+        background = new Image(new TextureRegion((Texture)game.getAssetManager().get("background.jpg")));
+        background.setFillParent(true);
         helpButton = new HelpButton(game);
     }
 
     public void addLabel() {
         Label.LabelStyle style = new Label.LabelStyle();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Mf I Love Glitter.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (Gdx.graphics.getHeight()/12);
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels

@@ -1,9 +1,5 @@
 package com.rpsparty.game.controller;
 
-/**
- * Created by afonso on 23/05/2017.
- */
-
 public class PaperGameController {
     /**
      * The singleton instance of this controller
@@ -52,4 +48,6 @@ public class PaperGameController {
     }
 
     public void reset() { instance = null; }
+
+    public float getMyPoints() { return distance; }
 }

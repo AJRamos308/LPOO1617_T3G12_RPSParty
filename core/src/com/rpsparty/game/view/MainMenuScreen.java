@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -16,6 +17,7 @@ import com.rpsparty.game.view.entities.HelpButton;
 import com.rpsparty.game.view.entities.JoinPartyButton;
 import com.rpsparty.game.view.entities.SettingsButton;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class MainMenuScreen extends ScreenAdapter {
     /**
@@ -33,13 +35,14 @@ public class MainMenuScreen extends ScreenAdapter {
      * automatically calculated using the screen ratio.
      */
     private static final float VIEWPORT_WIDTH = 20;
+    private Image background;
     private Stage stage;
     private CreatePartyButton createPartyButton;
     private JoinPartyButton joinPartyButton;
-    private HelpButton helpButton;
+   /* private HelpButton helpButton;
     private AchievementsButton achievementsButton;
     private SettingsButton settingsButton;
-
+    */
 
     public MainMenuScreen(RPSParty game) {
         this.game = game;
@@ -49,22 +52,28 @@ public class MainMenuScreen extends ScreenAdapter {
         addListeners();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+        stage.addActor(background);
         stage.addActor(createPartyButton);
         stage.addActor(joinPartyButton);
-        stage.addActor(helpButton);
+        /*stage.addActor(helpButton);
         stage.addActor(achievementsButton);
         stage.addActor(settingsButton);
+        */
         resetSockets();
     }
     /**
      * Loads the assets needed by this screen.
      */
     private void loadAssets() {
-        this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
+        /*this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
         this.game.getAssetManager().load( "test.jpg" , Texture.class);
         this.game.getAssetManager().load( "Achieve.png" , Texture.class);
         this.game.getAssetManager().load( "join.jpg" , Texture.class);
         this.game.getAssetManager().load( "settings.png" , Texture.class);
+        */
+        this.game.getAssetManager().load( "JoinPartyBtn.png" , Texture.class);
+        this.game.getAssetManager().load( "StartPartyBtn.png" , Texture.class);
+        this.game.getAssetManager().load( "MainMenuWall.png" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
     /**
@@ -113,9 +122,12 @@ public class MainMenuScreen extends ScreenAdapter {
     public void addButtons() {
         createPartyButton = new CreatePartyButton(game);
         joinPartyButton = new JoinPartyButton(game);
-        helpButton = new HelpButton(game);
+       /* helpButton = new HelpButton(game);
         achievementsButton = new AchievementsButton(game);
         settingsButton = new SettingsButton(game);
+        */
+        background = new Image(new TextureRegion((Texture)game.getAssetManager().get("MainMenuWall.png")));
+        background.setFillParent(true);
     }
 
     public void addListeners() {
@@ -129,11 +141,12 @@ public class MainMenuScreen extends ScreenAdapter {
                 game.setScreen(new JoinPartyScreen(game));
                 System.out.println("join party!");
             }});
-        helpButton.addListener(new ClickListener() {
+        /*helpButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 //TODO: fazer setScreen()
                 System.out.println("HELP!");
             }});
+            */
     }
 
     public void resetSockets() {

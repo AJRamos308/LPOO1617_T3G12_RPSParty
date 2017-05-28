@@ -8,11 +8,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -55,6 +57,7 @@ public class JoinPartyScreen extends ScreenAdapter {
     private TextField serverIP;
     private TextButton confirmInput;
     private boolean startGame;
+    private Image background;
 
     public JoinPartyScreen(RPSParty game) {
         this.game = game;
@@ -69,7 +72,8 @@ public class JoinPartyScreen extends ScreenAdapter {
         addListenersTextButton();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        stage.addActor(helpButton);
+        stage.addActor(background);
+        //stage.addActor(helpButton);
         stage.addActor(serverIP);
         stage.addActor(confirmInput);
     }
@@ -77,6 +81,7 @@ public class JoinPartyScreen extends ScreenAdapter {
      * Loads the assets needed by this screen.
      */
     private void loadAssets() {
+        this.game.getAssetManager().load( "background.jpg" , Texture.class);
         this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
         this.game.getAssetManager().load( "cursor.png" , Texture.class);
         this.game.getAssetManager().load( "Selection.png" , Texture.class);
@@ -130,6 +135,8 @@ public class JoinPartyScreen extends ScreenAdapter {
     }
 
     public void addButtons() {
+        background = new Image(new TextureRegion((Texture)game.getAssetManager().get("background.jpg")));
+        background.setFillParent(true);
         helpButton = new HelpButton(game);
     }
     //TODO: Back Button
@@ -143,7 +150,7 @@ public class JoinPartyScreen extends ScreenAdapter {
 
     public void addTextArea() {
         TextFieldStyle style = new TextFieldStyle();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Mf I Love Glitter.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (Gdx.graphics.getHeight()/13);
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
@@ -172,7 +179,7 @@ public class JoinPartyScreen extends ScreenAdapter {
 
     public void addTextButton() {
         TextButtonStyle style = new TextButtonStyle();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Mf I Love Glitter.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (Gdx.graphics.getHeight()/13);
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels

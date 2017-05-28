@@ -23,6 +23,7 @@ import com.rpsparty.game.view.entities.RockGameButton;
 import java.util.Random;
 
 import static com.badlogic.gdx.utils.Align.center;
+import static com.badlogic.gdx.utils.Align.left;
 
 public class RockGameScreen extends ScreenAdapter {
     /**
@@ -49,14 +50,15 @@ public class RockGameScreen extends ScreenAdapter {
     private float timeToPlay = 30; //mini-jogo de 30 segundos
     private Integer timerValue = 30;
     private Label timer;
+    private Label points;
     public RockGameScreen(RPSParty game) {
         this.game = game;
         loadAssets();
         camera = createCamera();
+        stage = new Stage();
         addButtons();
         addListeners();
         addLabel();
-        stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         addButtonsToStage();
     }
@@ -91,7 +93,6 @@ public class RockGameScreen extends ScreenAdapter {
         stage.addActor(Rock3);
         stage.addActor(Rock4);
         stage.addActor(Rock5);
-        stage.addActor(timer);
     }
     /**
      * Renders this screen.
@@ -139,10 +140,11 @@ public class RockGameScreen extends ScreenAdapter {
         timeToPlay -= delta;
         timerValue = Math.round(timeToPlay);
         timer.setText(Integer.toString(timerValue));
+        points.setText(Integer.toString(RockGameController.getInstance().getPoints()));
     }
     public void addLabel() {
         Label.LabelStyle style = new Label.LabelStyle();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Mf I Love Glitter.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (Gdx.graphics.getHeight()/15);
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
@@ -150,8 +152,13 @@ public class RockGameScreen extends ScreenAdapter {
         style.font = font;
         style.fontColor = Color.BLACK;
         timer = new Label(Integer.toString(timerValue), style);
-        timer.setBounds(4*Gdx.graphics.getWidth()/6, 12*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/8);
+        timer.setBounds(4*Gdx.graphics.getWidth()/6, 14*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/8);
         timer.setAlignment(center);
+        points = new Label("Points: "+Integer.toString(0),style);
+        points.setBounds(0, 13*Gdx.graphics.getHeight()/16,3*Gdx.graphics.getWidth()/4,2*Gdx.graphics.getHeight()/12);
+        points.setAlignment(left);
+        stage.addActor(timer);
+        stage.addActor(points);
     }
 
     public void addButtons() {

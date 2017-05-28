@@ -21,6 +21,7 @@ import com.rpsparty.game.controller.PaperGameController;
 import com.rpsparty.game.view.entities.PaperGameActor;
 
 import static com.badlogic.gdx.utils.Align.center;
+import static com.badlogic.gdx.utils.Align.left;
 
 public class PaperGameScreen extends ScreenAdapter {
     /**
@@ -42,25 +43,26 @@ public class PaperGameScreen extends ScreenAdapter {
     private Actor paper;
     private float timeToPlay;
     private Texture paperTexture;
+    private Sprite paperSprite;
     private Animation<TextureRegion> rolling;
     private Sprite sprite;
     private float stateTime;
-    private Integer timerValue = 45;
+    private Integer timerValue = 30;
     private Label timer;
+    private Label points;
 
     public PaperGameScreen(RPSParty game) {
         this.game = game;
         loadAssets();
         camera = createCamera();
-        addActors();
-        addLabel();
         stage = new Stage();
+        addActors();
+        addLabels();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(paper);
-        stage.addActor(timer);
         paper.setTouchable(Touchable.enabled);
         createPaperAnimation();
-        timeToPlay = 45;
+        timeToPlay = 30;
         stateTime = 0;
     }
     /**
@@ -77,28 +79,31 @@ public class PaperGameScreen extends ScreenAdapter {
      */
     private OrthographicCamera createCamera() {
         float ratio = ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
-        //OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
-        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
+
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
         return camera;
     }
 
-    public void addLabel() {
-        stage = new Stage();
+    public void addLabels() {
         Label.LabelStyle style = new Label.LabelStyle();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Bad Skizoff.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Mf I Love Glitter.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = (Gdx.graphics.getHeight()/15);
+        parameter.size = (Gdx.graphics.getHeight()/18);
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
         style.font = font;
         style.fontColor = Color.BLACK;
         timer = new Label(Integer.toString(timerValue), style);
-        timer.setBounds(4*Gdx.graphics.getWidth()/6, 12*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/8);
+        timer.setBounds(4*Gdx.graphics.getWidth()/6, 14*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/8);
         timer.setAlignment(center);
+        points = new Label("Points: "+Float.toString(0.0f), style);
+        points.setBounds(0, 13*Gdx.graphics.getHeight()/16,3*Gdx.graphics.getWidth()/4,2*Gdx.graphics.getHeight()/12);
+        points.setAlignment(left);
         stage.addActor(timer);
+        stage.addActor(points);
     }
 
     private void createPaperAnimation(){
@@ -108,6 +113,7 @@ public class PaperGameScreen extends ScreenAdapter {
         TextureRegion[] frames = new TextureRegion[5];
         System.arraycopy(rollPaper[0],0,frames,0,5);
         rolling = new Animation<TextureRegion>(0.0f,frames);
+        paperSprite = new Sprite(rolling.getKeyFrame(0));
 
     }
 
@@ -120,28 +126,32 @@ public class PaperGameScreen extends ScreenAdapter {
     public void render(float delta) {
         //Gdx.gl.glClearColor( 103/255f, 69/255f, 117/255f, 1 );
         game.backpressed = false;
-        camera.update();
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
-        updateTime(delta);
-
+        camera.update();
         stage.act(delta);
         stage.draw();
         updateSprite();
         game.getBatch().begin();
+        game.getBatch().setProjectionMatrix(camera.combined);
         sprite.draw(game.getBatch());
         game.getBatch().end();
         goBack();
-
+        updateTime(delta);
         if (timeToPlay < 0) {
             PaperGameController.getInstance().finalResult();
             PaperGameController.getInstance().reset();
-            this.dispose();
             game.setScreen(new GameScreen(game));
         }
     }
 
+    public void updateTime(float delta) {
+        timeToPlay -= delta;
+        stateTime += delta;
+        timerValue = Math.round(timeToPlay);
+        timer.setText(Integer.toString(timerValue));
+        points.setText("Points: "+PaperGameController.getInstance().getMyPoints());
+    }
     public void goBack() {
         if (Gdx.input.isKeyPressed(Keys.BACK)) {
             if (!game.backpressed) {
@@ -153,12 +163,6 @@ public class PaperGameScreen extends ScreenAdapter {
         }
     }
 
-    public void updateTime(float delta) {
-        timeToPlay -= delta;
-        timerValue = Math.round(timeToPlay);
-        timer.setText(Integer.toString(timerValue));
-        stateTime += delta;
-    }
     public void updateSprite(){
         rolling.setFrameDuration(PaperGameController.getInstance().getTimeToNextFrame());
         sprite.setRegion(rolling.getKeyFrame(stateTime,true));
@@ -168,12 +172,5 @@ public class PaperGameScreen extends ScreenAdapter {
         paper = new PaperGameActor();
         sprite = new Sprite(new Texture(Gdx.files.internal("Achieve.png")));
         sprite.setBounds(2*Gdx.graphics.getWidth()/8,Gdx.graphics.getHeight()/8,3*Gdx.graphics.getWidth()/8,2*Gdx.graphics.getHeight()/8);
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
-        camera.update();
     }
 }
