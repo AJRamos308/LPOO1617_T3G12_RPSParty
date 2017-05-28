@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.rpsparty.game.RPSParty;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.rpsparty.game.controller.MatchController;
 import com.rpsparty.game.controller.ScissorGameController;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -147,7 +148,7 @@ public class ScissorsGameScreen extends ScreenAdapter{
                 ScissorGameController.getInstance().finalResult();
                 ScissorGameController.getInstance().reset();
                 this.dispose();
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new MiniGameEndScreen(game, 2, MatchController.getInstance().getSets().get(MatchController.getInstance().getSets().size()-1)));
             }
             drawLine();
             game.getBatch().begin();

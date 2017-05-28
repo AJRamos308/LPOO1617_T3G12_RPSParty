@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.rpsparty.game.RPSParty;
 import com.badlogic.gdx.Input.Keys;
+import com.rpsparty.game.controller.MatchController;
 import com.rpsparty.game.controller.RockGameController;
 import com.rpsparty.game.model.RockGameModel;
 import com.rpsparty.game.model.entities.RockObjectGameModel;
@@ -132,7 +133,7 @@ public class RockGameScreen extends ScreenAdapter {
             RockGameController.getInstance().finalResult();
             RockGameController.getInstance().reset();
             this.dispose();
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new MiniGameEndScreen(game, 0, MatchController.getInstance().getSets().get(MatchController.getInstance().getSets().size()-1)));
         }
 
     }

@@ -39,7 +39,6 @@ public class EndGameScreen extends ScreenAdapter {
         loadAssets();
         camera = createCamera();
         winner = new WinOrLoseView(game);
-        
     }
 
     /**
