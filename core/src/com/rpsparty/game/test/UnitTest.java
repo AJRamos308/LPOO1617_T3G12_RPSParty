@@ -27,4 +27,12 @@ public class UnitTest extends GameTest{
         handler.load( "Achieve.png" , Texture.class);
         assertNotNull(handler.getLoadedAssets());
     }
+
+    @Test
+    public void GetSets(){
+        assertEquals(0, MatchController.getInstance().getSets().size());
+        MatchController.getInstance().getSets().add(1);
+        assertEquals(1, MatchController.getInstance().getSets().size());
+        assertEquals(1, MatchController.getInstance().getSets().get(0).intValue());
+    }
 }
