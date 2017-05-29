@@ -14,6 +14,6 @@ public class PaperView extends EntityView {
     public Sprite createSprite(RPSParty game) {
         Texture texture = game.getAssetManager().get("paper.png");
 
-        return new Sprite(texture, Gdx.graphics.getWidth()/5 , Gdx.graphics.getWidth()/5);
+        return new Sprite(texture, Gdx.graphics.getWidth()/4 , Gdx.graphics.getWidth()/4);
     }
 }
