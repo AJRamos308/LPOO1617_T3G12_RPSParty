@@ -24,8 +24,8 @@ public class WinOrLoseView extends EntityView {
     }
 
     public Sprite createSprite(RPSParty game) {
-        loser = game.getAssetManager().get("scissor.png");
-        winner = game.getAssetManager().get("rock.png");
+        loser = game.getAssetManager().get("loserScreen.png");
+        winner = game.getAssetManager().get("winnerScreen.png");
 
         if (MatchController.getInstance().getSets().size() > 0) {
             for (int i = 0; i < MatchController.getInstance().getSets().size(); i++) {
@@ -35,10 +35,12 @@ public class WinOrLoseView extends EntityView {
                     losses += 1;
             }
             if (wins > losses)
-                return new Sprite(winner, loser.getWidth(), loser.getHeight(), 200, 200);
+                return new Sprite(winner, 0, 0, -Gdx.graphics.getWidth(), -Gdx.graphics.getHeight());
             else
-                return new Sprite(loser, loser.getWidth(), loser.getHeight(), 200, 200);
+                return new Sprite(loser, 0, 0, -Gdx.graphics.getWidth(), -Gdx.graphics.getHeight());
         }
-        return new Sprite(loser, loser.getWidth(), loser.getHeight());
+        return new Sprite(loser, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
+
+    public Texture getFinalTexture() { return sprite.getTexture(); }
 }

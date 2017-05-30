@@ -6,6 +6,9 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.controller.MatchController;
 import com.rpsparty.game.view.entities.WinOrLoseView;
@@ -15,10 +18,6 @@ import com.rpsparty.game.view.entities.WinOrLoseView;
  */
 
 public class EndGameScreen extends ScreenAdapter {
-    /**
-     * How much meters does a pixel represent.
-     */
-    public final static float PIXEL_TO_METER = 0.04f;
 
     private final RPSParty game;
     /**
@@ -29,16 +28,20 @@ public class EndGameScreen extends ScreenAdapter {
      * The width of the viewport in meters. The height is
      * automatically calculated using the screen ratio.
      */
-    private static final float VIEWPORT_WIDTH = 20;
-    private float displayTime = 15; //Time that it takes to change back to MainMenuScreen if user doesn't click
+    private float displayTime = 7; //Time that it takes to change back to MainMenuScreen if user doesn't click
     private WinOrLoseView winner;
-    private int wins;
+    private Image background;
+    private Stage stage;
 
     public EndGameScreen(RPSParty game){
         this.game = game;
         loadAssets();
         camera = createCamera();
         winner = new WinOrLoseView(game);
+        stage = new Stage();
+        background = new Image(new TextureRegion((Texture)winner.getFinalTexture()));
+        background.setFillParent(true);
+        stage.addActor(background);
     }
 
     /**
@@ -47,8 +50,7 @@ public class EndGameScreen extends ScreenAdapter {
      * @return the camera
      */
     private OrthographicCamera createCamera() {
-        float ratio = ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
-        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
+        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
@@ -60,8 +62,8 @@ public class EndGameScreen extends ScreenAdapter {
      * Loads the assets needed by this screen.
      */
     private void loadAssets() {
-        this.game.getAssetManager().load( "rock.png" , Texture.class);
-        this.game.getAssetManager().load( "scissor.png" , Texture.class);
+        this.game.getAssetManager().load( "loserScreen.png" , Texture.class);
+        this.game.getAssetManager().load( "winnerScreen.png" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
 
@@ -77,16 +79,13 @@ public class EndGameScreen extends ScreenAdapter {
         camera.update();
         game.getBatch().begin();
         game.getBatch().setProjectionMatrix(camera.combined);
-        winner.draw(game.getBatch());
+        stage.draw();
         game.getBatch().end();
-        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
-            game.backpressed = true;
-            game.setScreen(new MainMenuScreen(game));
-            Gdx.input.setCatchBackKey(true);
-        }
         displayTime -= delta;
-        if (displayTime < 0 || (Gdx.input.isTouched() && displayTime < 12)){
+        if (displayTime < 0){
+            MatchController.getInstance().resetAll();
             game.setScreen(new MainMenuScreen(game));
         }
     }
+
 }

@@ -362,6 +362,8 @@ public class MatchController implements ContactListener {
         opponentChoice = "";
     }
 
+    public void resetAll() { instance = null; }
+
     public ArrayList<Integer> getSets() {
         return sets;
     }

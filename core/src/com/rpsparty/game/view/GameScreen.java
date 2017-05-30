@@ -115,14 +115,15 @@ public class GameScreen extends ScreenAdapter {
 
         stage.act();
         if(MatchController.getInstance().getMyChoice() == "") {//so desenhar butoes enquanto o utilizador nao escolher opcao
+            if (MatchController.getInstance().getSets().size() >= bestOf){
+                ConnectionSockets.getInstance().reset();
+                game.setScreen(new EndGameScreen(game));
+                //TODO:Fechar sockets
+            }
             enableButtons();
             game.getBatch().begin();
             stage.draw();
             game.getBatch().end();
-            if (MatchController.getInstance().getSets().size() >= bestOf){
-                game.setScreen(new EndGameScreen(game));
-                //TODO:Fechar sockets
-            }
         } else if(MatchController.getInstance().arePlayersReady()) {
             processChoices(delta);
         }

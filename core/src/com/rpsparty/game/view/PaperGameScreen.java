@@ -44,7 +44,6 @@ public class PaperGameScreen extends ScreenAdapter {
     private Actor paper;
     private float timeToPlay;
     private Texture paperTexture;
-    private Sprite paperSprite;
     private Animation<TextureRegion> rolling;
     private Sprite sprite;
     private float stateTime;
@@ -57,12 +56,12 @@ public class PaperGameScreen extends ScreenAdapter {
         loadAssets();
         camera = createCamera();
         stage = new Stage();
+        createPaperAnimation();
         addActors();
         addLabels();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(paper);
         paper.setTouchable(Touchable.enabled);
-        createPaperAnimation();
         timeToPlay = 30;
         stateTime = 0;
     }
@@ -114,8 +113,6 @@ public class PaperGameScreen extends ScreenAdapter {
         TextureRegion[] frames = new TextureRegion[5];
         System.arraycopy(rollPaper[0],0,frames,0,5);
         rolling = new Animation<TextureRegion>(0.0f,frames);
-        paperSprite = new Sprite(rolling.getKeyFrame(0));
-
     }
 
     /**
@@ -134,10 +131,9 @@ public class PaperGameScreen extends ScreenAdapter {
         stage.draw();
         updateSprite();
         game.getBatch().begin();
-        game.getBatch().setProjectionMatrix(camera.combined);
+        //game.getBatch().setProjectionMatrix(camera.combined);
         sprite.draw(game.getBatch());
         game.getBatch().end();
-        goBack();
         updateTime(delta);
         if (timeToPlay < 0) {
             PaperGameController.getInstance().finalResult();
@@ -153,16 +149,7 @@ public class PaperGameScreen extends ScreenAdapter {
         timer.setText(Integer.toString(timerValue));
         points.setText("Points: "+PaperGameController.getInstance().getMyPoints());
     }
-    public void goBack() {
-        if (Gdx.input.isKeyPressed(Keys.BACK)) {
-            if (!game.backpressed) {
-                game.backpressed = true;
-            } else if (game.backpressed) {
-                game.backpressed = false;
-                Gdx.app.exit();
-            }
-        }
-    }
+
 
     public void updateSprite(){
         rolling.setFrameDuration(PaperGameController.getInstance().getTimeToNextFrame());
@@ -171,7 +158,9 @@ public class PaperGameScreen extends ScreenAdapter {
 
     public void addActors() {
         paper = new PaperGameActor();
-        sprite = new Sprite(new Texture(Gdx.files.internal("Achieve.png")));
-        sprite.setBounds(2*Gdx.graphics.getWidth()/8,Gdx.graphics.getHeight()/8,3*Gdx.graphics.getWidth()/8,2*Gdx.graphics.getHeight()/8);
+        float width = paperTexture.getWidth()/5;
+        float height = paperTexture.getHeight();
+        sprite = new Sprite();
+        sprite.setBounds(Gdx.graphics.getWidth()/2-2*paper.getWidth()/20,3*paper.getHeight()/20,width,height);
     }
 }

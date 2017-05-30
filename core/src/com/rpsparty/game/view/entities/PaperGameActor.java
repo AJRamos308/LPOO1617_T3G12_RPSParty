@@ -17,9 +17,7 @@ import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.actor;
  */
 
 public class PaperGameActor extends Actor {
-    Texture texture = new Texture(Gdx.files.internal("Achieve.png"));
-    public float toiletPaperLength = 0;
-    public boolean started = false;
+    Texture texture = new Texture(Gdx.files.internal("paperRoll.png"));
     private float timeToNextFrame = 0.1f;
     private float totalVelocity = 0;
     private float deltaTime = 0;
@@ -27,13 +25,17 @@ public class PaperGameActor extends Actor {
     private boolean touching = false;
 
     public PaperGameActor(){
-        setBounds(5*Gdx.graphics.getWidth()/16,4*Gdx.graphics.getHeight()/8,2*Gdx.graphics.getWidth()/8,2*Gdx.graphics.getWidth()/8);
+        float width = texture.getWidth();
+        float height = texture.getHeight();
+        setBounds(Gdx.graphics.getWidth()/2-width/2,Gdx.graphics.getHeight()/2-height,width,height);
         addListener(new ActorGestureListener(){
             public void fling(InputEvent event, float velocityX, float velocityY, int button) {
-                totalVelocity -= velocityY;
-                timeToNextFrame = (684/15)/totalVelocity;
-                PaperGameController.getInstance().setDistance(-velocityY*flingTime);
-                flingTime = 0;
+                if(velocityY < 0) {
+                    totalVelocity -= velocityY;
+                    timeToNextFrame = (684 / 15) / totalVelocity;
+                    PaperGameController.getInstance().setDistance(-velocityY * flingTime);
+                    flingTime = 0;
+                }
             }
 
         });
@@ -55,7 +57,9 @@ public class PaperGameActor extends Actor {
 
     @Override
     public void draw(Batch batch, float alpha){
-        batch.draw(texture,5*Gdx.graphics.getWidth()/16,4*Gdx.graphics.getHeight()/8);
+        float width = texture.getWidth();
+        float height = texture.getHeight();
+        batch.draw(texture,Gdx.graphics.getWidth()/2-width/2,Gdx.graphics.getHeight()/2-height,width,height);
     }
 
     @Override
@@ -72,4 +76,5 @@ public class PaperGameActor extends Actor {
         saveTimeToNextFrame();
         deltaTime = delta;
     }
+
 }

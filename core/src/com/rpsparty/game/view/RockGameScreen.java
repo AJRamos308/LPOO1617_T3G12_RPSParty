@@ -67,9 +67,9 @@ public class RockGameScreen extends ScreenAdapter {
      * Loads the assets needed by this screen.
      */
     private void loadAssets() {
-        this.game.getAssetManager().load( "paper.png" , Texture.class);
         this.game.getAssetManager().load( "rock.png" , Texture.class);
-        this.game.getAssetManager().load( "scissor.png" , Texture.class);
+        this.game.getAssetManager().load( "coin.png" , Texture.class);
+        this.game.getAssetManager().load( "white.jpg" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
     /**

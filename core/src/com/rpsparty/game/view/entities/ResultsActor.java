@@ -26,9 +26,9 @@ public class ResultsActor extends Actor{
         for(Integer result : MatchController.getInstance().getSets()) {
 
             if(result == 1) {
-                batch.draw(won, 2 * nResult * Gdx.graphics.getWidth()/16, 7*Gdx.graphics.getHeight()/8, Gdx.graphics.getWidth()/6, Gdx.graphics.getWidth()/6);
+                batch.draw(won, 3 * nResult * Gdx.graphics.getWidth()/18, 7*Gdx.graphics.getHeight()/8, Gdx.graphics.getWidth()/6, Gdx.graphics.getWidth()/6);
             } else {
-                batch.draw(lost, 2 * nResult * Gdx.graphics.getWidth()/16, 7*Gdx.graphics.getHeight()/8, Gdx.graphics.getWidth()/6, Gdx.graphics.getWidth()/6);
+                batch.draw(lost, 3 * nResult * Gdx.graphics.getWidth()/18, 7*Gdx.graphics.getHeight()/8, Gdx.graphics.getWidth()/6, Gdx.graphics.getWidth()/6);
             }
             nResult++;
         }
