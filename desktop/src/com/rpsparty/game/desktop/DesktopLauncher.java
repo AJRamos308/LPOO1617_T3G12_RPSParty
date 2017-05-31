@@ -9,8 +9,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		//config.title = "hello-world";
 		//config.useGL20 = false;
-		config.width = 576;
-		config.height = 1024;
+		config.width = 450;
+		config.height = 800;
 		new LwjglApplication(new RPSParty(), config);
 	}
 }

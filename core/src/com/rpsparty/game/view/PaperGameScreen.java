@@ -50,7 +50,11 @@ public class PaperGameScreen extends ScreenAdapter {
     private Integer timerValue = 30;
     private Label timer;
     private Label points;
-
+    /**
+     * PaperGameScreen's constructor.
+     *
+     * @param game
+     */
     public PaperGameScreen(RPSParty game) {
         this.game = game;
         loadAssets();
@@ -86,7 +90,9 @@ public class PaperGameScreen extends ScreenAdapter {
 
         return camera;
     }
-
+    /**
+     * Creates the labels and its fonts.
+     */
     public void addLabels() {
         Label.LabelStyle style = new Label.LabelStyle();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Mf I Love Glitter.ttf"));
@@ -99,13 +105,15 @@ public class PaperGameScreen extends ScreenAdapter {
         timer = new Label(Integer.toString(timerValue), style);
         timer.setBounds(4*Gdx.graphics.getWidth()/6, 14*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/4,Gdx.graphics.getHeight()/8);
         timer.setAlignment(center);
-        points = new Label("Points: "+Float.toString(0.0f), style);
+        points = new Label("Points: " + Float.toString(0.0f), style);
         points.setBounds(0, 13*Gdx.graphics.getHeight()/16,3*Gdx.graphics.getWidth()/4,2*Gdx.graphics.getHeight()/12);
         points.setAlignment(left);
         stage.addActor(timer);
         stage.addActor(points);
     }
-
+    /**
+     * Creates the paper rolling animation.
+     */
     private void createPaperAnimation(){
         paperTexture = game.getAssetManager().get("paperanime.png");
         TextureRegion[][] rollPaper = TextureRegion.split(paperTexture,paperTexture.getWidth()/5,paperTexture.getHeight());
@@ -131,7 +139,6 @@ public class PaperGameScreen extends ScreenAdapter {
         stage.draw();
         updateSprite();
         game.getBatch().begin();
-        //game.getBatch().setProjectionMatrix(camera.combined);
         sprite.draw(game.getBatch());
         game.getBatch().end();
         updateTime(delta);
@@ -142,6 +149,9 @@ public class PaperGameScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Updates time variables and points.
+     */
     public void updateTime(float delta) {
         timeToPlay -= delta;
         stateTime += delta;
@@ -150,19 +160,22 @@ public class PaperGameScreen extends ScreenAdapter {
         points.setText("Points: "+PaperGameController.getInstance().getMyPoints());
     }
 
-
+    /**
+     * Updates the rolling paper sprite.
+     */
     public void updateSprite(){
         rolling.setFrameDuration(PaperGameController.getInstance().getTimeToNextFrame());
         sprite.setRegion(rolling.getKeyFrame(stateTime,true));
     }
 
+    /**
+     * Adds screen actors (timer, points and rolling paper).
+     */
     public void addActors() {
         paper = new PaperGameActor();
         float width = paperTexture.getWidth()/5;
         float height = paperTexture.getHeight();
         sprite = new Sprite();
-        //(47.2/1080)*Gdx.graphics.getWidth() => 2*paper.getWidth()/20);
-        //3*paper.getHeight()/20) => (122.85/1920)*Gdx.graphics.getHeight();
-        sprite.setBounds((float)(Gdx.graphics.getWidth()/2-(47.2/1080)*Gdx.graphics.getWidth()),(float)(122.85/1920)*Gdx.graphics.getHeight(),width,height);
+        sprite.setBounds((float)(Gdx.graphics.getWidth()/2-(47.2/1080)*Gdx.graphics.getWidth()),(float)(122.85/1920)*Gdx.graphics.getHeight(),(width/1080)*Gdx.graphics.getWidth(),(height/1920)*Gdx.graphics.getHeight());
     }
 }
