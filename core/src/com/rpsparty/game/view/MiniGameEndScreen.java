@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.rpsparty.game.RPSParty;
+import com.rpsparty.game.controller.MatchController;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
@@ -83,7 +84,11 @@ public class MiniGameEndScreen extends ScreenAdapter{
                 run(new Runnable(){
                     @Override
                     public void run(){
-                        game.setScreen(new GameScreen(game));
+                        if(!MatchController.getInstance().isEndOfGame()) {
+                            game.setScreen(new GameScreen(game));
+                        } else {
+                            game.setScreen(new EndGameScreen(game));
+                        }
                     }
                 })));
 
@@ -108,7 +113,7 @@ public class MiniGameEndScreen extends ScreenAdapter{
             if (win == 1)
                 splashActor = new Image(new TextureRegion(new Texture("scissorsWin.jpg")));
             else
-                splashActor = new Image(new TextureRegion(new Texture("scissorsWin.jpg")));
+                splashActor = new Image(new TextureRegion(new Texture("scissorsLose.jpg")));
         }
     }
 

@@ -40,6 +40,7 @@ public class CreatePartyScreen extends ScreenAdapter {
      */
     public final static float PIXEL_TO_METER = 0.04f;
 
+
     private final RPSParty game;
     /**
      * The camera used to show the viewport.
@@ -177,11 +178,12 @@ public class CreatePartyScreen extends ScreenAdapter {
                 ServerSocketHints serverSocketHint = new ServerSocketHints();
                 // 0 means no timeout.  Probably not the greatest idea in production!
                 serverSocketHint.acceptTimeout = 0;
+                serverSocketHint.reuseAddress = true;
 
                 // Create the socket server using TCP protocol and listening on 9021
                 // Only one app can listen to a port at a time, keep in mind many ports are reserved
                 // especially in the lower numbers ( like 21, 80, etc )
-                ServerSocket serverSocket = Gdx.net.newServerSocket(Protocol.TCP, 9021, serverSocketHint);
+                ServerSocket serverSocket = Gdx.net.newServerSocket(Protocol.TCP, game.getPort(), serverSocketHint);
                 System.out.println("criou um socket");
                 Socket client = serverSocket.accept(null);//fica a espera que alguem se conecte
                 ConnectionSockets.getInstance().setSocket(client);

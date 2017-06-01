@@ -94,4 +94,6 @@ public class RockGameModel {
         System.out.println("MAL RESET!");
     }
 
+    public void reset() { instance = null; }
+
 }

@@ -78,8 +78,10 @@ public class ConnectionSockets {
      * dos sockets
      */
     public void reset() {
+        System.out.println("cagou... :(");
         instance = null;
-        if(socket != null && socket != null) {
+        if(socket != null) {
+            System.out.println("vai apagar os sockets!");
             socket.dispose();
         }
     }

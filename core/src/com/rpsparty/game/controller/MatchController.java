@@ -22,6 +22,8 @@ import com.rpsparty.game.model.entities.ScissorHandModel;
 
 import java.util.ArrayList;
 
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
+
 public class MatchController implements ContactListener {
     /**
      * The singleton instance of this controller
@@ -55,6 +57,7 @@ public class MatchController implements ContactListener {
     private int count =0;//numero de shakes a dar
 
     private int currSet = 1;
+    private int nSets = 3;
     private ArrayList<Integer> sets = new ArrayList<Integer>();
 
     private boolean sync = false;
@@ -301,32 +304,39 @@ public class MatchController implements ContactListener {
     }
 
     public boolean finalResult() {
-        if(count == 0) {
+        if(count == 0) {//ja se agitou 3 vezes
             if(!animation) {
-                currSet++;
-                System.out.println("incrementou currSet");
                 if(isVictory()) {
                     System.out.println("ganhaste esta partida!");
                     sets.add(1);
+                    currSet++;
+                    System.out.println("incrementou currSet");
                 } else {
-                    System.out.println("perdeste esta partida...");
-                    if(!isTie()) //senao e empate
+
+                    if(!isTie()) { //senao e empate
+                        System.out.println("perdeste esta partida...");
                         sets.add(0);
+                        currSet++;
+                        System.out.println("incrementou currSet");
+                    }
                 }
             }
             animation = true;
 
-
-            if(!sync) {//sincronizar os shakes dos dois jogadores
-                String s;
-                ConnectionSockets.getInstance().sendMessage("lixo"+"\n");
-                s = ConnectionSockets.getInstance().receiveMessage();
-                sync = true;
-            }
+            synchronizeThreads();
 
             return true;
         }
         return false;
+    }
+
+    public void synchronizeThreads() {
+        if(!sync) {//sincronizar os shakes dos dois jogadores
+            String s;
+            ConnectionSockets.getInstance().sendMessage("lixo"+"\n");
+            s = ConnectionSockets.getInstance().receiveMessage();
+            sync = true;
+        }
     }
 
     public boolean isTie() { return myChoice.equals(opponentChoice); }
@@ -372,4 +382,10 @@ public class MatchController implements ContactListener {
 
     public void increaseSet() { currSet++; }
 
+    public Integer getLastResult() { return sets.get(sets.size()-1);}
+
+    public void clearSets() {
+        sets.clear(); }
+
+    public boolean isEndOfGame() {return (sets.size() == nSets); }
 }

@@ -131,9 +131,14 @@ public class RockGameScreen extends ScreenAdapter {
         if(timeToPlay <= 0) {
             //fim do mini-jogo
             RockGameController.getInstance().finalResult();
+            boolean tie = RockGameController.getInstance().isTie();
             RockGameController.getInstance().reset();
             this.dispose();
-            game.setScreen(new MiniGameEndScreen(game, 0, MatchController.getInstance().getSets().get(MatchController.getInstance().getSets().size()-1)));
+            if(tie) {
+                game.setScreen(new GameScreen(game));
+            } else {
+                game.setScreen(new MiniGameEndScreen(game, 0, MatchController.getInstance().getLastResult()));
+            }
         }
 
     }

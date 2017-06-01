@@ -16,7 +16,6 @@ public class MatchModel {
     private RockHandModel rock;
     private PaperHandModel paper;
     private ScissorHandModel scissor;
-    private EntityModel currentOption;
 
     private EntityModel player1Entity;
     private EntityModel player2Entity;
@@ -31,22 +30,9 @@ public class MatchModel {
         rock = new RockHandModel(Gdx.graphics.getWidth()/8,100,0);
         paper = new PaperHandModel(Gdx.graphics.getWidth()/4, 100, 0);
         scissor = new ScissorHandModel(Gdx.graphics.getWidth()/2, 100, 0);
-        currentOption = null;
         player1Entity = null;
         player2Entity = null;
     }
-
-   /* public void setCurrentOption(String option) {
-        if(option.equals("null")) {
-            currentOption = null;
-        } else if(option.equals("rock")) {
-            currentOption = new RockHandModel(50, 50, 0);
-        } else if(option.equals("paper")) {
-            currentOption = new PaperHandModel(50, 50, 0);
-        } else if(option.equals("scissor")) {
-            currentOption = new ScissorHandModel(50, 50, 0);
-        }
-    }*/
 
     public EntityModel setMyChoice(String s) {
         float width;
@@ -76,8 +62,7 @@ public class MatchModel {
     }
 
     public void reset() {
-        player1Entity = null;
-        player2Entity = null;
+        instance = null;
     }
     public RockHandModel getRock() { return rock; }
     public PaperHandModel getPaper() { return paper; }

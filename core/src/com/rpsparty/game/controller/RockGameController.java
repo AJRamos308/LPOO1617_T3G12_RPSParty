@@ -180,12 +180,16 @@ public class RockGameController{
         if(points != opponentPoints) {
             if (points > opponentPoints) {//ganhei
                 MatchController.getInstance().getSets().add(1);
+                MatchController.getInstance().increaseSet();
             } else {
                 MatchController.getInstance().getSets().add(0);
+                MatchController.getInstance().increaseSet();
             }
-            MatchController.getInstance().increaseSet();
+
         }
     }
+
+    public boolean isTie() { return points == opponentPoints; }
 
     public void reset() { instance = null; }
 

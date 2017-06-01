@@ -17,6 +17,7 @@ public class RPSParty extends Game {
 	private SpriteBatch batch;
 	private AssetManager assetManager;
 	public boolean backpressed = false;
+	private static int port = 9021;
 
 	/**
 	 * Creates the game. Initializes the sprite batch and asset manager.
@@ -53,6 +54,12 @@ public class RPSParty extends Game {
 	 */
 	public AssetManager getAssetManager() {
 		return assetManager;
+	}
+
+	public int getPort() {
+		int aux = port;
+		port++;
+		return aux;
 	}
 
 	/**

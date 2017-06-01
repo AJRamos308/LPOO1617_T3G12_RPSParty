@@ -52,7 +52,6 @@ public class GameScreen extends ScreenAdapter {
     private RockButton rockButton;
     private ResultsActor resultsActor;
     private Texture areYouReady;
-    private int bestOf = 3;
 
     public GameScreen(RPSParty game) {
         System.out.println("\nmudou para GameScreen\n");
@@ -115,8 +114,8 @@ public class GameScreen extends ScreenAdapter {
 
         stage.act();
         if(MatchController.getInstance().getMyChoice() == "") {//so desenhar butoes enquanto o utilizador nao escolher opcao
-            if (MatchController.getInstance().getSets().size() >= bestOf){
-                ConnectionSockets.getInstance().reset();
+            System.out.println("Tamanho de sets: "+MatchController.getInstance().getSets().size());
+            if (MatchController.getInstance().isEndOfGame()){
                 game.setScreen(new EndGameScreen(game));
                 //TODO:Fechar sockets
             }
@@ -214,7 +213,7 @@ public class GameScreen extends ScreenAdapter {
             view = new RockView(game);
         } else if(playerChoice instanceof PaperHandModel) {
             view = new PaperView(game);
-        } if(playerChoice instanceof ScissorHandModel) {
+        } else if(playerChoice instanceof ScissorHandModel) {
             view = new ScissorView(game);
         }
         view.update(playerChoice);
@@ -229,7 +228,7 @@ public class GameScreen extends ScreenAdapter {
             startAnimation(delta);
         } else {
             game.getBatch().begin();
-            game.getBatch().draw(areYouReady, graphics.getWidth() / 2, graphics.getHeight() / 2);
+            game.getBatch().draw(areYouReady, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
             game.getBatch().end();
             MatchController.getInstance().shakeUpdate(delta);
         }
@@ -244,6 +243,9 @@ public class GameScreen extends ScreenAdapter {
             if (!MatchController.getInstance().resetMatch(delta)) {//se ainda nao passaram os 3 segundos depois da colisao...
                 drawAnimation();//...continua a desenhar a animacao
             } else {
+                System.out.println("Vai sincronizar");
+                MatchController.getInstance().synchronizeThreads();
+                System.out.println("Sincronizou");
                 if(MatchController.getInstance().isTie()) {
                     String element = MatchController.getInstance().getMyChoice();
                     MatchController.getInstance().resetChoices();
@@ -251,7 +253,10 @@ public class GameScreen extends ScreenAdapter {
                 } else {
                     MatchController.getInstance().resetChoices();
                     System.out.println("vai criar thread");
-                    MatchController.getInstance().createReadThread();
+                    if(!MatchController.getInstance().isEndOfGame()) {
+                        System.out.println("nao e fim de jogo por isso vai criar thread");
+                        MatchController.getInstance().createReadThread();
+                    }
                 }
             }
         }
@@ -275,6 +280,12 @@ public class GameScreen extends ScreenAdapter {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
         camera.update();
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+        areYouReady.dispose();
     }
 
 }

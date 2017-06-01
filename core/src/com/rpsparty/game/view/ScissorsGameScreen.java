@@ -146,9 +146,15 @@ public class ScissorsGameScreen extends ScreenAdapter{
             //fim do mini-jogo
             if(!playAnimation(delta)) {//a animacao ja foi reproduzida
                 ScissorGameController.getInstance().finalResult();
+                boolean tie = ScissorGameController.getInstance().isTie();
                 ScissorGameController.getInstance().reset();
                 this.dispose();
-                game.setScreen(new MiniGameEndScreen(game, 2, MatchController.getInstance().getSets().get(MatchController.getInstance().getSets().size()-1)));
+                if(tie) {
+                    game.setScreen(new GameScreen(game));
+                } else {
+                    game.setScreen(new MiniGameEndScreen(game, 2, MatchController.getInstance().getLastResult()));
+                }
+                return;
             }
             drawLine();
             game.getBatch().begin();

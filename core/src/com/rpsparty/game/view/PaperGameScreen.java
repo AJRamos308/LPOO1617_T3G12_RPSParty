@@ -144,8 +144,13 @@ public class PaperGameScreen extends ScreenAdapter {
         updateTime(delta);
         if (timeToPlay < 0) {
             PaperGameController.getInstance().finalResult();
+            boolean tie = PaperGameController.getInstance().isTie();
             PaperGameController.getInstance().reset();
-            game.setScreen(new MiniGameEndScreen(game, 1, MatchController.getInstance().getSets().get(MatchController.getInstance().getSets().size()-1)));
+            if(tie) {
+                game.setScreen(new GameScreen(game));
+            } else {
+                game.setScreen(new MiniGameEndScreen(game, 1, MatchController.getInstance().getLastResult()));
+            }
         }
     }
 

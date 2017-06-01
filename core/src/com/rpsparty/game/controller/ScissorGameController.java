@@ -76,10 +76,11 @@ public class ScissorGameController {
         if(points != opponentPoints) {
             if (points > opponentPoints) {//ganhei
                 MatchController.getInstance().getSets().add(1);
+                MatchController.getInstance().increaseSet();
             } else {
                 MatchController.getInstance().getSets().add(0);
+                MatchController.getInstance().increaseSet();
             }
-            MatchController.getInstance().increaseSet();
         }
     }
 
@@ -106,6 +107,7 @@ public class ScissorGameController {
     public double[] getScissorVel() { return scissorVel; }
     public float getScissorAng() { return scissorAng; }
 
+    public boolean isTie() { return points == opponentPoints; }
     public void reset() {
         instance = null;
     }

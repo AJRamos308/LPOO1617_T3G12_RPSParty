@@ -36,12 +36,15 @@ public class PaperGameController {
         if(distance != opponentDistance) {
             if (distance > opponentDistance) {//ganhei
                 MatchController.getInstance().getSets().add(1);
+                MatchController.getInstance().increaseSet();
             } else {
                 MatchController.getInstance().getSets().add(0);
+                MatchController.getInstance().increaseSet();
             }
-            MatchController.getInstance().increaseSet();
         }
     }
+
+    public boolean isTie() { return distance == opponentDistance; }
 
     public void reset() { instance = null; }
 

@@ -51,7 +51,6 @@ public class JoinPartyScreen extends ScreenAdapter {
      * The width of the viewport in meters. The height is
      * automatically calculated using the screen ratio.
      */
-    private static final float VIEWPORT_WIDTH = 20;
     private Stage stage;
     private HelpButton helpButton;
     private TextField serverIP;
@@ -238,7 +237,7 @@ public class JoinPartyScreen extends ScreenAdapter {
                 //create the socket and connect to the server entered in the text box ( x.x.x.x format ) on port 9021
                 try {
                     System.out.println("o cliente vai se ligar ao IP "+serverIP.getText());
-                    Socket socket = Gdx.net.newClientSocket(Protocol.TCP, serverIP.getText(), 9021, socketHints);
+                    Socket socket = Gdx.net.newClientSocket(Protocol.TCP, serverIP.getText(), game.getPort(), socketHints);
                     System.out.println("cliente esta ligado ao servidor!");
                     ConnectionSockets.getInstance().setSocket(socket);
                     System.out.println("cliente criou um socket e servidor ligou-se a ele!");

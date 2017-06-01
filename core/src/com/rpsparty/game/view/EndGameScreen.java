@@ -11,6 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.controller.MatchController;
+import com.rpsparty.game.controller.PaperGameController;
+import com.rpsparty.game.controller.RockGameController;
+import com.rpsparty.game.controller.ScissorGameController;
+import com.rpsparty.game.model.MatchModel;
+import com.rpsparty.game.model.RockGameModel;
 import com.rpsparty.game.view.entities.WinOrLoseView;
 
 /**
@@ -83,9 +88,22 @@ public class EndGameScreen extends ScreenAdapter {
         game.getBatch().end();
         displayTime -= delta;
         if (displayTime < 0){
-            MatchController.getInstance().resetAll();
+            resetAllControllerInstances();
+            resetAllModelInstances();
             game.setScreen(new MainMenuScreen(game));
         }
     }
 
+    public void resetAllControllerInstances() {
+        PaperGameController.getInstance().reset();
+        RockGameController.getInstance().reset();
+        ScissorGameController.getInstance().reset();
+        MatchController.getInstance().clearSets();
+        MatchController.getInstance().resetAll();
+    }
+
+    public void resetAllModelInstances() {
+        MatchModel.getInstance().reset();
+        RockGameModel.getInstance().reset();
+    }
 }
