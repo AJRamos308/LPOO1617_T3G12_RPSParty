@@ -4,12 +4,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.rpsparty.game.model.entities.RockObjectGameModel;
 
-
-
-/**
- * Created by bibib on 18/05/2017.
- */
-
 public class RockGameBody {
     private int touchTime = 0;
     private float latentTime;

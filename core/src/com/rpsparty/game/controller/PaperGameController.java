@@ -21,10 +21,6 @@ public class PaperGameController {
         return instance;
     }
 
-    public void update(float increment){
-        distance += Math.abs(increment);
-    }
-
     public void setDistance(float d) { distance += d;}
 
     public void setTimeToNextFrame(float time) { timeToNextFrame = time; }

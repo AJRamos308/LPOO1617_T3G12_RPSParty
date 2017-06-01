@@ -4,10 +4,6 @@ import com.badlogic.gdx.Gdx;
 import java.util.Random;
 
 
-/**
- * Created by bibib on 22/05/2017.
- */
-
 public class ScissorGameController {
 
     private static ScissorGameController instance;
