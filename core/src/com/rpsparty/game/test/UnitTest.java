@@ -106,8 +106,8 @@ public class UnitTest extends GameTest{
 
     @Test
     public void ScissorsGameControl(){
-        ScissorGameController.getInstance().reset();
         ScissorGameController.getInstance();
+        ScissorGameController.getInstance().reset();
         assertTrue(ScissorGameController.getInstance().getMyPoints() == 0);
         ScissorGameController.getInstance().setCenter(200,200);
         ScissorGameController.getInstance().setRadius(5);
