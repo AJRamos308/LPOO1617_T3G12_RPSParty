@@ -27,7 +27,7 @@ public class PaperGameActor extends Actor {
     public PaperGameActor(){
         float width = texture.getWidth();
         float height = texture.getHeight();
-        setBounds(Gdx.graphics.getWidth()/2-width/2,Gdx.graphics.getHeight()/2-height,width,height);
+        setBounds(Gdx.graphics.getWidth()/16,0,Gdx.graphics.getWidth()-Gdx.graphics.getWidth()/8,Gdx.graphics.getHeight()-Gdx.graphics.getHeight()/8);
         addListener(new ActorGestureListener(){
             public void fling(InputEvent event, float velocityX, float velocityY, int button) {
                 if(velocityY < 0) {
@@ -59,7 +59,7 @@ public class PaperGameActor extends Actor {
     public void draw(Batch batch, float alpha){
         float width = texture.getWidth();
         float height = texture.getHeight();
-        batch.draw(texture,Gdx.graphics.getWidth()/2-width/2,Gdx.graphics.getHeight()/2-height,width,height);
+        batch.draw(texture,Gdx.graphics.getWidth()/16,0,Gdx.graphics.getWidth()-Gdx.graphics.getWidth()/8,Gdx.graphics.getHeight()-Gdx.graphics.getHeight()/8);
     }
 
     @Override

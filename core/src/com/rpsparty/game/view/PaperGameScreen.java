@@ -177,6 +177,6 @@ public class PaperGameScreen extends ScreenAdapter {
         float width = paperTexture.getWidth()/5;
         float height = paperTexture.getHeight();
         sprite = new Sprite();
-        sprite.setBounds((float)(Gdx.graphics.getWidth()/2-(47.2/1080)*Gdx.graphics.getWidth()),(float)(122.85/1920)*Gdx.graphics.getHeight(),(width/1080)*Gdx.graphics.getWidth(),(height/1920)*Gdx.graphics.getHeight());
+        sprite.setBounds(27*Gdx.graphics.getWidth()/64,Gdx.graphics.getHeight()/128,15*Gdx.graphics.getWidth()/32,3*Gdx.graphics.getHeight()/4);
     }
 }
