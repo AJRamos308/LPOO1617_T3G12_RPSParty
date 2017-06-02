@@ -10,9 +10,9 @@ public class PaperHandBody extends EntityBody {
     public PaperHandBody(World world, PaperHandModel model) {
         super(world, model);
         float density = 0.3f, friction = 0.4f, restitution = 0.1f;
-        int width = 190, height = 190;
+        int width = Gdx.graphics.getWidth()/4;
         PolygonShape shape =new PolygonShape();
-        shape.setAsBox(width/2,height/2);
-        createFixture(shape, width, height, density, friction, restitution, PAPER_BODY, (short) (ROCK_BODY | PAPER_BODY | SCISSOR_BODY));
+        shape.setAsBox(width/2,width/2);
+        createFixture(shape, width, width, density, friction, restitution, PAPER_BODY, (short) (ROCK_BODY | PAPER_BODY | SCISSOR_BODY));
     }
 }

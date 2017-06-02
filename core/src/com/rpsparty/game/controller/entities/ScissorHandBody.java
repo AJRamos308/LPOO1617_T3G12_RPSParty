@@ -10,10 +10,10 @@ public class ScissorHandBody extends EntityBody {
     public ScissorHandBody(World world, ScissorHandModel model) {
         super(world, model);
         float density = 0.7f, friction = 0.4f, restitution = 0.3f;
-        int width = 190, height = 190;
+        int width = Gdx.graphics.getWidth()/4;
         PolygonShape shape =new PolygonShape();
-        shape.setAsBox(width/2,height/2);
+        shape.setAsBox(width/2,width/2);
 
-        createFixture(shape, width, height, density, friction, restitution, SCISSOR_BODY, (short) (ROCK_BODY | PAPER_BODY | SCISSOR_BODY));
+        createFixture(shape, width, width, density, friction, restitution, SCISSOR_BODY, (short) (ROCK_BODY | PAPER_BODY | SCISSOR_BODY));
     }
 }
