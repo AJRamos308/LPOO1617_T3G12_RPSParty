@@ -106,6 +106,28 @@ public class UnitTest extends GameTest{
 
     @Test
     public void ScissorsGameControl(){
+        ScissorGameController.getInstance().reset();
         ScissorGameController.getInstance();
+        assertTrue(ScissorGameController.getInstance().getMyPoints() == 0);
+        ScissorGameController.getInstance().setCenter(200,200);
+        ScissorGameController.getInstance().setRadius(5);
+        assertEquals(5,(int)ScissorGameController.getInstance().getRadius());
+        ScissorGameController.getInstance().setMyPoints(150,150);
+        assertTrue(ScissorGameController.getInstance().getMyPoints() > 0);
+        assertTrue(ScissorGameController.getInstance().setScissorPosition(0.1f));
+        assertFalse(ScissorGameController.getInstance().isTie());
+        //ScissorPos[0] = 200+5*cos(0.1) ~= 204.975
+        //ScissorPos[1] = 200+5*sin(0.1) ~= 200.49916
+        //Vel[0] = -5*sin(0.1) ~= -0.499    Last = 0
+        //Vel[1] =  5*cos(0.1) ~= 4.975          Last = 1
+        //Norma ~= 1   Last = 1
+        //Ang ~= 0.1
+        assertEquals(204.975 ,ScissorGameController.getInstance().getScissorPosition()[0], 0.01);
+        assertEquals(200.49916 ,ScissorGameController.getInstance().getScissorPosition()[1], 0.01);
+        assertEquals(-0.499 ,ScissorGameController.getInstance().getScissorVel()[0], 0.01);
+        assertEquals(4.975 ,ScissorGameController.getInstance().getScissorVel()[1], 0.01);
+        assertEquals(0.1, ScissorGameController.getInstance().getScissorAng(), 0.01);
+
+        System.out.println(ScissorGameController.getInstance().getScissorAng());
     }
 }

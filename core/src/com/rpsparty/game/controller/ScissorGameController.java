@@ -47,13 +47,16 @@ public class ScissorGameController {
         return instance;
     }
 
+    public void setCenter(Integer Xcenter, Integer Ycenter){
+        centerX = Xcenter;
+        centerY = Ycenter;
+    }
+
     public void setRadius(Integer r) { radius = r; }
 
     public int getCircleSize() { return circleSize; }
 
     public float getMyPoints() { return points; }
-
-    public float getOpponentPoints() { return opponentPoints; }
 
     public void setMyPoints(Integer x, Integer y) {
         double distance = Math.sqrt(Math.pow(x-centerX, 2)+Math.pow(y-centerY, 2));
@@ -85,6 +88,7 @@ public class ScissorGameController {
     }
 
     public Integer getRadius () { return radius; }
+
     public boolean setScissorPosition (float delta) {
         stateTime += delta;
         if(stateTime*w < 2*Math.PI) {
@@ -104,10 +108,13 @@ public class ScissorGameController {
     }
 
     public double[] getScissorPosition() { return scissorPosition; }
+
     public double[] getScissorVel() { return scissorVel; }
+
     public float getScissorAng() { return scissorAng; }
 
     public boolean isTie() { return points == opponentPoints; }
+
     public void reset() {
         instance = null;
     }
