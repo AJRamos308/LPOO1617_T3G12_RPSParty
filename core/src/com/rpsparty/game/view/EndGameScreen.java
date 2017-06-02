@@ -90,6 +90,7 @@ public class EndGameScreen extends ScreenAdapter {
         if (displayTime < 0){
             resetAllControllerInstances();
             resetAllModelInstances();
+            game.resetServer();
             game.setScreen(new MainMenuScreen(game));
         }
     }

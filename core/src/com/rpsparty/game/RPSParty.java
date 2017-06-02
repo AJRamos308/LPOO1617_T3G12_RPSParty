@@ -2,31 +2,23 @@ package com.rpsparty.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import com.rpsparty.game.view.EndGameScreen;
-import com.rpsparty.game.view.GameScreen;
-import com.rpsparty.game.view.MainMenuScreen;
-
-import com.badlogic.gdx.net.Socket;
-import com.rpsparty.game.view.PaperGameScreen;
-import com.rpsparty.game.view.RockGameScreen;
-import com.rpsparty.game.view.ScissorsGameScreen;
+import com.badlogic.gdx.net.ServerSocket;
 import com.rpsparty.game.view.SplashScreen;
 
 public class RPSParty extends Game {
 	private SpriteBatch batch;
 	private AssetManager assetManager;
 	public boolean backpressed = false;
-	private static int port = 9021;
 	private int bestOf;
-
+    private ServerSocket server;
 	/**
 	 * Creates the game. Initializes the sprite batch and asset manager.
 	 * Also starts the game until we have a main menu.
 	 */
 	@Override
 	public void create () {
-		bestOf = 3;
+        server = null;
+        bestOf = 0;
 		batch = new SpriteBatch();
 		assetManager = new AssetManager();
 		startGame();
@@ -57,12 +49,6 @@ public class RPSParty extends Game {
 		return assetManager;
 	}
 
-	public int getPort() {
-		int aux = port;
-		port++;
-		return aux;
-	}
-
 	/**
 	 * Returns the sprite batch used to improve drawing performance.
 	 *
@@ -83,4 +69,16 @@ public class RPSParty extends Game {
 	 * @return
      */
 	public int getBestOf() { return bestOf; }
+    /**
+     * saves de server socket
+     * @param socket
+     */
+    public void setServer(ServerSocket socket) { server = socket; }
+
+    public void resetServer() {
+        if(server != null) {
+            server.dispose();
+            server = null;
+        }
+    }
 }

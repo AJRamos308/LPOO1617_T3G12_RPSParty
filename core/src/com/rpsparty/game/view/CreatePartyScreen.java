@@ -269,6 +269,7 @@ public class CreatePartyScreen extends ScreenAdapter {
                 // 0 means no timeout.  Probably not the greatest idea in production!
                 serverSocketHint.acceptTimeout = 0;
                 serverSocketHint.reuseAddress = true;
+                int port = 9021;
 
                 boolean connected = false;
                 while(!connected) {
@@ -276,14 +277,16 @@ public class CreatePartyScreen extends ScreenAdapter {
                         // Create the socket server using TCP protocol and listening on 9021
                         // Only one app can listen to a port at a time, keep in mind many ports are reserved
                         // especially in the lower numbers ( like 21, 80, etc )
-                        ServerSocket serverSocket = Gdx.net.newServerSocket(Protocol.TCP, game.getPort(), serverSocketHint);
+                        ServerSocket serverSocket = Gdx.net.newServerSocket(Protocol.TCP, port, serverSocketHint);
                         System.out.println("criou um socket");
                         connected = true;
                         Socket client = serverSocket.accept(null);//fica a espera que alguem se conecte
+                        game.setServer(serverSocket);
                         ConnectionSockets.getInstance().setSocket(client);
                         System.out.println("aceitou cliente");
                     } catch (GdxRuntimeException e) {
                         e.printStackTrace();
+                        port++;
                     }
                 }
 
