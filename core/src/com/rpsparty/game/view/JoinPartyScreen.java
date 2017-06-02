@@ -120,6 +120,8 @@ public class JoinPartyScreen extends ScreenAdapter {
         game.getBatch().end();
         goBack();
         if(startGame) {
+            int bestOf = Integer.parseInt(ConnectionSockets.getInstance().receiveMessage());
+            game.setBestOf(bestOf);
             game.setScreen(new GameScreen(game));
         }
     }
@@ -235,17 +237,20 @@ public class JoinPartyScreen extends ScreenAdapter {
                 // Socket will time our in 4 seconds
                 socketHints.connectTimeout = 4000;
                 //create the socket and connect to the server entered in the text box ( x.x.x.x format ) on port 9021
-                try {
-                    System.out.println("o cliente vai se ligar ao IP "+serverIP.getText());
-                    Socket socket = Gdx.net.newClientSocket(Protocol.TCP, serverIP.getText(), game.getPort(), socketHints);
-                    System.out.println("cliente esta ligado ao servidor!");
-                    ConnectionSockets.getInstance().setSocket(socket);
-                    System.out.println("cliente criou um socket e servidor ligou-se a ele!");
-                    startGame = true;
-                } catch (GdxRuntimeException e) {
-                    System.out.println("Exception");
-                    e.printStackTrace();
+                boolean connected = false;
+                while(!connected) {
+                    try {
+                        System.out.println("o cliente vai se ligar ao IP " + serverIP.getText());
+                        Socket socket = Gdx.net.newClientSocket(Protocol.TCP, serverIP.getText(), game.getPort(), socketHints);
+                        connected = true;
+                        System.out.println("cliente esta ligado ao servidor!");
+                        ConnectionSockets.getInstance().setSocket(socket);
+                    } catch (GdxRuntimeException e) {
+                        System.out.println("Exception");
+                        e.printStackTrace();
+                    }
                 }
+                startGame = true;
             }}).start();
     }
 

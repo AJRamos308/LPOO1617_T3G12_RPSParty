@@ -39,8 +39,8 @@ public class MainMenuScreen extends ScreenAdapter {
     private Stage stage;
     private CreatePartyButton createPartyButton;
     private JoinPartyButton joinPartyButton;
-   /* private HelpButton helpButton;
-    private AchievementsButton achievementsButton;
+    private HelpButton helpButton;
+   /* private AchievementsButton achievementsButton;
     private SettingsButton settingsButton;
     */
 
@@ -48,15 +48,12 @@ public class MainMenuScreen extends ScreenAdapter {
         this.game = game;
         loadAssets();
         camera = createCamera();
-        addButtons();
+        createButtons();
         addListeners();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        stage.addActor(background);
-        stage.addActor(createPartyButton);
-        stage.addActor(joinPartyButton);
-        /*stage.addActor(helpButton);
-        stage.addActor(achievementsButton);
+        addButtons();
+       /* stage.addActor(achievementsButton);
         stage.addActor(settingsButton);
         */
         resetSockets();
@@ -74,6 +71,7 @@ public class MainMenuScreen extends ScreenAdapter {
         this.game.getAssetManager().load( "JoinPartyBtn.png" , Texture.class);
         this.game.getAssetManager().load( "StartPartyBtn.png" , Texture.class);
         this.game.getAssetManager().load( "MainMenuWall.png" , Texture.class);
+        this.game.getAssetManager().load( "infoBtn.png" , Texture.class);
         this.game.getAssetManager().finishLoading();
     }
     /**
@@ -119,15 +117,22 @@ public class MainMenuScreen extends ScreenAdapter {
 
     }
 
-    public void addButtons() {
+    public void createButtons() {
         createPartyButton = new CreatePartyButton(game);
         joinPartyButton = new JoinPartyButton(game);
-       /* helpButton = new HelpButton(game);
-        achievementsButton = new AchievementsButton(game);
+        helpButton = new HelpButton(game);
+       /* achievementsButton = new AchievementsButton(game);
         settingsButton = new SettingsButton(game);
-        */
+       */
         background = new Image(new TextureRegion((Texture)game.getAssetManager().get("MainMenuWall.png")));
         background.setFillParent(true);
+    }
+
+    public void addButtons() {
+        stage.addActor(background);
+        stage.addActor(createPartyButton);
+        stage.addActor(joinPartyButton);
+        stage.addActor(helpButton);
     }
 
     public void addListeners() {
@@ -141,12 +146,12 @@ public class MainMenuScreen extends ScreenAdapter {
                 game.setScreen(new JoinPartyScreen(game));
                 System.out.println("join party!");
             }});
-        /*helpButton.addListener(new ClickListener() {
+        helpButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                //TODO: fazer setScreen()
                 System.out.println("HELP!");
+                game.setScreen(new InfoScreen(game));
             }});
-            */
+
     }
 
     public void resetSockets() {

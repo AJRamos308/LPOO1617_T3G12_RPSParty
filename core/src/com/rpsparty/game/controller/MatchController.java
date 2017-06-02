@@ -66,11 +66,6 @@ public class MatchController implements ContactListener {
 
     private MatchController() {
         world = new World(new Vector2(0, 0), true);
-
-       /* rock = new RockHandBody(world, MatchModel.getInstance().getRock());
-        paper = new PaperHandBody(world, MatchModel.getInstance().getPaper());
-        scissor = new ScissorHandBody(world, MatchModel.getInstance().getScissor());
-        */
         world.setContactListener(this);
         myChoice = "";
         opponentChoice = "";
@@ -388,4 +383,6 @@ public class MatchController implements ContactListener {
         sets.clear(); }
 
     public boolean isEndOfGame() {return (sets.size() == nSets); }
+
+    public void setNSets(int bestOf) { nSets = bestOf; }
 }

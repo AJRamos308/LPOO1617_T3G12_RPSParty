@@ -67,6 +67,7 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(rockButton);
         stage.addActor(resultsActor);
         areYouReady = new Texture(Gdx.files.internal("areuready.png"));
+        MatchController.getInstance().setNSets(game.getBestOf());
         MatchController.getInstance().createReadThread();
 
     }

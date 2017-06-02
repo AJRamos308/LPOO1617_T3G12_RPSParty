@@ -18,6 +18,7 @@ public class RPSParty extends Game {
 	private AssetManager assetManager;
 	public boolean backpressed = false;
 	private static int port = 9021;
+	private int bestOf;
 
 	/**
 	 * Creates the game. Initializes the sprite batch and asset manager.
@@ -25,6 +26,7 @@ public class RPSParty extends Game {
 	 */
 	@Override
 	public void create () {
+		bestOf = 3;
 		batch = new SpriteBatch();
 		assetManager = new AssetManager();
 		startGame();
@@ -71,4 +73,15 @@ public class RPSParty extends Game {
 		return batch;
 	}
 
+	/**
+	 * changes the bestOf value (numer of game sets)
+	 * @param value
+     */
+	public void setBestOf(int value) { bestOf = value; }
+
+	/**
+	 * get the bestOf value (number of game sets)
+	 * @return
+     */
+	public int getBestOf() { return bestOf; }
 }

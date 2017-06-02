@@ -25,21 +25,12 @@ import static com.badlogic.gdx.utils.Align.center;
 import static com.badlogic.gdx.utils.Align.left;
 
 public class PaperGameScreen extends ScreenAdapter {
-    /**
-     * How much meters does a pixel represent.
-     */
-    public final static float PIXEL_TO_METER = 0.04f;
 
     private final RPSParty game;
     /**
      * The camera used to show the viewport.
      */
     private final OrthographicCamera camera;
-    /**
-     * The width of the viewport in meters. The height is
-     * automatically calculated using the screen ratio.
-     */
-    private static final float VIEWPORT_WIDTH = 20;
     private Stage stage;
     private Actor paper;
     private float timeToPlay;
@@ -82,12 +73,9 @@ public class PaperGameScreen extends ScreenAdapter {
      * @return the camera
      */
     private OrthographicCamera createCamera() {
-        float ratio = ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
-        OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
-
+        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
-
         return camera;
     }
     /**
@@ -135,12 +123,7 @@ public class PaperGameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
-        stage.act(delta);
-        stage.draw();
-        updateSprite();
-        game.getBatch().begin();
-        sprite.draw(game.getBatch());
-        game.getBatch().end();
+        drawElements(delta);
         updateTime(delta);
         if (timeToPlay < 0) {
             PaperGameController.getInstance().finalResult();
@@ -163,6 +146,19 @@ public class PaperGameScreen extends ScreenAdapter {
         timerValue = Math.round(timeToPlay);
         timer.setText(Integer.toString(timerValue));
         points.setText("Points: "+PaperGameController.getInstance().getMyPoints());
+    }
+
+    /**
+     * Draw all the screen elements
+     * @param delta
+     */
+    public void drawElements(float delta) {
+        stage.act(delta);
+        stage.draw();
+        updateSprite();
+        game.getBatch().begin();
+        sprite.draw(game.getBatch());
+        game.getBatch().end();
     }
 
     /**

@@ -14,12 +14,14 @@ import com.badlogic.gdx.net.ServerSocketHints;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.controller.ConnectionSockets;
-import com.rpsparty.game.view.entities.HelpButton;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Net.Protocol;
 import java.net.Inet4Address;
@@ -52,16 +54,21 @@ public class CreatePartyScreen extends ScreenAdapter {
      */
     private static final float VIEWPORT_WIDTH = 20;
     private Stage stage;
-    private HelpButton helpButton;
     private Label myIP;
+    private Label bestOfLabel;
+    private TextButton bestOf1, bestOf3, bestOf5;
     private String ipAddress;
     private boolean startGame;
     private Image background;
+    private BitmapFont font;
+    private int bestOfChoosen;
 
     public CreatePartyScreen(RPSParty game) {
         this.game = game;
         loadAssets();
         camera = createCamera();
+        bestOfChoosen = 0;
+        createFont();
 
         startGame = false;
         addButtons();
@@ -69,9 +76,7 @@ public class CreatePartyScreen extends ScreenAdapter {
         addLabel();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        stage.addActor(background);
-       // stage.addActor(helpButton);
-        stage.addActor(myIP);
+        addActorsToStage();
         ipAddress = "";
         while(ipAddress.equals("")) {
             getIP();
@@ -105,6 +110,15 @@ public class CreatePartyScreen extends ScreenAdapter {
         return camera;
     }
 
+    private void createFont() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Mf I Love Glitter.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = (Gdx.graphics.getHeight()/12);
+        font = generator.generateFont(parameter); // font size 12 pixels
+        generator.dispose(); // don't forget to dispose to avoid memory leaks!
+
+    }
+
     /**
      * Renders this screen.
      *
@@ -123,7 +137,8 @@ public class CreatePartyScreen extends ScreenAdapter {
         stage.draw();
         game.getBatch().end();
         goBack();
-        if(startGame) {
+        if(startGame && (bestOfChoosen != 0)) {
+            ConnectionSockets.getInstance().sendMessage(Integer.toString(bestOfChoosen)+"\n");
             this.dispose();
             game.setScreen(new GameScreen(game));
         }
@@ -138,33 +153,108 @@ public class CreatePartyScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * add buttons to the screen
+     */
     public void addButtons() {
         background = new Image(new TextureRegion((Texture)game.getAssetManager().get("background.jpg")));
         background.setFillParent(true);
-        helpButton = new HelpButton(game);
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = font;
+        style.fontColor = Color.CORAL;
+        btn1(style);
+        btn3(style);
+        btn5(style);
     }
 
-    public void addLabel() {
-        Label.LabelStyle style = new Label.LabelStyle();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Mf I Love Glitter.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = (Gdx.graphics.getHeight()/12);
-        BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
-        generator.dispose(); // don't forget to dispose to avoid memory leaks!
-        style.font = font;
-        style.fontColor = Color.BLACK;
-        myIP = new Label("", style);
-        myIP.setBounds(Gdx.graphics.getWidth()/4, 5*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/4);
-        myIP.setAlignment(center);
+    /**
+     * sets up button for Best Of 1
+     * @param style
+     */
+    public void btn1(TextButton.TextButtonStyle style) {
+        bestOf1 = new TextButton("1", style);
+        bestOf1.setY(Gdx.graphics.getHeight()/8);
+        bestOf1.setX((Gdx.graphics.getWidth()/10));
+        bestOf1.setWidth(Gdx.graphics.getWidth()/5);
+        bestOf1.setHeight(Gdx.graphics.getHeight()/5);
+    }
+
+    /**
+     * sets up button for Best Of 3
+     * @param style
+     */
+    public void btn3(TextButton.TextButtonStyle style) {
+        bestOf3 = new TextButton("3", style);
+        bestOf3.setY(Gdx.graphics.getHeight()/8);
+        bestOf3.setX(2*(Gdx.graphics.getWidth()/10)+Gdx.graphics.getWidth()/5);
+        bestOf3.setWidth(Gdx.graphics.getWidth()/5);
+        bestOf3.setHeight(Gdx.graphics.getHeight()/5);
+    }
+
+    /**
+     * sets up button for Best Of 5
+     * @param style
+     */
+    public void btn5(TextButton.TextButtonStyle style) {
+        bestOf5 = new TextButton("5", style);
+        bestOf5.setY(Gdx.graphics.getHeight()/8);
+        bestOf5.setX(3*(Gdx.graphics.getWidth()/10)+2*Gdx.graphics.getWidth()/5);
+        bestOf5.setWidth(Gdx.graphics.getWidth()/5);
+        bestOf5.setHeight(Gdx.graphics.getHeight()/5);
     }
 
     public void addListeners() {
-        helpButton.addListener(new ClickListener() {
+        bestOf1.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                //TODO: fazer setScreen()
-                System.out.println("HELP!");
+                game.setBestOf(1);
+                System.out.println("Best Of 1");
+                bestOfChoosen = 1;
+                Gdx.input.vibrate(200);
             }});
+        bestOf3.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                game.setBestOf(3);
+                System.out.println("Best Of 3");
+                bestOfChoosen = 3;
+                Gdx.input.vibrate(200);
+            }});
+        bestOf5.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                game.setBestOf(5);
+                System.out.println("Best Of 5");
+                bestOfChoosen = 5;
+                Gdx.input.vibrate(200);
+            }});
+
     }
+    public void addLabel() {
+        Label.LabelStyle style = new Label.LabelStyle();
+        style.font = font;
+        style.fontColor = Color.BLACK;
+        myIP = new Label("", style);
+        myIP.setBounds(Gdx.graphics.getWidth()/4, 8*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/4);
+        myIP.setAlignment(center);
+        Label.LabelStyle style2 = new Label.LabelStyle();
+        style2.font = font;
+        style2.fontColor = Color.CORAL;
+        bestOfLabel = new Label("Best of", style2);
+        bestOfLabel.setBounds(Gdx.graphics.getWidth()/4, 4*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/4);
+        bestOfLabel.setAlignment(center);
+
+    }
+
+    /**
+     * add all the actors to the stage
+     */
+    public void addActorsToStage() {
+        stage.addActor(background);
+        stage.addActor(myIP);
+        stage.addActor(bestOfLabel);
+        stage.addActor(bestOf1);
+        stage.addActor(bestOf3);
+        stage.addActor(bestOf5);
+    }
+
     /*
     *espera que um cliente se ligue ao nosso socket
     * e le o que o cliente escreve para o socket
@@ -180,14 +270,23 @@ public class CreatePartyScreen extends ScreenAdapter {
                 serverSocketHint.acceptTimeout = 0;
                 serverSocketHint.reuseAddress = true;
 
-                // Create the socket server using TCP protocol and listening on 9021
-                // Only one app can listen to a port at a time, keep in mind many ports are reserved
-                // especially in the lower numbers ( like 21, 80, etc )
-                ServerSocket serverSocket = Gdx.net.newServerSocket(Protocol.TCP, game.getPort(), serverSocketHint);
-                System.out.println("criou um socket");
-                Socket client = serverSocket.accept(null);//fica a espera que alguem se conecte
-                ConnectionSockets.getInstance().setSocket(client);
-                System.out.println("aceitou cliente");
+                boolean connected = false;
+                while(!connected) {
+                    try {
+                        // Create the socket server using TCP protocol and listening on 9021
+                        // Only one app can listen to a port at a time, keep in mind many ports are reserved
+                        // especially in the lower numbers ( like 21, 80, etc )
+                        ServerSocket serverSocket = Gdx.net.newServerSocket(Protocol.TCP, game.getPort(), serverSocketHint);
+                        System.out.println("criou um socket");
+                        connected = true;
+                        Socket client = serverSocket.accept(null);//fica a espera que alguem se conecte
+                        ConnectionSockets.getInstance().setSocket(client);
+                        System.out.println("aceitou cliente");
+                    } catch (GdxRuntimeException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 startGame = true;
 
             }

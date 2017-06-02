@@ -11,7 +11,7 @@ public class HelpButton extends EntityButton{
     }
 
     public void editStyle(RPSParty game) {
-        skin.add("helpImage", game.getAssetManager().get("badlogic.jpg"));//a imagem e primeiro posta numa skin porque Skin consegue converter o seu conteudo em diferentes tipo como Drawable que e o que nos precisamos para atribuir uma imagem ao butao
+        skin.add("helpImage", game.getAssetManager().get("infoBtn.png"));//a imagem e primeiro posta numa skin porque Skin consegue converter o seu conteudo em diferentes tipo como Drawable que e o que nos precisamos para atribuir uma imagem ao butao
         style = new ButtonStyle();
         style.up = skin.getDrawable("helpImage");
 
