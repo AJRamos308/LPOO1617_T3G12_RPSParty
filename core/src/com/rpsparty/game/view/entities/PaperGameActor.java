@@ -65,6 +65,7 @@ public class PaperGameActor extends Actor {
     @Override
     public void act(float delta) {
         if(!touching) {//ir reduzindo a velocidade de transicao entre frames enquanto nao ha fling; aumentamos o timeToNextFrame
+            PaperGameController.getInstance().setDistance(totalVelocity * delta);
             totalVelocity = totalVelocity > 0 ? totalVelocity - (50+ totalVelocity/90) : 0;//a cada segundo reduz 1/3 da velocidade total
             if(totalVelocity <= 0) { //rolo de papel parado apos esta ultima atualizacao
                 totalVelocity = 0;

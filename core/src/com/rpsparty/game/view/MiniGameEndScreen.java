@@ -105,9 +105,9 @@ public class MiniGameEndScreen extends ScreenAdapter{
         }
         else if (miniGame == PAPERGAME){
             if (win == 1)
-                splashActor = new Image(new TextureRegion(new Texture("scissorsWin.jpg")));
+                splashActor = new Image(new TextureRegion(new Texture("paperWin.jpg")));
             else
-                splashActor = new Image(new TextureRegion(new Texture("scissorsLose.jpg")));
+                splashActor = new Image(new TextureRegion(new Texture("paperLose.jpg")));
         }
         else if (miniGame == SCISSORSGAME){
             if (win == 1)
