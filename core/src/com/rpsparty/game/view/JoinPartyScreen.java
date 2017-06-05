@@ -60,7 +60,6 @@ public class JoinPartyScreen extends ScreenAdapter {
 
     public JoinPartyScreen(RPSParty game) {
         this.game = game;
-        loadAssets();
         camera = createCamera();
 
         startGame = false;
@@ -75,16 +74,6 @@ public class JoinPartyScreen extends ScreenAdapter {
         //stage.addActor(helpButton);
         stage.addActor(serverIP);
         stage.addActor(confirmInput);
-    }
-    /**
-     * Loads the assets needed by this screen.
-     */
-    private void loadAssets() {
-        this.game.getAssetManager().load( "background.jpg" , Texture.class);
-        this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
-        this.game.getAssetManager().load( "cursor.png" , Texture.class);
-        this.game.getAssetManager().load( "Selection.png" , Texture.class);
-        this.game.getAssetManager().finishLoading();
     }
     /**
      * Creates the camera used to show the viewport.
@@ -151,13 +140,13 @@ public class JoinPartyScreen extends ScreenAdapter {
 
     public void addTextArea() {
         TextFieldStyle style = new TextFieldStyle();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Mf I Love Glitter.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixel.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (Gdx.graphics.getHeight()/13);
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
         style.font = font;
-        style.fontColor = Color.BLACK;
+        style.fontColor = Color.WHITE;
         Skin skin = new Skin();
         skin.add("cursor", this.game.getAssetManager().get("cursor.png"));
         skin.add("Selection", this.game.getAssetManager().get("Selection.png"));
@@ -180,13 +169,13 @@ public class JoinPartyScreen extends ScreenAdapter {
 
     public void addTextButton() {
         TextButtonStyle style = new TextButtonStyle();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Mf I Love Glitter.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixel.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (Gdx.graphics.getHeight()/13);
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
         style.font = font;
-        style.fontColor = Color.BLACK;
+        style.fontColor = Color.WHITE;
         confirmInput = new TextButton("Join Party", style);
         confirmInput.setY(Gdx.graphics.getHeight()/4);
         confirmInput.setX(Gdx.graphics.getWidth()/4);

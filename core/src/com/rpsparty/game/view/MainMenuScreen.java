@@ -46,7 +46,6 @@ public class MainMenuScreen extends ScreenAdapter {
 
     public MainMenuScreen(RPSParty game) {
         this.game = game;
-        loadAssets();
         camera = createCamera();
         createButtons();
         addListeners();
@@ -57,22 +56,6 @@ public class MainMenuScreen extends ScreenAdapter {
         stage.addActor(settingsButton);
         */
         resetSockets();
-    }
-    /**
-     * Loads the assets needed by this screen.
-     */
-    private void loadAssets() {
-        /*this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
-        this.game.getAssetManager().load( "test.jpg" , Texture.class);
-        this.game.getAssetManager().load( "Achieve.png" , Texture.class);
-        this.game.getAssetManager().load( "join.jpg" , Texture.class);
-        this.game.getAssetManager().load( "settings.png" , Texture.class);
-        */
-        this.game.getAssetManager().load( "JoinPartyBtn.png" , Texture.class);
-        this.game.getAssetManager().load( "StartPartyBtn.png" , Texture.class);
-        this.game.getAssetManager().load( "MainMenuWall.png" , Texture.class);
-        this.game.getAssetManager().load( "infoBtn.png" , Texture.class);
-        this.game.getAssetManager().finishLoading();
     }
     /**
      * Creates the camera used to show the viewport.
@@ -124,7 +107,7 @@ public class MainMenuScreen extends ScreenAdapter {
        /* achievementsButton = new AchievementsButton(game);
         settingsButton = new SettingsButton(game);
        */
-        background = new Image(new TextureRegion((Texture)game.getAssetManager().get("MainMenuWall.png")));
+        background = new Image(new TextureRegion((Texture)game.getAssetManager().get("BackGround.png")));
         background.setFillParent(true);
     }
 

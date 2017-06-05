@@ -65,7 +65,6 @@ public class CreatePartyScreen extends ScreenAdapter {
 
     public CreatePartyScreen(RPSParty game) {
         this.game = game;
-        loadAssets();
         camera = createCamera();
         bestOfChoosen = 0;
         createFont();
@@ -88,14 +87,6 @@ public class CreatePartyScreen extends ScreenAdapter {
         System.out.println("saiu do seu construtor de classe");
     }
     /**
-     * Loads the assets needed by this screen.
-     */
-    private void loadAssets() {
-        this.game.getAssetManager().load( "background.jpg" , Texture.class);
-        this.game.getAssetManager().load( "badlogic.jpg" , Texture.class);
-        this.game.getAssetManager().finishLoading();
-    }
-    /**
      * Creates the camera used to show the viewport.
      *
      * @return the camera
@@ -111,7 +102,7 @@ public class CreatePartyScreen extends ScreenAdapter {
     }
 
     private void createFont() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Mf I Love Glitter.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixel.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (Gdx.graphics.getHeight()/12);
         font = generator.generateFont(parameter); // font size 12 pixels
@@ -230,13 +221,13 @@ public class CreatePartyScreen extends ScreenAdapter {
     public void addLabel() {
         Label.LabelStyle style = new Label.LabelStyle();
         style.font = font;
-        style.fontColor = Color.BLACK;
+        style.fontColor = Color.WHITE;
         myIP = new Label("", style);
         myIP.setBounds(Gdx.graphics.getWidth()/4, 8*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/4);
         myIP.setAlignment(center);
         Label.LabelStyle style2 = new Label.LabelStyle();
         style2.font = font;
-        style2.fontColor = Color.CORAL;
+        style2.fontColor = Color.WHITE;
         bestOfLabel = new Label("Best of", style2);
         bestOfLabel.setBounds(Gdx.graphics.getWidth()/4, 4*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/4);
         bestOfLabel.setAlignment(center);

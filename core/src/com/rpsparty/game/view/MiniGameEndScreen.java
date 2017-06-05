@@ -99,21 +99,21 @@ public class MiniGameEndScreen extends ScreenAdapter{
     private void setActor(int miniGame,int win){
         if (miniGame == ROCKGAME){
             if (win == 1)
-                splashActor = new Image(new TextureRegion(new Texture("rockWin.jpg")));
+                splashActor = new Image(new TextureRegion(new Texture("RockWin.png")));
             else
-                splashActor = new Image(new TextureRegion(new Texture("rockLost.jpg")));
+                splashActor = new Image(new TextureRegion(new Texture("RockLose.png")));
         }
         else if (miniGame == PAPERGAME){
             if (win == 1)
-                splashActor = new Image(new TextureRegion(new Texture("paperWin.jpg")));
+                splashActor = new Image(new TextureRegion(new Texture("PaperWin.png")));
             else
-                splashActor = new Image(new TextureRegion(new Texture("paperLose.jpg")));
+                splashActor = new Image(new TextureRegion(new Texture("PaperLose.png")));
         }
         else if (miniGame == SCISSORSGAME){
             if (win == 1)
-                splashActor = new Image(new TextureRegion(new Texture("scissorsWin.jpg")));
+                splashActor = new Image(new TextureRegion(new Texture("ScissorWin.png")));
             else
-                splashActor = new Image(new TextureRegion(new Texture("scissorsLose.jpg")));
+                splashActor = new Image(new TextureRegion(new Texture("ScissorLose.png")));
         }
     }
 

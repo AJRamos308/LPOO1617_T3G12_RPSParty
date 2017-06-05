@@ -31,19 +31,10 @@ public class InfoScreen extends ScreenAdapter {
 
     public InfoScreen(RPSParty game) {
         this.game = game;
-        loadAssets();
         camera = createCamera();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         createBackground();
-    }
-
-    /**
-     * Loads the assets needed by this screen.
-     */
-    private void loadAssets() {
-        this.game.getAssetManager().load( "infoScreen.jpg" , Texture.class);
-        this.game.getAssetManager().finishLoading();
     }
     /**
      * Creates the camera used to show the viewport.

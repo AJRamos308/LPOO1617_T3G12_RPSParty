@@ -65,7 +65,7 @@ public class SplashScreen extends ScreenAdapter{
     public void show(){
 
         stage = new Stage();
-        splashActor = new Image(new TextureRegion(new Texture("SplashScreen.jpg")));
+        splashActor = new Image(new TextureRegion(new Texture("SplashScreen.png")));
         splashActor.setFillParent(true);
         SequenceAction actions = new SequenceAction(sequence(fadeIn(2f), delay(1.5f),
                 run(new Runnable() {
@@ -89,6 +89,29 @@ public class SplashScreen extends ScreenAdapter{
     }
     private void loadAssets() {
         //TODO: Fazer load de todas as imagens aqui.
+        this.game.getAssetManager().load( "paper.png" , Texture.class);
+        this.game.getAssetManager().load( "rock.png" , Texture.class);
+        this.game.getAssetManager().load( "scissor.png" , Texture.class);
+        this.game.getAssetManager().load( "check.png" , Texture.class);
+        this.game.getAssetManager().load( "paperanime.png" , Texture.class);
+        this.game.getAssetManager().load( "x.png" , Texture.class);
+        this.game.getAssetManager().load( "BackGround.png" , Texture.class);
+        this.game.getAssetManager().load( "bigSemiCirc.png" , Texture.class);
+        this.game.getAssetManager().load( "mediumSemiCirc.png" , Texture.class);
+        this.game.getAssetManager().load( "smallSemiCirc.png" , Texture.class);
+        this.game.getAssetManager().load( "extrasmallSemiCirc.png" , Texture.class);
+        this.game.getAssetManager().load( "scissorsAnimation.png" , Texture.class);
+        this.game.getAssetManager().load( "rock.png" , Texture.class);
+        this.game.getAssetManager().load( "coin.png" , Texture.class);
+        this.game.getAssetManager().load( "white.jpg" , Texture.class);
+        this.game.getAssetManager().load( "JoinPartyBtn.png" , Texture.class);
+        this.game.getAssetManager().load( "StartPartyBtn.png" , Texture.class);
+        this.game.getAssetManager().load( "infoBtn.png" , Texture.class);
+        this.game.getAssetManager().load( "infoScreen.jpg" , Texture.class);
+        this.game.getAssetManager().load( "loserScreen.png" , Texture.class);
+        this.game.getAssetManager().load( "winnerScreen.png" , Texture.class);
+        this.game.getAssetManager().load( "cursor.png" , Texture.class);
+        this.game.getAssetManager().load( "Selection.png" , Texture.class);
 
         this.game.getAssetManager().finishLoading();
     }

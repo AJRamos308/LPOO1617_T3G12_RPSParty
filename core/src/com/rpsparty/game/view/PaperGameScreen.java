@@ -48,7 +48,6 @@ public class PaperGameScreen extends ScreenAdapter {
      */
     public PaperGameScreen(RPSParty game) {
         this.game = game;
-        loadAssets();
         camera = createCamera();
         stage = new Stage();
         createPaperAnimation();
@@ -59,13 +58,6 @@ public class PaperGameScreen extends ScreenAdapter {
         paper.setTouchable(Touchable.enabled);
         timeToPlay = 30;
         stateTime = 0;
-    }
-    /**
-     * Loads the assets needed by this screen.
-     */
-    private void loadAssets() {
-        this.game.getAssetManager().load( "paperanime.png" , Texture.class);
-        this.game.getAssetManager().finishLoading();
     }
     /**
      * Creates the camera used to show the viewport.
@@ -83,7 +75,7 @@ public class PaperGameScreen extends ScreenAdapter {
      */
     public void addLabels() {
         Label.LabelStyle style = new Label.LabelStyle();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Mf I Love Glitter.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixel.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (Gdx.graphics.getHeight()/18);
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels

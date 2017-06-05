@@ -56,7 +56,6 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(RPSParty game) {
         System.out.println("\nmudou para GameScreen\n");
         this.game = game;
-        loadAssets();
         camera = createCamera();
         addButtons();
         addListeners();
@@ -70,19 +69,6 @@ public class GameScreen extends ScreenAdapter {
         MatchController.getInstance().setNSets(game.getBestOf());
         MatchController.getInstance().createReadThread();
 
-    }
-    /**
-     * Loads the assets needed by this screen.
-     */
-    private void loadAssets() {
-        this.game.getAssetManager().load( "areuready.png" , Texture.class);
-        this.game.getAssetManager().load( "paper.png" , Texture.class);
-        this.game.getAssetManager().load( "rock.png" , Texture.class);
-        this.game.getAssetManager().load( "scissor.png" , Texture.class);
-        this.game.getAssetManager().load( "check.png" , Texture.class);
-        this.game.getAssetManager().load( "paperanime.png" , Texture.class);
-        this.game.getAssetManager().load( "x.png" , Texture.class);
-        this.game.getAssetManager().finishLoading();
     }
     /**
      * Creates the camera used to show the viewport.

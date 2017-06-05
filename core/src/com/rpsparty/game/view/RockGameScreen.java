@@ -54,7 +54,6 @@ public class RockGameScreen extends ScreenAdapter {
     private Label points;
     public RockGameScreen(RPSParty game) {
         this.game = game;
-        loadAssets();
         camera = createCamera();
         stage = new Stage();
         addButtons();
@@ -62,15 +61,6 @@ public class RockGameScreen extends ScreenAdapter {
         addLabel();
         Gdx.input.setInputProcessor(stage);
         addButtonsToStage();
-    }
-    /**
-     * Loads the assets needed by this screen.
-     */
-    private void loadAssets() {
-        this.game.getAssetManager().load( "rock.png" , Texture.class);
-        this.game.getAssetManager().load( "coin.png" , Texture.class);
-        this.game.getAssetManager().load( "white.jpg" , Texture.class);
-        this.game.getAssetManager().finishLoading();
     }
     /**
      * Creates the camera used to show the viewport.
@@ -150,7 +140,7 @@ public class RockGameScreen extends ScreenAdapter {
     }
     public void addLabel() {
         Label.LabelStyle style = new Label.LabelStyle();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Mf I Love Glitter.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixel.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (Gdx.graphics.getHeight()/15);
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels

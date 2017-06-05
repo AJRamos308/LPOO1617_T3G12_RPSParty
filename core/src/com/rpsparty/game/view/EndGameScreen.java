@@ -40,7 +40,6 @@ public class EndGameScreen extends ScreenAdapter {
 
     public EndGameScreen(RPSParty game){
         this.game = game;
-        loadAssets();
         camera = createCamera();
         winner = new WinOrLoseView(game);
         stage = new Stage();
@@ -62,16 +61,6 @@ public class EndGameScreen extends ScreenAdapter {
 
         return camera;
     }
-
-    /**
-     * Loads the assets needed by this screen.
-     */
-    private void loadAssets() {
-        this.game.getAssetManager().load( "loserScreen.png" , Texture.class);
-        this.game.getAssetManager().load( "winnerScreen.png" , Texture.class);
-        this.game.getAssetManager().finishLoading();
-    }
-
     /**
      * Renders this screen.
      *
