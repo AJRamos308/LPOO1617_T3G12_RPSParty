@@ -1,5 +1,6 @@
 package com.rpsparty.game.controller;
 
+import com.badlogic.gdx.net.ServerSocket;
 import com.badlogic.gdx.net.Socket;
 
 import java.io.BufferedReader;
@@ -17,6 +18,8 @@ public class ConnectionSockets {
     private static ConnectionSockets instance;
 
     private Socket socket; //client socket; para onde vamos escrever
+    private ServerSocket server;
+
     /**
      * Returns a singleton instance of a game controller
      *

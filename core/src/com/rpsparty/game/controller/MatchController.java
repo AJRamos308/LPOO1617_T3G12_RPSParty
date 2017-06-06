@@ -109,35 +109,35 @@ public class MatchController implements ContactListener {
 
     public void chooseRock() {
         player1Entity = new RockHandBody(world, (RockHandModel)MatchModel.getInstance().setMyChoice("rock"));
-        player1Entity.setLinearVelocity(0f,200f);
+        player1Entity.setLinearVelocity(0f,400f);
         ConnectionSockets.getInstance().sendMessage("rock");
     }
 
     public void choosePaper() {
         player1Entity = new PaperHandBody(world, (PaperHandModel)MatchModel.getInstance().setMyChoice("paper"));
-        player1Entity.setLinearVelocity(0f,200f);
+        player1Entity.setLinearVelocity(0f,400f);
         ConnectionSockets.getInstance().sendMessage("paper");
     }
 
     public void chooseScissor() {
         player1Entity = new ScissorHandBody(world, (ScissorHandModel)MatchModel.getInstance().setMyChoice("scissor"));
-        player1Entity.setLinearVelocity(0f,200f);
+        player1Entity.setLinearVelocity(0f,400f);
         ConnectionSockets.getInstance().sendMessage("scissor");
     }
 
     public void opponentChooseRock() {
         player2Entity = new RockHandBody(world, (RockHandModel)MatchModel.getInstance().setOpponentChoice("rock"));
-        player2Entity.setLinearVelocity(0f,-200f);
+        player2Entity.setLinearVelocity(0f,-400f);
     }
 
     public void opponentChoosePaper() {
         player2Entity = new PaperHandBody(world, (PaperHandModel)MatchModel.getInstance().setOpponentChoice("paper"));
-        player2Entity.setLinearVelocity(0f,-200f);
+        player2Entity.setLinearVelocity(0f,-400f);
     }
 
     public void opponentChooseScissor() {
         player2Entity = new ScissorHandBody(world, (ScissorHandModel)MatchModel.getInstance().setOpponentChoice("scissor"));
-        player2Entity.setLinearVelocity(0f,-200f);
+        player2Entity.setLinearVelocity(0f,-400f);
     }
 
     /**

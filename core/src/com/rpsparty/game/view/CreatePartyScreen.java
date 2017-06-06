@@ -286,6 +286,7 @@ public class CreatePartyScreen extends ScreenAdapter {
                         System.out.println("aceitou cliente");
                     } catch (GdxRuntimeException e) {
                         e.printStackTrace();
+                        game.resetServer();
                         port++;
                     }
                 }

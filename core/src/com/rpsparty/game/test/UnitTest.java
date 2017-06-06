@@ -3,13 +3,20 @@ package com.rpsparty.game.test;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.controller.ConnectionSockets;
 import com.rpsparty.game.controller.MatchController;
 import com.rpsparty.game.controller.PaperGameController;
 import com.rpsparty.game.controller.RockGameController;
 import com.rpsparty.game.controller.ScissorGameController;
+import com.rpsparty.game.controller.entities.EntityBody;
+import com.rpsparty.game.controller.entities.RockHandBody;
 import com.rpsparty.game.model.RockGameModel;
+import com.rpsparty.game.model.entities.EntityModel;
+import com.rpsparty.game.model.entities.RockHandModel;
 
 import org.junit.Test;
 import java.util.regex.Pattern;
@@ -47,7 +54,7 @@ public class UnitTest extends GameTest{
         ConnectionSockets.getInstance().reset();
         assertFalse(MatchController.getInstance().isAnimation());
         assertFalse(MatchController.getInstance().arePlayersReady());
-        /*MatchController.getInstance().choosePaper(); //TODO: Ele tenta enviar uma mensagem, mas como é obvio, falha
+        /*MatchController.getInstance().choosePaper();
         MatchController.getInstance().opponentChooseRock();
         assertEquals("paper", MatchController.getInstance().getMyChoice());
         assertEquals("rock", MatchController.getInstance().getOpponentChoice());
@@ -59,6 +66,10 @@ public class UnitTest extends GameTest{
         MatchController.getInstance().opponentChooseScissor();
         assertEquals("scissors", MatchController.getInstance().getMyChoice());
         assertEquals("scissors", MatchController.getInstance().getOpponentChoice());*/
+        /*World world = new World(new Vector2(0, 0), true);
+        RockHandModel model = new RockHandModel(0,0,0);
+        EntityBody rock = new RockHandBody(world, model);
+        assertEquals(rock.getAngle(),0,0.1);*/
     }
 
     @Test
