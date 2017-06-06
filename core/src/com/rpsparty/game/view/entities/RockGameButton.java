@@ -28,7 +28,7 @@ public class RockGameButton extends Button {
     }
 
     public void editStyle(RPSParty game) {
-        skin.add("Rock", game.getAssetManager().get("rock.png"));//a imagem e primeiro posta numa skin porque Skin consegue converter o seu conteudo em diferentes tipo como Drawable que e o que nos precisamos para atribuir uma imagem ao butao
+        skin.add("Rock", game.getAssetManager().get("rock1.png"));//a imagem e primeiro posta numa skin porque Skin consegue converter o seu conteudo em diferentes tipo como Drawable que e o que nos precisamos para atribuir uma imagem ao butao
         if(model.hasCoin()) {
             skin.add("Coin", game.getAssetManager().get("coin.png"));
             style2 = new Button.ButtonStyle();

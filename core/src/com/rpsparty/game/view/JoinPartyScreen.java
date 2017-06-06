@@ -125,7 +125,7 @@ public class JoinPartyScreen extends ScreenAdapter {
     }
 
     public void addButtons() {
-        background = new Image(new TextureRegion((Texture)game.getAssetManager().get("background.jpg")));
+        background = new Image(new TextureRegion((Texture)game.getAssetManager().get("background.png")));
         background.setFillParent(true);
         helpButton = new HelpButton(game);
     }
@@ -152,7 +152,7 @@ public class JoinPartyScreen extends ScreenAdapter {
         skin.add("Selection", this.game.getAssetManager().get("Selection.png"));
         style.cursor = skin.newDrawable("cursor");
         style.selection = skin.newDrawable("Selection");
-        serverIP = new TextField("Server IP", style);
+        serverIP = new TextField("SERVER IP", style);
         serverIP.setBounds(0, Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()/4);
         serverIP.setTextFieldFilter(new TextField.TextFieldFilter() {
             // Accepts only numbers and dots
@@ -176,7 +176,7 @@ public class JoinPartyScreen extends ScreenAdapter {
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
         style.font = font;
         style.fontColor = Color.WHITE;
-        confirmInput = new TextButton("Join Party", style);
+        confirmInput = new TextButton("JOIN PARTY", style);
         confirmInput.setY(Gdx.graphics.getHeight()/4);
         confirmInput.setX(Gdx.graphics.getWidth()/4);
         confirmInput.setWidth(Gdx.graphics.getWidth()/2);

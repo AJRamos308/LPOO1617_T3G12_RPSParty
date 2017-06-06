@@ -49,7 +49,7 @@ public class InfoScreen extends ScreenAdapter {
     }
 
     private void createBackground() {
-        background = new Image(new TextureRegion((Texture)game.getAssetManager().get("infoScreen.jpg")));
+        background = new Image(new TextureRegion((Texture)game.getAssetManager().get("help.png")));
         background.setFillParent(true);
         stage.addActor(background);
     }

@@ -18,6 +18,6 @@ public class CreatePartyButton extends EntityButton {
     }
 
     public void editBounds(RPSParty game){
-        bounds = new Rectangle(Gdx.graphics.getWidth()/12, 4*Gdx.graphics.getHeight()/8, 5*Gdx.graphics.getWidth()/6, Gdx.graphics.getHeight()/8);
+        bounds = new Rectangle(Gdx.graphics.getWidth()/4, 44*Gdx.graphics.getHeight()/80, 17*Gdx.graphics.getWidth()/32, Gdx.graphics.getHeight()/6);
     }
 }

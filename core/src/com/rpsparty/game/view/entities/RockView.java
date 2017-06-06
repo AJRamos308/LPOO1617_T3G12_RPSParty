@@ -12,8 +12,8 @@ public class RockView extends EntityView {
 
 
     public Sprite createSprite(RPSParty game) {
-        Texture texture = game.getAssetManager().get("rock.png");
+        Texture texture = game.getAssetManager().get("Rock.png");
 
-        return new Sprite(texture, Gdx.graphics.getWidth()/4 , Gdx.graphics.getWidth()/4);
+        return new Sprite(texture, texture.getWidth() , texture.getHeight());
     }
 }

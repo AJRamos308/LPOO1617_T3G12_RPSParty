@@ -61,6 +61,8 @@ public class CreatePartyScreen extends ScreenAdapter {
     private boolean startGame;
     private Image background;
     private BitmapFont font;
+    TextButton.TextButtonStyle styleS,style;
+    Label.LabelStyle styleL;
     private int bestOfChoosen;
 
     public CreatePartyScreen(RPSParty game) {
@@ -68,7 +70,6 @@ public class CreatePartyScreen extends ScreenAdapter {
         camera = createCamera();
         bestOfChoosen = 0;
         createFont();
-
         startGame = false;
         addButtons();
         addListeners();
@@ -107,7 +108,15 @@ public class CreatePartyScreen extends ScreenAdapter {
         parameter.size = (Gdx.graphics.getHeight()/12);
         font = generator.generateFont(parameter); // font size 12 pixels
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
-
+        style = new TextButton.TextButtonStyle();
+        style.font = font;
+        style.fontColor = Color.YELLOW;
+        styleS = new TextButton.TextButtonStyle();
+        styleS.font = font;
+        styleS.fontColor = Color.WHITE;
+        styleL = new Label.LabelStyle();
+        styleL.font = font;
+        styleL.fontColor = Color.WHITE;
     }
 
     /**
@@ -148,11 +157,8 @@ public class CreatePartyScreen extends ScreenAdapter {
      * add buttons to the screen
      */
     public void addButtons() {
-        background = new Image(new TextureRegion((Texture)game.getAssetManager().get("background.jpg")));
+        background = new Image(new TextureRegion((Texture)game.getAssetManager().get("background.png")));
         background.setFillParent(true);
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.font = font;
-        style.fontColor = Color.CORAL;
         btn1(style);
         btn3(style);
         btn5(style);
@@ -200,6 +206,9 @@ public class CreatePartyScreen extends ScreenAdapter {
                 game.setBestOf(1);
                 System.out.println("Best Of 1");
                 bestOfChoosen = 1;
+                bestOf1.setStyle(styleS);
+                bestOf3.setStyle(style);
+                bestOf5.setStyle(style);
                 Gdx.input.vibrate(200);
             }});
         bestOf3.addListener(new ClickListener() {
@@ -207,6 +216,9 @@ public class CreatePartyScreen extends ScreenAdapter {
                 game.setBestOf(3);
                 System.out.println("Best Of 3");
                 bestOfChoosen = 3;
+                bestOf1.setStyle(style);
+                bestOf3.setStyle(styleS);
+                bestOf5.setStyle(style);
                 Gdx.input.vibrate(200);
             }});
         bestOf5.addListener(new ClickListener() {
@@ -214,21 +226,18 @@ public class CreatePartyScreen extends ScreenAdapter {
                 game.setBestOf(5);
                 System.out.println("Best Of 5");
                 bestOfChoosen = 5;
+                bestOf1.setStyle(style);
+                bestOf3.setStyle(style);
+                bestOf5.setStyle(styleS);
                 Gdx.input.vibrate(200);
             }});
 
     }
     public void addLabel() {
-        Label.LabelStyle style = new Label.LabelStyle();
-        style.font = font;
-        style.fontColor = Color.WHITE;
-        myIP = new Label("", style);
+        myIP = new Label("", styleL);
         myIP.setBounds(Gdx.graphics.getWidth()/4, 8*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/4);
         myIP.setAlignment(center);
-        Label.LabelStyle style2 = new Label.LabelStyle();
-        style2.font = font;
-        style2.fontColor = Color.WHITE;
-        bestOfLabel = new Label("Best of", style2);
+        bestOfLabel = new Label("Best of", styleL);
         bestOfLabel.setBounds(Gdx.graphics.getWidth()/4, 4*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/4);
         bestOfLabel.setAlignment(center);
 

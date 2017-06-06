@@ -12,8 +12,8 @@ public class ScissorView extends EntityView {
     }
 
     public Sprite createSprite(RPSParty game) {
-        Texture texture = game.getAssetManager().get("scissor.png");
+        Texture texture = game.getAssetManager().get("Scissor.png");
 
-        return new Sprite(texture, Gdx.graphics.getWidth()/4 , Gdx.graphics.getWidth()/4);
+        return new Sprite(texture, texture.getWidth() , texture.getHeight());
     }
 }

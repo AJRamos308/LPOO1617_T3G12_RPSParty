@@ -36,8 +36,8 @@ public class RockHandActor extends EntityActor {
         System.out.println("> Coordenadas da pedra:");
         System.out.println("x: "+x);
         System.out.println("y: "+y);
-        System.out.println("largura e altura: "+Gdx.graphics.getWidth()/6);
-        return new Sprite(texture, x, y, Gdx.graphics.getWidth()/6, Gdx.graphics.getWidth()/6);
+        System.out.println("largura e altura: "+Gdx.graphics.getWidth()/5);
+        return new Sprite(texture, x, y, Gdx.graphics.getWidth()/5, Gdx.graphics.getWidth()/5);
     }
 
     public void draw(Batch batch, float parentAlpha) {

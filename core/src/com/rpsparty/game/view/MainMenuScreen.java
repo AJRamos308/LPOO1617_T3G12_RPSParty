@@ -107,7 +107,7 @@ public class MainMenuScreen extends ScreenAdapter {
        /* achievementsButton = new AchievementsButton(game);
         settingsButton = new SettingsButton(game);
        */
-        background = new Image(new TextureRegion((Texture)game.getAssetManager().get("BackGround.png")));
+        background = new Image(new TextureRegion((Texture)game.getAssetManager().get("background.png")));
         background.setFillParent(true);
     }
 

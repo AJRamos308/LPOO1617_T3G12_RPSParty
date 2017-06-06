@@ -205,6 +205,7 @@ public class GameScreen extends ScreenAdapter {
         }
         view.update(playerChoice);
 
+
         return view;
     }
 
