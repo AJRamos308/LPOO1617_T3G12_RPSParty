@@ -136,7 +136,7 @@ public class RockGameScreen extends ScreenAdapter {
         timeToPlay -= delta;
         timerValue = Math.round(timeToPlay);
         timer.setText(Integer.toString(timerValue));
-        points.setText(Integer.toString(RockGameController.getInstance().getPoints()));
+        points.setText("Points: "+Integer.toString(RockGameController.getInstance().getPoints()));
     }
     public void addLabel() {
         Label.LabelStyle style = new Label.LabelStyle();

@@ -96,10 +96,10 @@ public class PaperGameScreen extends ScreenAdapter {
      */
     private void createPaperAnimation(){
         paperTexture = game.getAssetManager().get("paperanime.png");
-        TextureRegion[][] rollPaper = TextureRegion.split(paperTexture,paperTexture.getWidth()/5,paperTexture.getHeight());
+        TextureRegion[][] rollPaper = TextureRegion.split(paperTexture,paperTexture.getWidth()/10,paperTexture.getHeight());
 
-        TextureRegion[] frames = new TextureRegion[5];
-        System.arraycopy(rollPaper[0],0,frames,0,5);
+        TextureRegion[] frames = new TextureRegion[10];
+        System.arraycopy(rollPaper[0],0,frames,0,10);
         rolling = new Animation<TextureRegion>(0.0f,frames);
     }
 
@@ -166,8 +166,6 @@ public class PaperGameScreen extends ScreenAdapter {
      */
     public void addActors() {
         paper = new PaperGameActor();
-        float width = paperTexture.getWidth()/5;
-        float height = paperTexture.getHeight();
         sprite = new Sprite();
         sprite.setBounds(27*Gdx.graphics.getWidth()/64,Gdx.graphics.getHeight()/128,15*Gdx.graphics.getWidth()/32,3*Gdx.graphics.getHeight()/4);
     }
