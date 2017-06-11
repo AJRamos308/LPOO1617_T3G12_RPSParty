@@ -6,7 +6,9 @@ Install the .apk file provided which is located inside the android folder and is
 ## Development Documentation
 ### Updated UML
 
-![Help](https://github.com/AJRamos308/LPOO1617_T3G12_RPSParty/blob/master/Delivery%20Images/NewUML.PNG)
+![UML](https://github.com/AJRamos308/LPOO1617_T3G12_RPSParty/blob/master/Delivery%20Images/NewUML.PNG)
+
+(In more detail inside the file UML.pdf located in the root.)
 
 ### Design Patterns
 **Singleton**: Ensure a class has only one instance, and provide a global point of access to it. In our project we use it in the controller and model classes.
