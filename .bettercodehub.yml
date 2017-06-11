@@ -4,7 +4,7 @@ exclude:
 - /desktop/src/com/rpsparty/game/desktop/DesktopLauncher.java
 - /html/.*
 - /ios/src/com/rpsparty/game/IOSLauncher.java
-component_depth: 5
+component_depth: 6
 languages:
 - java
 - javascript
