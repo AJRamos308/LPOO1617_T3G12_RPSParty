@@ -215,14 +215,13 @@ public class RockGameController{
         opponentPoints = Integer.parseInt(ConnectionSockets.getInstance().receiveMessage());
         System.out.println("leu do oponente");
         if(points != opponentPoints) {
-            if (points > opponentPoints) {//ganhei
+            if (points > opponentPoints) {// Won
                 MatchController.getInstance().getSets().add(1);
                 MatchController.getInstance().increaseSet();
-            } else {
+            } else { //Lost
                 MatchController.getInstance().getSets().add(0);
                 MatchController.getInstance().increaseSet();
             }
-
         }
     }
 

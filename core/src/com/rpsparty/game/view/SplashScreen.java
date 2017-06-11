@@ -52,21 +52,17 @@ public class SplashScreen extends ScreenAdapter{
      */
     @Override
     public void render(float delta){
-
         Gdx.gl.glClearColor(1,1,1,1);
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
-
         stage.act();
         stage.draw();
     }
 
-
     /**
-     * shows the screen image
+     * Shows the Splash Screen image
      */
     @Override
     public void show(){
-
         stage = new Stage();
         splashActor = new Image(new TextureRegion(new Texture("SplashScreen.png")));
         splashActor.setFillParent(true);

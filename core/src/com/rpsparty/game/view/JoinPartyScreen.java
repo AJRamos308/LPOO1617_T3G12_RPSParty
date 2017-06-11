@@ -81,7 +81,6 @@ public class JoinPartyScreen extends ScreenAdapter {
         OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
-
         return camera;
     }
 
@@ -94,14 +93,10 @@ public class JoinPartyScreen extends ScreenAdapter {
     public void render(float delta) {
         //Gdx.gl.glClearColor( 103/255f, 69/255f, 117/255f, 1 );
         camera.update();
-        Gdx.gl.glClearColor( 1, 1, 1, 1 );
-        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
-
+        Gdx.gl.glClearColor( 1, 1, 1, 1 );  Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
         stage.act();
-
         game.getBatch().begin();
-        stage.draw();
-        game.getBatch().end();
+        stage.draw();                   game.getBatch().end();
         goBack();
         if(startGame) {
             int bestOf = Integer.parseInt(ConnectionSockets.getInstance().receiveMessage());

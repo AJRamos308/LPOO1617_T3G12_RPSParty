@@ -76,22 +76,14 @@ public class MainMenuScreen extends ScreenAdapter {
     public void render(float delta) {
         game.backpressed = false;
         camera.update();
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
+        Gdx.gl.glClearColor(1, 1, 1, 1);                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         stage.act();
         game.getBatch().begin();
-        stage.draw();
-        game.getBatch().end();
+        stage.draw();                                   game.getBatch().end();
         if (Gdx.input.isKeyPressed(Keys.BACK)) {
-            if (!game.backpressed) {
-                game.backpressed = true;
-            } else if (game.backpressed) {
-                game.backpressed = false;
-                Gdx.app.exit();
-            }
-        }
-
+            if (!game.backpressed) {        game.backpressed = true;
+            } else if (game.backpressed) {  game.backpressed = false;
+                Gdx.app.exit();}}
     }
 
     /**
