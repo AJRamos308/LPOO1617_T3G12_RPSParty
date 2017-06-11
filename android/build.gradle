@@ -17,6 +17,9 @@ android {
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
     defaultConfig {
         multiDexEnabled true
         applicationId "com.rpsparty.game"
