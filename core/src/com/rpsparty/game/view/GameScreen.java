@@ -103,7 +103,6 @@ public class GameScreen extends ScreenAdapter {
 
         stage.act();
         if(MatchController.getInstance().getMyChoice() == "") {//so desenhar butoes enquanto o utilizador nao escolher opcao
-            System.out.println("Tamanho de sets: "+MatchController.getInstance().getSets().size());
             if (MatchController.getInstance().isEndOfGame()){
                 game.setScreen(new EndGameScreen(game));
                 //TODO:Fechar sockets

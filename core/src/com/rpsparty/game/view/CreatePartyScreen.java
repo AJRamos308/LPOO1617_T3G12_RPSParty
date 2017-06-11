@@ -146,7 +146,7 @@ public class CreatePartyScreen extends ScreenAdapter {
         goBack();
         if(startGame && (bestOfChoosen != 0)) {
             ConnectionSockets.getInstance().sendMessage(Integer.toString(bestOfChoosen)+"\n");
-            this.dispose();
+            //this.dispose();
             game.setScreen(new GameScreen(game));
         }
     }
@@ -157,7 +157,7 @@ public class CreatePartyScreen extends ScreenAdapter {
     public void goBack() {
         if (Gdx.input.isKeyPressed(Keys.BACK)) {
             game.backpressed = true;
-            this.dispose();
+            //this.dispose();
             game.setScreen(new MainMenuScreen(game));
             Gdx.input.setCatchBackKey(true);
         }

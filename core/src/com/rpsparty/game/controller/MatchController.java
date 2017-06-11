@@ -50,7 +50,7 @@ public class MatchController implements ContactListener {
     private int shakeStage = 0; // 0 = X do telemovel esta a aumentar ; 1 = X do telemovel esta a diminuir
     private int updateTime = 1; // 1 = primeiro update de inicio de um shake ; 2 = segundo update de inicio de um shake
     private int flagDirection = 2; // 0 = shake aumenta no  sentido positivo de X ; 1 = shake aumenta no  sentido negativo de X ; 2 = ainda não se sabe o sentido
-    private int count =3;//numero de shakes a dar
+    private int count =0;//numero de shakes a dar
 
     private int currSet = 1;
     private int nSets = 3;
@@ -123,7 +123,7 @@ public class MatchController implements ContactListener {
     public void chooseRock() {
         player1Entity = new RockHandBody(world, (RockHandModel)MatchModel.getInstance().setMyChoice("rock"));
         player1Entity.setLinearVelocity(0f,400f);
-        ConnectionSockets.getInstance().sendMessage("rock");
+        //ConnectionSockets.getInstance().sendMessage("rock"+"\n");
     }
 
     /**
@@ -132,7 +132,7 @@ public class MatchController implements ContactListener {
     public void choosePaper() {
         player1Entity = new PaperHandBody(world, (PaperHandModel)MatchModel.getInstance().setMyChoice("paper"));
         player1Entity.setLinearVelocity(0f,400f);
-        ConnectionSockets.getInstance().sendMessage("paper");
+        //ConnectionSockets.getInstance().sendMessage("paper"+"\n");
     }
 
     /**
@@ -141,7 +141,7 @@ public class MatchController implements ContactListener {
     public void chooseScissor() {
         player1Entity = new ScissorHandBody(world, (ScissorHandModel)MatchModel.getInstance().setMyChoice("scissor"));
         player1Entity.setLinearVelocity(0f,400f);
-        ConnectionSockets.getInstance().sendMessage("scissor");
+       // ConnectionSockets.getInstance().sendMessage("scissor"+"\n");
     }
 
     /**
@@ -442,7 +442,7 @@ public class MatchController implements ContactListener {
             shakeStage = 0;
             updateTime = 1;
             flagDirection = 2;
-            count = 3;
+            count = 0;
             sync = false;
             animation = false;
             collision = false;
@@ -458,6 +458,7 @@ public class MatchController implements ContactListener {
     public void resetChoices() {
         myChoice = "";
         opponentChoice = "";
+        sync = false;
     }
 
     /**
