@@ -211,6 +211,7 @@ public class JoinPartyScreen extends ScreenAdapter {
                         System.out.println("Exception");
                         e.printStackTrace();
                         port++;
+                        if(port > 9050) return;
                     }
                 }
                 startGame = true;

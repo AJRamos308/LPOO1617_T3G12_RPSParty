@@ -285,13 +285,13 @@ public class GameScreen extends ScreenAdapter {
      */
     public void playMiniGame(String element) {
         if(element.equals("rock")) {
-            this.dispose();
+            //this.dispose();
             game.setScreen(new RockGameScreen(game));
         } else if(element.equals("paper")) {
-            this.dispose();
+            //this.dispose();
             game.setScreen(new PaperGameScreen(game));
         } else if(element.equals("scissor")) {
-            this.dispose();
+            //this.dispose();
             game.setScreen(new ScissorsGameScreen(game));
         }
     }
