@@ -1,0 +1,10 @@
+exclude:
+- /Javadoc/script.js
+- /android/src/com/rpsparty/game/AndroidLauncher.java
+- /desktop/src/com/rpsparty/game/desktop/DesktopLauncher.java
+- /html/.*
+- /ios/src/com/rpsparty/game/IOSLauncher.java
+component_depth: 1
+languages:
+- java
+- javascript
