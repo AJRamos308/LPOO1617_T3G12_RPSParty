@@ -17,7 +17,9 @@ Repository created for the final project of the "Laboratório de Programação O
 
 ## Major Difficulties Along the Way
 **-** Code structure planning;
+
 **-** Communication between sockets;
+
 **-** Adjust the textures to the right coordinates on the screen;
 
 ## Lessons Learned
