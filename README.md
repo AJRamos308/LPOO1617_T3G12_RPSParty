@@ -24,9 +24,13 @@ Repository created for the final project of the "Laboratório de Programação O
 
 ## Lessons Learned
 **-** Do a lot of research  as new concepts come up;
+
 **-** See sample code extracts as a good way to learn;
+
 **-** Write the plan on paper before starting coding;
+
 **-** Ask for help, but always try to resolve it by yourself at first.
+
 
 ## Overall Time Spent Developing
 Around 120 hours.
