@@ -51,7 +51,6 @@ public class GameScreen extends ScreenAdapter {
     private ScissorsButton scissorsButton;
     private RockButton rockButton;
     private ResultsActor resultsActor;
-    private Texture areYouReady;
 
     /**
      * class constructor
@@ -69,7 +68,6 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(scissorsButton);
         stage.addActor(rockButton);
         stage.addActor(resultsActor);
-        areYouReady = new Texture(Gdx.files.internal("areuready.png"));
         MatchController.getInstance().setNSets(game.getBestOf());
         MatchController.getInstance().createReadThread();
 
@@ -246,7 +244,6 @@ public class GameScreen extends ScreenAdapter {
             startAnimation(delta);
         } else {
             game.getBatch().begin();
-            game.getBatch().draw(areYouReady, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
             game.getBatch().end();
             MatchController.getInstance().shakeUpdate(delta);
         }
@@ -310,7 +307,6 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         stage.dispose();
-        areYouReady.dispose();
     }
 
 }
