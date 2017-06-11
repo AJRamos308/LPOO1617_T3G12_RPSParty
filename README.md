@@ -1,5 +1,5 @@
 # RPS PARTY Final Delivery
-
+[![BCH compliance](https://bettercodehub.com/edge/badge/AJRamos308/LPOO1617_T3G12_RPSParty?branch=master&token=fe6c87c41045ba638cc2f32723fe1092a95db246)](https://bettercodehub.com/)
 ## Setup
 Install the .apk file provided which is located inside the android folder and is named "android-release.apk".
 
