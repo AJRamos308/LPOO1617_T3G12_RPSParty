@@ -7,11 +7,31 @@ Repository created for the final project of the "Laboratório de Programação O
 ## UML
 ![UML](https://github.com/AJRamos308/LPOO1617_T3G12_RPSParty/blob/master/Delivery%20Images/UML.PNG)
 ## Design Patterns
-**Singleton**: Assegura que uma classe terá apenas umas instancia, ou seja, será apenas criada uma e uma só vez, e é acedida de uma forma global. No nosso projeto usaremos para instanciar apenas uma vez o modelo (model) e logica (controller) do jogo principal (em que se escolhe um dos elementos pedra, papel ou tesoura) e de cada mini jogo.
+**Singleton**: Ensure a class has only one instance, and provide a global point of access to it. In our project we use it in the controller and model classes.
 
-**State**: Permite que um objeto altere o seu comportamento consoante o contexto em que se encontra. Aqui teremos diferentes states para cada mini jogo ao usarmos dentro de um Screen mais do que um Stage diferente.
+**State**: Allow an object to alter its behavior when its internal state changes. The object will appear to change its class. In our project we use on GameScreen because we have a stage when the players have to choose an option and then another stage that will draw the result of the match between the players' choices. So, in the same class, the methods can change their behaviour.
 
-**Template Method**: Define a estrutura base (esqueleto) de um algoritmos, tendo ligeiras variâncias entras as subclasses. As subclasses redefinem certos passo/métodos da template sem alterarem a estrutura da mesma. No nosso caso tal é visível nas classes abstratas EntityModel, EntityActor, EntityButton, etc, em que teremos algumas características em comum entre as subclasses que derivam destas classes abstratas, no entanto as mesma continuam a ser “únicas” porque redefinem métodos de forma diferente.
+**Template Method**:Define the skeleton of an algorithm in an operation, deferring some steps to client subclasses. Template Method lets subclasses redefine certain steps of an algorithm without changing the algorithm's structure. In our project we use it in the abstract classes EntityModel, EntityView and EntityButton.
+
+**Observer**: Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically. Encapsulate the core (or common or engine) components in a Subject abstraction, and the variable (or optional or user interface) components in an Observer hierarchy. In our project we use it as we apply the Model-View-Controller architecture pattern and, consequently, the View corresponds to the Observer.
+
+## Major Difficulties Along the Way
+**-** Code structure planning;
+**-** Communication between sockets;
+**-** Adjust the textures to the right coordinates on the screen;
+
+## Lessons Learned
+**-** Do a lot of research  as new concepts come up;
+**-** See sample code extracts as a good way to learn;
+**-** Write the plan on paper before starting coding;
+**-** Ask for help, but always try to resolve it by yourself at first.
+
+## Overall Time Spent Developing
+Around 120 hours.
+
+## Work Distribution Amongst Team Members
+50-50
+
 ## Tests
 **1** To the correct transition between screens, depending on the button pressed;
 
