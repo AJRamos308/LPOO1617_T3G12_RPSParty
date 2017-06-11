@@ -1,8 +1,8 @@
 # RPS PARTY Final Delivery
 [![BCH compliance](https://bettercodehub.com/edge/badge/AJRamos308/LPOO1617_T3G12_RPSParty?branch=master&token=fe6c87c41045ba638cc2f32723fe1092a95db246)](https://bettercodehub.com/)
 ## Setup
-Install the .apk file provided which is located inside the android folder and is named "android-release.apk".
-
+Install the .apk file provided which is located inside the android folder and is named "android-release.apk" or through the Play Store:
+[Play Store](https://play.google.com/store/apps/details?id=com.rpsparty.game)
 ## Development Documentation
 ### Updated UML
 
