@@ -96,7 +96,7 @@ public class ScissorGameController {
      * conclude who won the game
      */
     public void finalResult() {//ve quem e que ganhou o jogo
-        points /= radius;//para os pontos serem proporcionais ao tamanho da circunferencia
+        points /= (float)Math.pow(radius, 2);//para os pontos serem proporcionais ao tamanho da circunferencia
         ConnectionSockets.getInstance().sendMessage(Float.toString(points)+"\n");
         opponentPoints = Float.parseFloat(ConnectionSockets.getInstance().receiveMessage());
 
