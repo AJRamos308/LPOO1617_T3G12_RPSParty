@@ -7,6 +7,11 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.rpsparty.game.model.entities.RockHandModel;
 
 public class RockHandBody extends EntityBody {
+    /**
+     * Constructor for the Body
+     * @param world world in which the body resides in
+     * @param model model of the body
+     */
     public RockHandBody(World world, RockHandModel model) {
         super(world, model);
         float density = 1.2f, friction = 0.8f, restitution = 0.2f;

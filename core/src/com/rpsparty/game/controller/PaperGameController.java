@@ -10,7 +10,7 @@ public class PaperGameController {
     private float opponentDistance;
 
     /**
-     * class constructor
+     * Class constructor
      */
     private PaperGameController() {
         timeToNextFrame = 0.1f;

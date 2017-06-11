@@ -60,6 +60,9 @@ public class MatchController implements ContactListener {
     private boolean animation = false;
     private boolean collision = false;
 
+    /**
+     * Constructor for the Match Controller
+     */
     private MatchController() {
         world = new World(new Vector2(0, 0), true);
         world.setContactListener(this);
@@ -70,7 +73,6 @@ public class MatchController implements ContactListener {
 
     /**
      * Returns a singleton instance of a game controller
-     *
      * @return the singleton instance
      */
     public static MatchController getInstance() {
@@ -80,8 +82,8 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * update the bodies from the world
-     * @param delta
+     * Update the bodies from the world
+     * @param delta update accordingly to the provided delta
      */
     public void update(float delta) {
 
@@ -100,23 +102,23 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * get the world object
-     * @return
+     * Get the world object
+     * @return world
      */
     public World getWorld() {
         return world;
     }
 
     /**
-     * verify if the animation is being played
-     * @return
+     * Verify if the animation is being played
+     * @return animation
      */
     public boolean isAnimation() {
         return animation;
     }
 
     /**
-     * if we choose rock
+     * If the player chooses rock
      */
     public void chooseRock() {
         player1Entity = new RockHandBody(world, (RockHandModel)MatchModel.getInstance().setMyChoice("rock"));
@@ -125,7 +127,7 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * if we choose paper
+     * If the player chooses paper
      */
     public void choosePaper() {
         player1Entity = new PaperHandBody(world, (PaperHandModel)MatchModel.getInstance().setMyChoice("paper"));
@@ -134,7 +136,7 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * if we choose scissors
+     * If the player chooses scissors
      */
     public void chooseScissor() {
         player1Entity = new ScissorHandBody(world, (ScissorHandModel)MatchModel.getInstance().setMyChoice("scissor"));
@@ -143,7 +145,7 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * if the opponente chooses rock
+     * If the opponent chooses rock
      */
     public void opponentChooseRock() {
         player2Entity = new RockHandBody(world, (RockHandModel)MatchModel.getInstance().setOpponentChoice("rock"));
@@ -151,7 +153,7 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * if the opponente chooses paper
+     * If the opponent chooses paper
      */
     public void opponentChoosePaper() {
         player2Entity = new PaperHandBody(world, (PaperHandModel)MatchModel.getInstance().setOpponentChoice("paper"));
@@ -159,7 +161,7 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * if the opponente chooses scissors
+     * If the opponent chooses scissors
      */
     public void opponentChooseScissor() {
         player2Entity = new ScissorHandBody(world, (ScissorHandModel)MatchModel.getInstance().setOpponentChoice("scissor"));
@@ -168,7 +170,6 @@ public class MatchController implements ContactListener {
 
     /**
      * A contact between two objects was detected
-     *
      * @param contact the detected contact
      */
     @Override
@@ -181,6 +182,10 @@ public class MatchController implements ContactListener {
         collision = true;
     }
 
+    /**
+     * Ends contact
+     * @param contact the detected collision
+     */
     @Override
     public void endContact(Contact contact) {
         //resetMatch();
@@ -197,32 +202,32 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * get my option
-     * @return
+     * Get my option
+     * @return choice
      */
     public String getMyChoice() {
         return myChoice;
     }
 
     /**
-     * get opponent option
-     * @return
+     * Get opponent option
+     * @return opponent choice
      */
     public String getOpponentChoice() {
         return opponentChoice;
     }
 
     /**
-     * save my choice
-     * @param choice
+     * Save my choice
+     * @param choice choice
      */
     public void setMyChoice(String choice) {
         myChoice = choice;
     }
 
     /**
-     * sync; waits for opponent to choose
-     * @return
+     * Sync; Waits for opponent to choose
+     * @return boolean
      */
     public boolean waitForOpponent() {
         System.out.println("\nESTA NO WAIT FOR OPPONENT|\n");
@@ -236,7 +241,7 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * creates a thread that will read the opponent choice
+     * Creates a thread that will read the opponent choice
      */
     public void createReadThread() {
         new Thread(new Runnable(){
@@ -256,8 +261,8 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * detect one shake
-     * @return
+     * Detect one shake
+     * @return boolean indicating success
      */
     public boolean shake() {
         float currX = Gdx.input.getAccelerometerX();
@@ -283,7 +288,7 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * verify the direction of the shake
+     * Verify the direction of the shake
      * @return true if the direction was already found, false if not yet
      */
     public boolean verifyDirectionShake() {
@@ -312,8 +317,8 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * get the last position x detected
-     * @return
+     * Get the last position x detected
+     * @return last position
      */
     public float updateLastX() {
         float currX = Gdx.input.getAccelerometerX();
@@ -324,8 +329,8 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * count one shake
-     * @param delta
+     * Count one shake
+     * @param delta timings
      */
     public void shakeUpdate(float delta) {
         lastUpdate += delta;
@@ -345,11 +350,15 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * verify if both players already chose between rock, paper and scissors
-     * @return
+     * Verify if both players already chose between rock, paper or scissors
+     * @return choices
      */
     public boolean arePlayersReady() { return (myChoice != "" && opponentChoice != ""); }
 
+    /**
+     * Checks if it was a victory
+     * @return boolean if it is victory
+     */
     public boolean isVictory() {
         boolean result = false;
         if(myChoice == "paper") {
@@ -364,8 +373,8 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * conclude which one won this set
-     * @return
+     * Conclude which one won this set
+     * @return boolean indicating if the user has already shook 3 times
      */
     public boolean finalResult() {
         if(count == 0) {//ja se agitou 3 vezes
@@ -395,7 +404,7 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * sync players communication
+     * Sync players communication
      */
     public void synchronizeThreads() {
         if(!sync) {//sincronizar os shakes dos dois jogadores
@@ -407,15 +416,15 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     *
+     * Verification if it is a tie
      * @return return true if is a tie
      */
     public boolean isTie() { return myChoice.equals(opponentChoice); }
 
     /**
-     * reset almost all class attributes
-     * @param delta
-     * @return true if the attributes were reseted
+     * Reset almost all class attributes
+     * @param delta difference in times
+     * @return true if the attributes were already reset
      */
     public boolean resetMatch(float delta) {
         lastUpdate += delta;
@@ -444,7 +453,7 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * reset players choices
+     * Reset players choices
      */
     public void resetChoices() {
         myChoice = "";
@@ -452,12 +461,12 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     * reset the class attributes that were not reseted yet
+     * Reset the class attributes that were not reseted yet
      */
     public void resetAll() { instance = null; }
 
     /**
-     *
+     *  Gets rounds scores
      * @return the sets that players already played
      */
     public ArrayList<Integer> getSets() {
@@ -465,24 +474,24 @@ public class MatchController implements ContactListener {
     }
 
     /**
-     *
+     * Checks if collision
      * @return true if bodies collied
      */
     public boolean isCollision() { return collision; }
 
     /**
-     * update the current set's number
+     * Update the current set's number
      */
     public void increaseSet() { currSet++; }
 
     /**
-     * get the result from the previous set
-     * @return
+     * Get the result from the previous set
+     * @return last result
      */
     public Integer getLastResult() { return sets.get(sets.size()-1);}
 
     /**
-     * empty the array of sets played
+     * Rmpty the array of sets played
      */
     public void clearSets() {
         sets.clear(); }
@@ -495,7 +504,7 @@ public class MatchController implements ContactListener {
 
     /**
      * return the total number of sets that will be played in this game
-     * @param bestOf
+     * @param bestOf best of how many
      */
     public void setNSets(int bestOf) { nSets = bestOf; }
 }

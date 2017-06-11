@@ -8,6 +8,11 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.rpsparty.game.model.entities.ScissorHandModel;
 
 public class ScissorHandBody extends EntityBody {
+    /**
+     * Constructor for the Body
+     * @param world world in which the body resides in
+     * @param model model of the body
+     */
     public ScissorHandBody(World world, ScissorHandModel model) {
         super(world, model);
         float density = 0.7f, friction = 0.4f, restitution = 0.3f;

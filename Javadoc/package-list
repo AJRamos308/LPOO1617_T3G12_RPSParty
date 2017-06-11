@@ -1,0 +1,7 @@
+com.rpsparty.game
+com.rpsparty.game.controller
+com.rpsparty.game.controller.entities
+com.rpsparty.game.model
+com.rpsparty.game.model.entities
+com.rpsparty.game.view
+com.rpsparty.game.view.entities

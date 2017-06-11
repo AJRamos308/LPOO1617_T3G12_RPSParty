@@ -7,10 +7,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/**
- * Created by bibib on 06/05/2017.
- */
-
 public class ConnectionSockets {
     /**
      * The singleton instance of this controller
@@ -32,15 +28,15 @@ public class ConnectionSockets {
     }
 
     /**
-     * class constructor
+     * Class constructor
      */
     ConnectionSockets () {
         socket = null;
     }
 
     /**
-     * save the socket used for communication
-     * @param socket
+     * Save the socket used for communication
+     * @param socket Socket used for connection.
      */
     public void setSocket(Socket socket) {
         this.socket = socket;
@@ -49,8 +45,8 @@ public class ConnectionSockets {
 
 
     /**
-     * enviar mensagem para o outro jogador; escrever no server socket
-     * @param s o que vamos enviar
+     * Sends message to the other player by writing in the server socket.
+     * @param s string of what is going to be sent
      */
     public void sendMessage (String s) {
         try {
@@ -63,8 +59,8 @@ public class ConnectionSockets {
     }
 
     /**
-     * receber resposta do nosso oponente
-     * @return resposta do outro utilizador/ jogador
+     * Receive message from the other player
+     * @return answer from the other player.
      */
     public String receiveMessage () {
         if(!socket.isConnected())
@@ -85,8 +81,7 @@ public class ConnectionSockets {
     }
 
     /**
-     * devemos invocar o reset() sempre que nos queiramos desconectar
-     * dos sockets
+     * Function called when we want to disconnect from the sockets.
      */
     public void reset() {
         System.out.println("cagou... :(");
