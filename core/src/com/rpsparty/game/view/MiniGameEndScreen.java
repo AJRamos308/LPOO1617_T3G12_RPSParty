@@ -68,6 +68,9 @@ public class MiniGameEndScreen extends ScreenAdapter{
     }
 
 
+    /**
+     * show the screen image
+     */
     @Override
     public void show(){
 
@@ -96,6 +99,11 @@ public class MiniGameEndScreen extends ScreenAdapter{
         stage.addActor(splashActor);
     }
 
+    /**
+     * choose the rigth image depending on the mini game played and the final result
+     * @param miniGame
+     * @param win
+     */
     private void setActor(int miniGame,int win){
         if (miniGame == ROCKGAME){
             if (win == 1)

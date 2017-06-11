@@ -9,9 +9,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.controller.MatchController;
 
-/**
- * Created by afonso on 25/05/2017.
- */
 
 public class WinOrLoseView extends EntityView {
     Texture loser;

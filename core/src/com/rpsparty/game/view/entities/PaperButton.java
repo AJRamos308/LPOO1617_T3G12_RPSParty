@@ -5,9 +5,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.rpsparty.game.RPSParty;
 
-/**
- * Created by afonso on 07/05/2017.
- */
 
 public class PaperButton extends EntityButton{
     public PaperButton(RPSParty game) {

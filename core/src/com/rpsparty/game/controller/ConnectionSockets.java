@@ -31,10 +31,17 @@ public class ConnectionSockets {
         return instance;
     }
 
+    /**
+     * class constructor
+     */
     ConnectionSockets () {
         socket = null;
     }
 
+    /**
+     * save the socket used for communication
+     * @param socket
+     */
     public void setSocket(Socket socket) {
         this.socket = socket;
     }
@@ -51,6 +58,7 @@ public class ConnectionSockets {
             socket.getOutputStream().write(s.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
+
         }
     }
 

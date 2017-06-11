@@ -23,7 +23,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.controller.ConnectionSockets;
-import com.rpsparty.game.view.entities.HelpButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.Net.Protocol;
 import java.net.Inet4Address;
@@ -52,7 +51,6 @@ public class JoinPartyScreen extends ScreenAdapter {
      * automatically calculated using the screen ratio.
      */
     private Stage stage;
-    private HelpButton helpButton;
     private TextField serverIP;
     private TextButton confirmInput;
     private boolean startGame;
@@ -64,14 +62,12 @@ public class JoinPartyScreen extends ScreenAdapter {
 
         startGame = false;
         addButtons();
-        addListenersButton();
         addTextArea();
         addTextButton();
         addListenersTextButton();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         stage.addActor(background);
-        //stage.addActor(helpButton);
         stage.addActor(serverIP);
         stage.addActor(confirmInput);
     }
@@ -82,7 +78,6 @@ public class JoinPartyScreen extends ScreenAdapter {
      */
     private OrthographicCamera createCamera() {
         float ratio = ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
-        //OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
         OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
@@ -115,6 +110,9 @@ public class JoinPartyScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * function to jump to MainMenuScreen
+     */
     public void goBack() {
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             game.backpressed = true;
@@ -124,20 +122,17 @@ public class JoinPartyScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * add buttons to screen
+     */
     public void addButtons() {
         background = new Image(new TextureRegion((Texture)game.getAssetManager().get("background.png")));
         background.setFillParent(true);
-        helpButton = new HelpButton(game);
-    }
-    //TODO: Back Button
-    public void addListenersButton() {
-        helpButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                //TODO: fazer setScreen()
-                System.out.println("HELP!");
-            }});
     }
 
+    /**
+     * add TextArea to insert the server IP
+     */
     public void addTextArea() {
         TextFieldStyle style = new TextFieldStyle();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixel.otf"));
@@ -166,7 +161,9 @@ public class JoinPartyScreen extends ScreenAdapter {
         serverIP.setMaxLength(15);
     }
 
-
+    /**
+     * add buttons to the screen
+     */
     public void addTextButton() {
         TextButtonStyle style = new TextButtonStyle();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixel.otf"));
@@ -183,6 +180,9 @@ public class JoinPartyScreen extends ScreenAdapter {
         confirmInput.setHeight(Gdx.graphics.getHeight()/4);
     }
 
+    /**
+     * add button's listeners
+     */
     public void addListenersTextButton() {
         confirmInput.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -190,32 +190,9 @@ public class JoinPartyScreen extends ScreenAdapter {
             }});
     }
 
-    public String getIP() {
-        List<String> addresses = new ArrayList<String>();
-        try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            for(NetworkInterface ni : Collections.list(interfaces)){
-                for(InetAddress address : Collections.list(ni.getInetAddresses()))
-                {
-                    if(address instanceof Inet4Address){
-                        addresses.add(address.getHostAddress());
-                    }
-                }
-            }
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-        String ipAddress = new String("");
-        for(String str:addresses)
-        {
-            if(!str.equals("127.0.0.1")) {//nao escrever o IP "127.0.0.1" porque e o localhost (igual para qualquer pc)
-                ipAddress = str + "\n";
-                return ipAddress;//envia o primeiro id valido que encontra
-            }
-        }
-        return ipAddress;
-    }
-
+    /**
+     * create thread that will communicate with the server
+     */
     public void createThread() {
         new Thread(new Runnable(){
 

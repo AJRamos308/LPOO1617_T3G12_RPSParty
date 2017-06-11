@@ -49,39 +49,30 @@ public class EntityBody {
         body.createFixture(fixtureDef);
 
     }
+
+    /**
+     * get x position
+     * @return
+     */
     public float getX() {
         return body.getPosition().x;
     }
 
+    /**
+     * get y position
+     * @return
+     */
     public float getY() {
         return body.getPosition().y;
     }
 
-    public float getAngle() {
-        return body.getAngle();
-    }
-
-    public void setTransform(float x, float y, float angle) {
-        body.setTransform(x, y, angle);
-    }
-
-    /*public void setLinearVelocity(float velocity) {
-        body.setLinearVelocity((float)(velocity * -Math.sin(getAngle())), (float) (velocity * Math.cos(getAngle())));
-    }*/
-
+    /**
+     * sets body velocity
+     * @param vX
+     * @param vY
+     */
     public void setLinearVelocity(float vX, float vY) {
         body.setLinearVelocity(vX, vY);
-    }
-
-    public void applyTorque(float torque, boolean wake) {
-        body.applyTorque(torque, wake);
-    }
-    public void setAngularVelocity(float omega) {
-        body.setAngularVelocity(omega);
-    }
-
-    public void applyForceToCenter(float forceX, float forceY, boolean awake) {
-        body.applyForceToCenter(forceX, forceY, awake);
     }
 
     /**

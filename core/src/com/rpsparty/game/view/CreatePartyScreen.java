@@ -65,6 +65,10 @@ public class CreatePartyScreen extends ScreenAdapter {
     Label.LabelStyle styleL;
     private int bestOfChoosen;
 
+    /**
+     * class constructor
+     * @param game
+     */
     public CreatePartyScreen(RPSParty game) {
         this.game = game;
         camera = createCamera();
@@ -102,6 +106,9 @@ public class CreatePartyScreen extends ScreenAdapter {
         return camera;
     }
 
+    /**
+     * create text font
+     */
     private void createFont() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixel.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -144,6 +151,9 @@ public class CreatePartyScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * function to jump to MainMenuScreen
+     */
     public void goBack() {
         if (Gdx.input.isKeyPressed(Keys.BACK)) {
             game.backpressed = true;
@@ -200,6 +210,9 @@ public class CreatePartyScreen extends ScreenAdapter {
         bestOf5.setHeight(Gdx.graphics.getHeight()/5);
     }
 
+    /**
+     * add button´s listeners
+     */
     public void addListeners() {
         bestOf1.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -233,6 +246,10 @@ public class CreatePartyScreen extends ScreenAdapter {
             }});
 
     }
+
+    /**
+     * add label to show player's IP
+     */
     public void addLabel() {
         myIP = new Label("", styleL);
         myIP.setBounds(Gdx.graphics.getWidth()/4, 8*Gdx.graphics.getHeight()/16,Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/4);
@@ -298,6 +315,9 @@ public class CreatePartyScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * get player's IP
+     */
     public void getIP() {
         List<String> addresses = new ArrayList<String>();
         try {

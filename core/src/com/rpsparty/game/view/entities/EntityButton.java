@@ -11,6 +11,10 @@ public abstract class EntityButton extends Button {
     ButtonStyle style;
     Rectangle bounds;
 
+    /**
+     * button constructor
+     * @param game
+     */
     EntityButton(RPSParty game) {
         skin = new Skin();
         editStyle(game);
@@ -21,6 +25,14 @@ public abstract class EntityButton extends Button {
         setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
+    /**
+     * set button's style
+     * @param game
+     */
     public abstract void editStyle(RPSParty game);
+    /**
+     * edit button's bounds
+     * @param game
+     */
     public abstract void editBounds(RPSParty game);
 }

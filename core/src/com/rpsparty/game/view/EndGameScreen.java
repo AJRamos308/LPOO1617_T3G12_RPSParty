@@ -38,6 +38,10 @@ public class EndGameScreen extends ScreenAdapter {
     private Image background;
     private Stage stage;
 
+    /**
+     * class constructor
+     * @param game
+     */
     public EndGameScreen(RPSParty game){
         this.game = game;
         camera = createCamera();
@@ -84,6 +88,9 @@ public class EndGameScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * reset controller class
+     */
     public void resetAllControllerInstances() {
         PaperGameController.getInstance().reset();
         RockGameController.getInstance().reset();
@@ -92,6 +99,9 @@ public class EndGameScreen extends ScreenAdapter {
         MatchController.getInstance().resetAll();
     }
 
+    /**
+     * reset models class
+     */
     public void resetAllModelInstances() {
         MatchModel.getInstance().reset();
         RockGameModel.getInstance().reset();

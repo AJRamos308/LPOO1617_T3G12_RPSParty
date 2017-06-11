@@ -26,6 +26,9 @@ public class MatchModel {
         return instance;
     }
 
+    /**
+     * class constructor
+     */
     private MatchModel(){
         rock = new RockHandModel(Gdx.graphics.getWidth()/8,100,0);
         paper = new PaperHandModel(Gdx.graphics.getWidth()/4, 100, 0);
@@ -34,6 +37,11 @@ public class MatchModel {
         player2Entity = null;
     }
 
+    /**
+     * saves player's choice
+     * @param s
+     * @return EntityModel depending on player's choice
+     */
     public EntityModel setMyChoice(String s) {
         float width;
         width = Gdx.graphics.getWidth();
@@ -47,6 +55,11 @@ public class MatchModel {
         return player1Entity;
     }
 
+    /**
+     * saves opponent's choice
+     * @param s
+     * @return EntityModel depending on player's choice
+     */
     public EntityModel setOpponentChoice(String s) {
         float width, height;
         width = Gdx.graphics.getWidth();
@@ -61,16 +74,43 @@ public class MatchModel {
         return player2Entity;
     }
 
+    /**
+     * reset model
+     */
     public void reset() {
         instance = null;
     }
+
+    /**
+     * get rock's model
+     * @return rock's model
+     */
     public RockHandModel getRock() { return rock; }
+
+    /**
+     *
+     * @return paper's model
+     */
     public PaperHandModel getPaper() { return paper; }
+
+    /**
+     *
+     * @return scissors' model
+     */
     public ScissorHandModel getScissor() { return scissor; }
 
+    /**
+     *
+     * @return player's choice model
+     */
     public EntityModel getPlayer1Entity() {
         return player1Entity;
     }
+
+    /**
+     *
+     * @return opponent's choice model
+     */
     public EntityModel getPlayer2Entity() {
         return player2Entity;
     }

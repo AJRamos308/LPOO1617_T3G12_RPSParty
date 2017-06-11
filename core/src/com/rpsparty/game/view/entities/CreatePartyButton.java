@@ -6,10 +6,18 @@ import com.rpsparty.game.RPSParty;
 
 public class CreatePartyButton extends EntityButton {
 
+    /**
+     * class constructor
+     * @param game
+     */
     public CreatePartyButton(RPSParty game) {
         super(game);
     }
 
+    /**
+     * set button's style
+     * @param game
+     */
     public void editStyle(RPSParty game) {
         skin.add("createPartyImage", game.getAssetManager().get("StartPartyBtn.png"));//a imagem e primeiro posta numa skin porque Skin consegue converter o seu conteudo em diferentes tipo como Drawable que e o que nos precisamos para atribuir uma imagem ao butao
         style = new ButtonStyle();
@@ -17,6 +25,10 @@ public class CreatePartyButton extends EntityButton {
 
     }
 
+    /**
+     * edit button's bounds
+     * @param game
+     */
     public void editBounds(RPSParty game){
         bounds = new Rectangle(Gdx.graphics.getWidth()/4, 44*Gdx.graphics.getHeight()/80, 17*Gdx.graphics.getWidth()/32, Gdx.graphics.getHeight()/6);
     }

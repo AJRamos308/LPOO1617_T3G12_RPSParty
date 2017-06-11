@@ -53,6 +53,10 @@ public class GameScreen extends ScreenAdapter {
     private ResultsActor resultsActor;
     private Texture areYouReady;
 
+    /**
+     * class constructor
+     * @param game
+     */
     public GameScreen(RPSParty game) {
         System.out.println("\nmudou para GameScreen\n");
         this.game = game;
@@ -118,6 +122,9 @@ public class GameScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * function to jump to MainMenuScreen
+     */
     public void goBack() {
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
             if (!game.backpressed) {
@@ -129,6 +136,9 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * add buttons to screen
+     */
     public void addButtons() {
         rockButton = new RockButton(game);
         scissorsButton = new ScissorsButton(game);
@@ -137,18 +147,27 @@ public class GameScreen extends ScreenAdapter {
         resultsActor = new ResultsActor(game);
     }
 
+    /**
+     * disables the screen's buttons
+     */
     public void disableButtons() {
         rockButton.setTouchable(Touchable.disabled);
         scissorsButton.setTouchable(Touchable.disabled);
         paperButton.setTouchable(Touchable.disabled);
     }
 
+    /**
+     * enables the screen's buttons
+     */
     public void enableButtons() {
         rockButton.setTouchable(Touchable.enabled);
         scissorsButton.setTouchable(Touchable.enabled);
         paperButton.setTouchable(Touchable.enabled);
     }
 
+    /**
+     * add screen components listeners
+     */
     public void addListeners() {
         rockButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -179,6 +198,9 @@ public class GameScreen extends ScreenAdapter {
             }});
     }
 
+    /**
+     * draw animation of player's choices collision
+     */
     public void drawAnimation() {
         EntityModel player1Choice = MatchModel.getInstance().getPlayer1Entity();
         EntityModel player2Choice = MatchModel.getInstance().getPlayer2Entity();
@@ -193,6 +215,11 @@ public class GameScreen extends ScreenAdapter {
         game.getBatch().end();
     }
 
+    /**
+     *
+     * @param playerChoice
+     * @return view depending on the choice
+     */
     public EntityView getPlayerView (EntityModel playerChoice) {
         EntityView view = null;
 
@@ -210,7 +237,10 @@ public class GameScreen extends ScreenAdapter {
     }
 
 
-
+    /**
+     * after players choose the option (rock, paper or scissors)
+     * @param delta
+     */
     public void processChoices(float delta) {
         if (MatchController.getInstance().finalResult()) {//ainda nao deram os 3 shakes; ainda nao se pode mostrar o resultado
             startAnimation(delta);
@@ -222,7 +252,10 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-
+    /**
+     * stage where the animation is drawn
+     * @param delta
+     */
     public void startAnimation(float delta) {
         MatchController.getInstance().update(delta);
         if (!MatchController.getInstance().isCollision()) {
@@ -250,6 +283,10 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * select the mini game that will be played, depending on the players' choice
+     * @param element
+     */
     public void playMiniGame(String element) {
         if(element.equals("rock")) {
             this.dispose();

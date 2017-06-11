@@ -78,6 +78,9 @@ public class RockGameScreen extends ScreenAdapter {
         return camera;
     }
 
+    /**
+     * add buttons to the stage
+     */
     public void addButtonsToStage() {
         stage.addActor(Rock1);
         stage.addActor(Rock2);
@@ -132,12 +135,21 @@ public class RockGameScreen extends ScreenAdapter {
         }
 
     }
+
+    /**
+     * save the time passed since the begining of the game
+     * @param delta
+     */
     public void updateTime(float delta) {
         timeToPlay -= delta;
         timerValue = Math.round(timeToPlay);
         timer.setText(Integer.toString(timerValue));
         points.setText("Points: "+Integer.toString(RockGameController.getInstance().getPoints()));
     }
+
+    /**
+     * add labels to the screen
+     */
     public void addLabel() {
         Label.LabelStyle style = new Label.LabelStyle();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("pixel.otf"));
@@ -157,6 +169,9 @@ public class RockGameScreen extends ScreenAdapter {
         stage.addActor(points);
     }
 
+    /**
+     * add buttons to the screen
+     */
     public void addButtons() {
         Rock1 = new RockGameButton(game, RockGameModel.getInstance().getRockOne());
         Rock2 = new RockGameButton(game, RockGameModel.getInstance().getRockTwo());
@@ -165,6 +180,9 @@ public class RockGameScreen extends ScreenAdapter {
         Rock5 = new RockGameButton(game, RockGameModel.getInstance().getRockFive());
     }
 
+    /**
+     * add buttons' listeners
+     */
     public void addListeners() {
         rock1Listener();
         rock2Listener();
@@ -203,12 +221,20 @@ public class RockGameScreen extends ScreenAdapter {
                 RockGameController.getInstance().touchRockFive();
             }});
     }
+
+    /**
+     * change the style of a specific button
+     * @param btn
+     */
     public void changeButtonStyle (RockGameButton btn) {
         if(RockGameModel.getInstance().isDestroid(btn.getModel())) {
             btn.changeStyle();
         }
     }
 
+    /**
+     * change all buttons style
+     */
     public void changeButtonsStyle () {
         changeButtonStyle(Rock1);
         changeButtonStyle(Rock2);
@@ -218,6 +244,10 @@ public class RockGameScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * update button btn
+     * @param btn
+     */
     public void updateButton(RockGameButton btn) {
         if(RockGameController.getInstance().isButtonToUpdate(btn.getModel())) {
             btn.remove();
@@ -247,6 +277,9 @@ public class RockGameScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * update all buttons from the screen
+     */
     public void updateButtons() {
         for(Actor btn : stage.getActors()) {
             if(!(btn instanceof Label))

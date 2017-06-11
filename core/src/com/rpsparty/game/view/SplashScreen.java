@@ -61,6 +61,9 @@ public class SplashScreen extends ScreenAdapter{
     }
 
 
+    /**
+     * shows the screen image
+     */
     @Override
     public void show(){
 
@@ -88,7 +91,6 @@ public class SplashScreen extends ScreenAdapter{
         stage.addActor(splashActor);
     }
     private void loadAssets() {
-        //TODO: Fazer load de todas as imagens aqui.
         this.game.getAssetManager().load( "Paper.png" , Texture.class);
         this.game.getAssetManager().load( "Rock.png" , Texture.class);
         this.game.getAssetManager().load( "Scissor.png" , Texture.class);

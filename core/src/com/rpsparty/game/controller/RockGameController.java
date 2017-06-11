@@ -46,6 +46,10 @@ public class RockGameController{
         return instance;
     }
 
+    /**
+     * update the rocks from the game
+     * @param delta
+     */
     public void update(float delta) {
         for(int i = 0; i < rocks.size(); i++) {
             if(RockGameModel.getInstance().isDestroid(rocks.get(i).getModel())) {//se pedra destruida
@@ -60,6 +64,11 @@ public class RockGameController{
         }
     }
 
+    /**
+     * renew the game's rocks
+     * @param model
+     * @return
+     */
     public RockGameBody createNewRock(RockObjectGameModel model) {
         RockGameModel.getInstance().resetModel(model);
         if(model.getNumber() == RockObjectGameModel.RockNumber.ONE) {
@@ -88,6 +97,9 @@ public class RockGameController{
 
     }
 
+    /**
+     * rock number one is taped
+     */
     public void touchRockOne() {
         if(!RockGameModel.getInstance().isDestroid(rockBodyOne.getModel())) {
             rockBodyOne.setTouchTime();
@@ -99,6 +111,10 @@ public class RockGameController{
             }
         }
     }
+
+    /**
+     * rock number two is taped
+     */
     public void touchRockTwo() {
         if(!RockGameModel.getInstance().isDestroid(rockBodyTwo.getModel())) {
             rockBodyTwo.setTouchTime();
@@ -110,6 +126,10 @@ public class RockGameController{
             }
         }
     }
+
+    /**
+     * rock number three is taped
+     */
     public void touchRockThree() {
         if(!RockGameModel.getInstance().isDestroid(rockBodyThree.getModel())) {
             rockBodyThree.setTouchTime();
@@ -121,6 +141,10 @@ public class RockGameController{
             }
         }
     }
+
+    /**
+     * rock number four is taped
+     */
     public void touchRockFour() {
         if(!RockGameModel.getInstance().isDestroid(rockBodyFour.getModel())) {
             rockBodyFour.setTouchTime();
@@ -132,6 +156,10 @@ public class RockGameController{
             }
         }
     }
+
+    /**
+     * rock number five is taped
+     */
     public void touchRockFive() {
         if(!RockGameModel.getInstance().isDestroid(rockBodyFive.getModel())) {
             rockBodyFive.setTouchTime();
@@ -144,6 +172,11 @@ public class RockGameController{
         }
     }
 
+    /**
+     *
+     * @param model
+     * @return true if rock from model needs to be updated
+     */
     public boolean isButtonToUpdate(RockObjectGameModel model) {
         boolean result = false;
         if(model.getNumber() == RockObjectGameModel.RockNumber.ONE) {
@@ -170,6 +203,10 @@ public class RockGameController{
         return result;
     }
 
+    /**
+     * get player's game points
+     * @return
+     */
     public int getPoints() { return points; }
 
     public void finalResult() {//ve quem e que ganhou o jogo
@@ -189,8 +226,15 @@ public class RockGameController{
         }
     }
 
+    /**
+     *
+     * @return true if is a tie
+     */
     public boolean isTie() { return points == opponentPoints; }
 
+    /**
+     * reset the class
+     */
     public void reset() { instance = null; }
 
 }

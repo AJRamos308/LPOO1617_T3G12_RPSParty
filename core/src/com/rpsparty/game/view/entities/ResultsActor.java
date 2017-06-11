@@ -7,13 +7,14 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.rpsparty.game.RPSParty;
 import com.rpsparty.game.controller.MatchController;
 
-/**
- * Created by afonso on 18/05/2017.
- */
 
 public class ResultsActor extends Actor{
     private Texture won, lost;
 
+    /**
+     * class constructor
+     * @param game
+     */
     public ResultsActor(RPSParty game) {
         super();
         won = game.getAssetManager().get("check.png");
@@ -21,6 +22,9 @@ public class ResultsActor extends Actor{
     }
 
     @Override
+    /**
+     * draw the played sets result (X if lost, check if win)
+     */
     public void draw(Batch batch, float parentAlpha){
         int nResult = 0;
         for(Integer result : MatchController.getInstance().getSets()) {

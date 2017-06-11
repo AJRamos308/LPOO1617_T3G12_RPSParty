@@ -9,6 +9,9 @@ public class PaperGameController {
     private float distance;
     private float opponentDistance;
 
+    /**
+     * class constructor
+     */
     private PaperGameController() {
         timeToNextFrame = 0.1f;
         distance = 0;
@@ -21,12 +24,27 @@ public class PaperGameController {
         return instance;
     }
 
+    /**
+     * update the length of toilet paper unrolled
+     * @param d
+     */
     public void setDistance(float d) { distance += d;}
 
+    /**
+     * set the time to change to the next frame of the animation
+     * @param time
+     */
     public void setTimeToNextFrame(float time) { timeToNextFrame = time; }
 
+    /**
+     * gets the time to change to the next frame of the animation
+     * @return
+     */
     public float getTimeToNextFrame() { return  timeToNextFrame; }
 
+    /**
+     * conclude who won the game
+     */
     public void finalResult() {//ve quem e que ganhou o jogo
 
         ConnectionSockets.getInstance().sendMessage(Float.toString(distance)+"\n");
@@ -44,9 +62,20 @@ public class PaperGameController {
         }
     }
 
+    /**
+     *
+     * @return true if is a tie
+     */
     public boolean isTie() { return distance == opponentDistance; }
 
+    /**
+     * reset class
+     */
     public void reset() { instance = null; }
 
+    /**
+     * get player's game points
+     * @return
+     */
     public float getMyPoints() { return distance; }
 }

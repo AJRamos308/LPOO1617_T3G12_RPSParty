@@ -3,7 +3,6 @@ package com.rpsparty.game.controller;
 import com.badlogic.gdx.Gdx;
 import java.util.Random;
 
-
 public class ScissorGameController {
 
     private static ScissorGameController instance;
@@ -47,17 +46,39 @@ public class ScissorGameController {
         return instance;
     }
 
+    /**
+     * sets the center of the circle
+     * @param Xcenter
+     * @param Ycenter
+     */
     public void setCenter(Integer Xcenter, Integer Ycenter){
         centerX = Xcenter;
         centerY = Ycenter;
     }
 
+    /**
+     * saves the current circle's radius
+     * @param r
+     */
     public void setRadius(Integer r) { radius = r; }
 
+    /**
+     * gets the current circle size
+     * @return
+     */
     public int getCircleSize() { return circleSize; }
 
+    /**
+     * get playe's game points
+     * @return
+     */
     public float getMyPoints() { return points; }
 
+    /**
+     * update player's point depending on finger position
+     * @param x
+     * @param y
+     */
     public void setMyPoints(Integer x, Integer y) {
         double distance = Math.sqrt(Math.pow(x-centerX, 2)+Math.pow(y-centerY, 2));
         double deltaDist = Math.abs(radius-distance);
@@ -71,6 +92,9 @@ public class ScissorGameController {
         }
     }
 
+    /**
+     * conclude who won the game
+     */
     public void finalResult() {//ve quem e que ganhou o jogo
         points /= radius;//para os pontos serem proporcionais ao tamanho da circunferencia
         ConnectionSockets.getInstance().sendMessage(Float.toString(points)+"\n");
@@ -87,8 +111,17 @@ public class ScissorGameController {
         }
     }
 
+    /**
+     *
+     * @return current circle's radius
+     */
     public Integer getRadius () { return radius; }
 
+    /**
+     * update scissors' position for the animation
+     * @param delta
+     * @return
+     */
     public boolean setScissorPosition (float delta) {
         stateTime += delta;
         if(stateTime*w < 2*Math.PI) {
@@ -107,14 +140,33 @@ public class ScissorGameController {
         return false;
     }
 
+    /**
+     *
+     * @return scissors' position from the animation
+     */
     public double[] getScissorPosition() { return scissorPosition; }
 
+    /**
+     *
+     * @return scissors' velocity from the animation
+     */
     public double[] getScissorVel() { return scissorVel; }
 
+    /**
+     *
+     * @return scissors' orientation from the animation
+     */
     public float getScissorAng() { return scissorAng; }
 
+    /**
+     *
+     * @return true if is a tie
+     */
     public boolean isTie() { return points == opponentPoints; }
 
+    /**
+     * reset class
+     */
     public void reset() {
         instance = null;
     }

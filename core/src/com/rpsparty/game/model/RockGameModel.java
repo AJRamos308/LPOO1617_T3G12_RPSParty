@@ -35,6 +35,9 @@ public class RockGameModel {
         return instance;
     }
 
+    /**
+     * class constructor
+     */
     private RockGameModel(){
 
         rockOne = new RockObjectGameModel(Gdx.graphics.getWidth()/16,Gdx.graphics.getHeight()/16,0, ONE);
@@ -44,36 +47,62 @@ public class RockGameModel {
         rockFive = new RockObjectGameModel(2*Gdx.graphics.getWidth()/16,10*Gdx.graphics.getHeight()/16,0, FIVE);
     }
 
+    /**
+     *
+     * @return rock one model
+     */
     public RockObjectGameModel getRockOne() { return rockOne; }
+    /**
+     *
+     * @return rock two model
+     */
     public RockObjectGameModel getRockTwo() { return rockTwo; }
+    /**
+     *
+     * @return rock three model
+     */
     public RockObjectGameModel getRockThree() { return rockThree; }
+    /**
+     *
+     * @return rock four model
+     */
     public RockObjectGameModel getRockFour() { return rockFour; }
+    /**
+     *
+     * @return rock five model
+     */
     public RockObjectGameModel getRockFive() { return rockFive; }
 
+    /**
+     *
+     * @param model
+     * @return true if rock from model has a coin inside
+     */
     public boolean hasCoin(RockObjectGameModel model) {
-        /*if(model.getNumber() == RockObjectGameModel.RockNumber.ONE) {
-            return rockOne.hasCoin();
-        } else if(model.getNumber() == RockObjectGameModel.RockNumber.TWO) {
-            return rockTwo.hasCoin();
-        } else if(model.getNumber() == RockObjectGameModel.RockNumber.THREE) {
-            return rockThree.hasCoin();
-        } else if(model.getNumber() == RockObjectGameModel.RockNumber.FOUR) {
-            return rockFour.hasCoin();
-        } else if(model.getNumber() == RockObjectGameModel.RockNumber.FIVE) {
-            return rockFive.hasCoin();
-        }
-        return false;*/
         return model.hasCoin();
     }
 
+    /**
+     *
+     * @param model
+     * @return true if rock from model is destroid
+     */
     public boolean isDestroid (RockObjectGameModel model) {
         return model.isDestroied();
     }
 
+    /**
+     * destroy the rock from model
+     * @param model
+     */
     public void destroyRock(RockObjectGameModel model) {
         model.destroy();
     }
 
+    /**
+     * reset rock's model (after being destroid)
+     * @param model
+     */
     public void resetModel(RockObjectGameModel model) {
         if(model.getNumber().equals(RockObjectGameModel.RockNumber.ONE)) {
             rockOne = new RockObjectGameModel(Gdx.graphics.getWidth()/16,Gdx.graphics.getHeight()/16,0, ONE);
@@ -94,6 +123,9 @@ public class RockGameModel {
         System.out.println("MAL RESET!");
     }
 
+    /**
+     * reset class
+     */
     public void reset() { instance = null; }
 
 }

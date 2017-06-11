@@ -12,9 +12,6 @@ import com.rpsparty.game.view.PaperGameScreen;
 
 import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.actor;
 
-/**
- * Created by afonso on 22/05/2017.
- */
 
 public class PaperGameActor extends Actor {
     Texture texture = new Texture(Gdx.files.internal("paperRoll.png"));
@@ -24,6 +21,9 @@ public class PaperGameActor extends Actor {
     private float flingTime = 0;
     private boolean touching = false;
 
+    /**
+     * class constructor
+     */
     public PaperGameActor(){
         float width = texture.getWidth();
         float height = texture.getHeight();
@@ -53,16 +53,23 @@ public class PaperGameActor extends Actor {
 
     }
 
+    /**
+     * gets time for the next animation's frame
+     */
     public void saveTimeToNextFrame() { PaperGameController.getInstance().setTimeToNextFrame(timeToNextFrame); }
 
     @Override
+    /**
+     * draw toilet paper
+     */
     public void draw(Batch batch, float alpha){
-        float width = texture.getWidth();
-        float height = texture.getHeight();
         batch.draw(texture,Gdx.graphics.getWidth()/16,0,Gdx.graphics.getWidth()-Gdx.graphics.getWidth()/8,Gdx.graphics.getHeight()-Gdx.graphics.getHeight()/8);
     }
 
     @Override
+    /**
+     * toilet paper move
+     */
     public void act(float delta) {
         if(!touching) {//ir reduzindo a velocidade de transicao entre frames enquanto nao ha fling; aumentamos o timeToNextFrame
             PaperGameController.getInstance().setDistance(totalVelocity * delta);

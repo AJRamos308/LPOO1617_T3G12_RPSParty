@@ -40,9 +40,7 @@ public class MainMenuScreen extends ScreenAdapter {
     private CreatePartyButton createPartyButton;
     private JoinPartyButton joinPartyButton;
     private HelpButton helpButton;
-   /* private AchievementsButton achievementsButton;
-    private SettingsButton settingsButton;
-    */
+
 
     public MainMenuScreen(RPSParty game) {
         this.game = game;
@@ -52,9 +50,6 @@ public class MainMenuScreen extends ScreenAdapter {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         addButtons();
-       /* stage.addActor(achievementsButton);
-        stage.addActor(settingsButton);
-        */
         resetSockets();
     }
     /**
@@ -79,7 +74,6 @@ public class MainMenuScreen extends ScreenAdapter {
      */
     @Override
     public void render(float delta) {
-        //Gdx.gl.glClearColor( 103/255f, 69/255f, 117/255f, 1 );
         game.backpressed = false;
         camera.update();
         Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -100,17 +94,20 @@ public class MainMenuScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * create screen buttons
+     */
     public void createButtons() {
         createPartyButton = new CreatePartyButton(game);
         joinPartyButton = new JoinPartyButton(game);
         helpButton = new HelpButton(game);
-       /* achievementsButton = new AchievementsButton(game);
-        settingsButton = new SettingsButton(game);
-       */
         background = new Image(new TextureRegion((Texture)game.getAssetManager().get("background.png")));
         background.setFillParent(true);
     }
 
+    /**
+     * add buttons to the screen
+     */
     public void addButtons() {
         stage.addActor(background);
         stage.addActor(createPartyButton);
@@ -118,6 +115,9 @@ public class MainMenuScreen extends ScreenAdapter {
         stage.addActor(helpButton);
     }
 
+    /**
+     * add screen components listeners
+     */
     public void addListeners() {
         createPartyButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -137,6 +137,9 @@ public class MainMenuScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * reset the previous sockets
+     */
     public void resetSockets() {
         ConnectionSockets.getInstance().reset();
     }

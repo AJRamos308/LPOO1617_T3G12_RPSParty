@@ -63,6 +63,10 @@ public class ScissorsGameScreen extends ScreenAdapter{
     private Label timer;
     private Stage stage;
 
+    /**
+     * class constructor
+     * @param game
+     */
     public ScissorsGameScreen(RPSParty game) {
         this.game = game;
         camera = createCamera();
@@ -79,14 +83,15 @@ public class ScissorsGameScreen extends ScreenAdapter{
      */
     private OrthographicCamera createCamera() {
 
-        float ratio = ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
-        //OrthographicCamera camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_WIDTH / PIXEL_TO_METER * ratio);
         OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
         return camera;
     }
 
+    /**
+     * add labels to the screen
+     */
     public void addLabel() {
         stage = new Stage();
         Label.LabelStyle style = new Label.LabelStyle();
@@ -103,6 +108,9 @@ public class ScissorsGameScreen extends ScreenAdapter{
         stage.addActor(timer);
     }
 
+    /**
+     * create scissors' animation
+     */
     public void createAnimation() {
         animationTexture = game.getAssetManager().get("scissorsAnimation.png");
         // Split the texture into frame
@@ -167,6 +175,10 @@ public class ScissorsGameScreen extends ScreenAdapter{
         goBack();
     }
 
+    /**
+     * save the time passed since the begining of the game
+     * @param delta
+     */
     public void updateTime(float delta) {
         stateTime += delta;
         timeToPlay -= delta;
@@ -174,6 +186,9 @@ public class ScissorsGameScreen extends ScreenAdapter{
         timer.setText(Integer.toString(timerValue));
     }
 
+    /**
+     * function to return to the Main Menu
+     */
     public void goBack() {
         if (Gdx.input.isKeyPressed(Keys.BACK)) {
             if (!game.backpressed) {
@@ -186,6 +201,11 @@ public class ScissorsGameScreen extends ScreenAdapter{
 
     }
 
+    /**
+     * play the scissors' animation
+     * @param delta
+     * @return true if th animation is being played
+     */
     public boolean playAnimation(float delta) {
 
         if(ScissorGameController.getInstance().setScissorPosition(delta)) {
@@ -201,6 +221,9 @@ public class ScissorsGameScreen extends ScreenAdapter{
 
     }
 
+    /**
+     * saves the touch position
+     */
     public void saveFingerPosition() {
         if(Gdx.input.getX() < Gdx.graphics.getWidth()/2)//so desenhar de metade do ecra para a direita
             return;
@@ -222,6 +245,9 @@ public class ScissorsGameScreen extends ScreenAdapter{
 
     }
 
+    /**
+     * draw the line in the screen positions that the player touched
+     */
     public void drawLine() {
         camera.update();
         quad.setProjectionMatrix(camera.combined);
@@ -236,6 +262,9 @@ public class ScissorsGameScreen extends ScreenAdapter{
         quad.end();
     }
 
+    /**
+     * save the current semicircle texture
+     */
     public void setSemiCircleTexture() {
         switch (circleSize) {
             case 0:
