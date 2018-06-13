@@ -144,6 +144,4 @@ Every mini game has a limited time to be concluded. You can also see a quick exp
 
 ![Win](https://github.com/AJRamos308/LPOO1617_T3G12_RPSParty/blob/master/Delivery%20Images/WinningLosingScreen.png)
 
-Afonso Jorge Moreira Maia Ramos     up201506239@fe.up.pt
-
-Beatriz Souto de Sá Baldaia         up201505633@fe.up.pt
+Made by [@afonsojramos](https://github.com/afonsojramos) and [@BeatrizBaldaia](https://github.com/BeatrizBaldaia)
